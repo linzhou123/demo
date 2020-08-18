@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.Mapper.ProjectMapper">
+<resultMap id="BaseResultMap" type="com.example.demo.Model.Project">
+    <id column="id" jdbcType="INTEGER" property="id"/>
+    <result column="project_name" jdbcType="VARCHAR" property="projectName"/>
+    <result column="description" jdbcType="VARCHAR" property="description"/>
+    <result column="creat_time" jdbcType="INTEGER" property="creatTime"/>
+    <result column="update_time" jdbcType="INTEGER" property="updateTime"/>
+</resultMap>
+<sql id="Base_Column_List">
+    `id`,`project_name`,`description`,`creat_time`,`update_time`
+    </sql>
+<insert id="insertProject" keyProperty="id" parameterType="com.example.demo.Model.Project" useGeneratedKeys="true">
+    insert into project (`project_name`,`description`,creat_time,update_time) value (#{projectName},#{description},#{creatTime},#{updateTime})
+    </insert>
+<update id="updateProject" parameterType="com.example.demo.Model.Project">
+    update project
+    set description =#{description}
+    where id = #{id}
+</update>
+<select id="findAllProject" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"></include>
+    from project
+</select>
+<select id="findByName" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select
+    <include refid="Base_Column_List"></include>
+    from project
+    where project_name = #{projectName}
+</select>
+<select id="findById" resultMap="BaseResultMap" parameterType="int">
+    select
+    <include refid="Base_Column_List"></include>
+    from project
+    where id = #{projectId}
+</select>
+<delete id="deleteById" parameterType="int">
+    delete from project where id = #{projectId}
+</delete>
+</mapper>
