@@ -2,7 +2,7 @@ package com.example.demo.Model;
 
 import java.io.Serializable;
 
-public class Header implements Serializable {
+public class Params implements Serializable {
     private String key;
     private String value;
 

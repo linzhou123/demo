@@ -1,5 +1,7 @@
 package com.example.demo.Service.Impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.example.demo.Mapper.ApiSuiteMapper;
 import com.example.demo.Model.ApiSuite;
 import com.example.demo.Service.ApiSuiteService;
@@ -23,12 +25,23 @@ public class ApiSuiteServiceImpl implements ApiSuiteService {
     }
 
     @Override
+    public int updateApiSuite(ApiSuite apiSuite){
+        apiSuite.setUpdateTime((int)(System.currentTimeMillis()/1000));
+        return apiSuiteMapper.updateApiSuite(apiSuite);
+    }
+
+    @Override
+    public int deleteById(int apiSuiteId){
+        return apiSuiteMapper.deleteById(apiSuiteId);
+    }
+
+    @Override
     public List<ApiSuite> findAllByName(String apiSuiteName){
         return  apiSuiteMapper.findAllByName(apiSuiteName);
     }
 
     @Override
-    public List<ApiSuite> findAllById(int apiSuiteId){
+    public ApiSuite findAllById(int apiSuiteId){
         return  apiSuiteMapper.findAllById(apiSuiteId);
     }
 
@@ -41,5 +54,11 @@ public class ApiSuiteServiceImpl implements ApiSuiteService {
     public PageInfoNew<ApiSuite> findAllWithPage(int pageNum,int pageSize){
         PageHelper.startPage(pageNum,pageSize);
         return new PageInfoNew<>(apiSuiteMapper.findAll());
+    }
+
+    @Override
+    public JSONObject js(int apiSuiteId){
+        ApiSuite apiSuites = apiSuiteMapper.findAllById(apiSuiteId);
+        return JSONObject.parseObject(JSON.toJSONString(apiSuites));
     }
 }

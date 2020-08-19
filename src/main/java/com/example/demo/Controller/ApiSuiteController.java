@@ -18,17 +18,45 @@ public class ApiSuiteController {
     private ProjectService projectService;
 
     @PostMapping("/add")
-    public ResponseInfo insertApiSuite(@RequestBody ApiSuite apiSuite){
-        List<ApiSuite> apiSuites =apiSuiteService.findAllByName(apiSuite.getName());
-        if (apiSuites.size()>0){
-            return ResponseInfo.errorInfo("name已重复");
+    public ResponseInfo insertApiSuite(@RequestBody ApiSuite apiSuite) {
+        List<ApiSuite> apiSuites = apiSuiteService.findAllByName(apiSuite.getName());
+        if (apiSuites.size() > 0) {
+            return ResponseInfo.errorInfo("apiSuiteName已重复");
         }
         apiSuiteService.insertApiSuite(apiSuite);
         return ResponseInfo.successInfo("");
     }
+
+    /**
+     * 更新apiSuite
+     */
+    @PostMapping("/edit")
+    public ResponseInfo updateApiSuite(@RequestBody ApiSuite apiSuite) {
+        ApiSuite apiSuites = apiSuiteService.findAllById(apiSuite.getId());
+        if (apiSuites.getId() == 0) {
+            return ResponseInfo.errorInfo("apiSuite不存在");
+        }
+        apiSuiteService.updateApiSuite(apiSuite);
+        return ResponseInfo.successInfo("");
+    }
+
+    /**
+     * 删除apiSuite
+     */
+    @DeleteMapping("/delete/{id}")
+    public ResponseInfo deleteApiSuiteById(@PathVariable(value = "id") int apiSuiteId) {
+        apiSuiteService.deleteById(apiSuiteId);
+        return ResponseInfo.successInfo("");
+    }
+
     @GetMapping("/page")
-    public ResponseInfo finAllWithPage(@RequestParam(value = "pageNum",required = true) int pageNum,@RequestParam(value = "pageSize",required = true) int pageSize ){
-        return ResponseInfo.successInfo(apiSuiteService.findAllWithPage(pageNum,pageSize));
+    public ResponseInfo finAllWithPage(@RequestParam(value = "pageNum", required = true) int pageNum, @RequestParam(value = "pageSize", required = true) int pageSize) {
+        return ResponseInfo.successInfo(apiSuiteService.findAllWithPage(pageNum, pageSize));
+    }
+
+    @GetMapping("/get/{id}")
+    public ResponseInfo finById(@PathVariable(value = "id") int apiSuiteId){
+        return ResponseInfo.successInfo(apiSuiteService.findAllById(apiSuiteId));
     }
 }
 

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.Mapper.ApiMapper">
+    <resultMap id="BaseResultMap" type="com.example.demo.Model.Api">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="project_id" jdbcType="INTEGER" property="projectId"/>
+        <result column="api_suite_id" jdbcType="INTEGER" property="apiSuiteId"/>
+        <result column="request_header" property="requestHeader"
+                typeHandler="com.example.demo.typehandler.ListTypeHandler"/>
+        <result column="request_params" property="requestParams"
+                typeHandler="com.example.demo.typehandler.ListTypeHandler"/>
+        <result column="method" jdbcType="VARCHAR" property="method"/>
+        <result column="path" jdbcType="VARCHAR" property="path"/>
+        <result column="creat_time" jdbcType="INTEGER" property="creatTime"/>
+        <result column="update_time" jdbcType="INTEGER" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        `id`,`name`,`project_id`,`api_suite_id`,`request_header`,`request_params`,`method`,`path`,`creat_time`,`update_time`
+    </sql>
+    <insert id="insertApi" parameterType="com.example.demo.Model.Api">
+        insert into api (`name`,`project_id`,`api_suite_id`,`request_header`,`request_params`,`method`,`path`,`creat_time`,`update_time`)
+            value (#{name},#{projectId},#{apiSuiteId},#{requestHeader,jdbcType=VARCHAR,typeHandler=com.example.demo.typehandler.ListTypeHandler,},#{requestParams,jdbcType=VARCHAR,typeHandler=com.example.demo.typehandler.ListTypeHandler},#{method},#{path},#{creatTime},#{updateTime})
+    </insert>
+    <select id="findAllByName" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"></include>
+        from api
+        where `name` =#{apiName}
+    </select>
+</mapper>

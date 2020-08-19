@@ -1,6 +1,8 @@
 package com.example.demo.Model;
 
-public class ApiSuite {
+import java.io.Serializable;
+
+public class ApiSuite implements Serializable {
     private int id;
     private String name;
     private int projectId;
