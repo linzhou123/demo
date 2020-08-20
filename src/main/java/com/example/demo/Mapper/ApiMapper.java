@@ -8,5 +8,7 @@ import java.util.List;
 public interface ApiMapper {
 
     int insertApi(Api api);
-    List<Api> findAllByName(@Param("apiName") String apiName);
+    List<Api> findAllByName(@Param(value = "apiName") String apiName);
+    Api findById(@Param(value = "apiId") int apiId);
+    int updateApi(Api api);
 }

@@ -24,4 +24,14 @@ public class ApiServiceImpl implements ApiService {
     public List<Api> findAllByName(String apiName){
         return apiMapper.findAllByName(apiName);
     }
+
+    @Override
+    public Api findById(int apiId){
+        return apiMapper.findById(apiId);
+    }
+
+    @Override
+    public int updateApi(Api api){
+        return apiMapper.updateApi(api);
+    }
 }

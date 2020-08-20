@@ -8,6 +8,7 @@ public class Api implements Serializable {
     private String name;
     private int projectId;
     private int apiSuiteId;
+    private String domain;
     private List<Header> requestHeader;
     private List<Params> requestParams;
     private String method;
@@ -45,6 +46,14 @@ public class Api implements Serializable {
 
     public void setApiSuiteId(int apiSuiteId) {
         this.apiSuiteId = apiSuiteId;
+    }
+
+    public String getDomain() {
+        return domain;
+    }
+
+    public void setDomain(String domain) {
+        this.domain = domain;
     }
 
     public List<Header> getRequestHeader() {
