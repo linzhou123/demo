@@ -1,5 +1,8 @@
 package com.example.demo.Model;
 
+import com.example.demo.Model.ApiModel.Header;
+import com.example.demo.Model.ApiModel.Params;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -17,6 +20,7 @@ public class ApiRequestResult implements Serializable {
     private boolean resultIsPass;
     private int creatTime;
     private int updateTime;
+
 
     public int getId() {
         return id;

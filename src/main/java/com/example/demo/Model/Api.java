@@ -1,5 +1,9 @@
 package com.example.demo.Model;
 
+import com.example.demo.Model.ApiModel.Header;
+import com.example.demo.Model.ApiModel.Params;
+import com.example.demo.Model.ApiModel.RequestAssert;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -9,10 +13,13 @@ public class Api implements Serializable {
     private int projectId;
     private int apiSuiteId;
     private String domain;
+    private String requestParamType;
     private List<Header> requestHeader;
     private List<Params> requestParams;
+    private String requestBody;
     private String method;
     private String path;
+    private List<RequestAssert> requestAssert;
     private int creatTime;
     private int updateTime;
 
@@ -88,6 +95,14 @@ public class Api implements Serializable {
         this.path = path;
     }
 
+    public List<RequestAssert> getRequestAssert() {
+        return requestAssert;
+    }
+
+    public void setRequestAssert(List<RequestAssert> requestAssert) {
+        this.requestAssert = requestAssert;
+    }
+
     public int getCreatTime() {
         return creatTime;
     }
@@ -102,5 +117,21 @@ public class Api implements Serializable {
 
     public void setUpdateTime(int updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getRequestParamType() {
+        return requestParamType;
+    }
+
+    public void setRequestParamType(String requestParamType) {
+        this.requestParamType = requestParamType;
+    }
+
+    public String getRequestBody() {
+        return requestBody;
+    }
+
+    public void setRequestBody(String requestBody) {
+        this.requestBody = requestBody;
     }
 }

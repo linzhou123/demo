@@ -5,7 +5,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class Test {
@@ -59,7 +58,11 @@ public class Test {
 //        System.out.println(sql);
 //        List<String> result = test.getData(sql,"mistake_name");
 //        System.out.println(result.get(0));
-        String date =String.valueOf(new Date());
-        System.out.println(date);
+//        ApiServiceImpl apiService = null;
+//        Api api= apiService.findById(3);
+//        List<Header> headerList= api.getRequestHeader();
+//        System.out.println(headerList.getClass().toString());
+//        String date =String.valueOf(new Date());
+//        System.out.println(date);
     }
 }

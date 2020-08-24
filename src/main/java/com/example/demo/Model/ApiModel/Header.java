@@ -1,8 +1,8 @@
-package com.example.demo.Model;
+package com.example.demo.Model.ApiModel;
 
 import java.io.Serializable;
 
-public class Params implements Serializable {
+public class Header implements Serializable {
     private String key;
     private String value;
 
