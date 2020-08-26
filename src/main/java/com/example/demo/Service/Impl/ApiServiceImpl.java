@@ -3,6 +3,8 @@ package com.example.demo.Service.Impl;
 import com.example.demo.Mapper.ApiMapper;
 import com.example.demo.Model.Api;
 import com.example.demo.Service.ApiService;
+import com.example.demo.units.PageInfoNew;
+import com.github.pagehelper.PageHelper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -28,6 +30,12 @@ public class ApiServiceImpl implements ApiService {
     @Override
     public Api findById(int apiId){
         return apiMapper.findById(apiId);
+    }
+
+    @Override
+    public PageInfoNew<Api> findAllWithPage(int pageNum, int pageSize,Integer apsuiteId){
+        PageHelper.startPage(pageNum,pageSize);
+        return new PageInfoNew<>(apiMapper.findAllByApiSuiteId(apsuiteId));
     }
 
     @Override

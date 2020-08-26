@@ -53,4 +53,19 @@
             `update_time` =#{updateTime}
         where id =#{id};
     </update>
+    <select id="findAll" resultMap="BaseResultMap" parameterType="com.example.demo.Model.Api">
+        select
+        <include refid="Base_Column_List"></include>
+        from api
+    </select>
+    <select id="findAllByApiSuiteId" resultMap="BaseResultMap" parameterType="com.example.demo.Model.Api">
+        select
+        <include refid="Base_Column_List"></include>
+        from api
+         <if test="apiSuiteId !=null and apiSuiteId !=''">
+             where api_suite_id=#{apiSuiteId}
+         </if>
+
+    </select>
+
 </mapper>

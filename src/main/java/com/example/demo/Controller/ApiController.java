@@ -21,34 +21,35 @@ public class ApiController {
     ApiRequestResultService apiRequestResultService;
 
     @PostMapping("/add")
-    public ResponseInfo insertApi(@RequestBody Api api){
-        List<Api> apiList =apiService.findAllByName(api.getName());
-        if (apiList.size()>0){
-            return ResponseInfo.errorInfo(api.getName()+"已存在");
+    public ResponseInfo insertApi(@RequestBody Api api) {
+        List<Api> apiList = apiService.findAllByName(api.getName());
+        if (apiList.size() > 0) {
+            return ResponseInfo.errorInfo(api.getName() + "已存在");
         }
         apiService.insertApi(api);
         return ResponseInfo.successInfo("");
     }
 
+    @GetMapping("/page")
+    public ResponseInfo apiPage(@RequestParam(value = "pageNum") int pageNum,@RequestParam(value = "pageSize") int pageSize,@RequestParam(value = "apiSuiteId",required = false) Integer apiSuiteId){
+            return ResponseInfo.successInfo(apiService.findAllWithPage(pageNum,pageSize,apiSuiteId));
+    }
+
     @PostMapping("/edit")
-    public ResponseInfo updateApi(@RequestBody Api api){
-        try{
+    public ResponseInfo updateApi(@RequestBody Api api) {
+        try {
             apiService.updateApi(api);
             return ResponseInfo.successInfo("");
-        }catch (Exception e){
+        } catch (Exception e) {
             return ResponseInfo.errorInfo(e.getMessage());
 
         }
     }
 
     @PostMapping("/run")
-    public ResponseInfo runApi(@RequestParam int apiId){
+    public ResponseInfo runApi(@RequestParam int apiId) {
 
-        try {
-            apiRequestResultService.insertApiRequestResult(apiId);
-            return ResponseInfo.successInfo("");
-        }catch (Exception e){
-            return ResponseInfo.errorInfo(e.getMessage());
-        }
+        apiRequestResultService.insertApiRequestResult(apiId);
+        return ResponseInfo.successInfo("");
     }
 }

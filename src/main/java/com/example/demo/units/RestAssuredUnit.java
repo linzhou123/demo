@@ -5,10 +5,12 @@ import com.example.demo.Model.Api;
 import com.example.demo.Model.ApiModel.Header;
 import com.example.demo.Model.ApiModel.Params;
 import com.example.demo.Model.ApiModel.RequestAssert;
+import com.example.demo.Model.ApiModel.ResultAssert;
 import com.example.demo.Model.ApiRequestResult;
 import com.jayway.jsonpath.JsonPath;
 import io.restassured.response.Response;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,7 +59,8 @@ public class RestAssuredUnit {
         apiRequestResult.setURL(URL);
         apiRequestResult.setResultBody(response.getBody().prettyPrint());
         apiRequestResult.setResultStatus(response.getStatusCode());
-        apiRequestResult.setResultIsPass(flag);
+        apiRequestResult.setResultAssert(getResultAssert());
+        apiRequestResult.setResultIsPass(requestAssert());
         apiRequestResult.setResultTime((int) response.getTime());
         apiRequestResult.setCreatTime((int) (System.currentTimeMillis() / 1000));
         apiRequestResult.setUpdateTime((int) (System.currentTimeMillis() / 1000));
@@ -65,6 +68,9 @@ public class RestAssuredUnit {
 
     }
 
+    /**
+     * 获取消息头
+     * */
     public Map<String, Object> getHeaders() {
         List<Header> headerList = JSONObject.parseArray(api.getRequestHeader().toString(), Header.class);
         Map<String, Object> getHeaders = new HashMap<String, Object>();
@@ -84,6 +90,9 @@ public class RestAssuredUnit {
         return getHeaders;
     }
 
+    /**
+     * 获取参数
+     * */
     public Map<String, Object> getParams() {
         List<Params> paramsList = JSONObject.parseArray(api.getRequestParams().toString(), Params.class);
         Map<String, Object> getParams = new HashMap<String, Object>();
@@ -103,13 +112,40 @@ public class RestAssuredUnit {
         return getParams;
     }
 
-    public boolean requestAssert(String isCheked) {
+    /**
+     * 返回断言结果集：ResultAssert
+     * */
+    public List<ResultAssert> getResultAssert(){
         List<RequestAssert> assertList = JSONObject.parseArray(api.getRequestAssert().toString(), RequestAssert.class);
-        if (assertList.size() > 0) {
+        List<ResultAssert> resultAssertList =new ArrayList<ResultAssert>();
+        if (assertList.size()>0){
             for (RequestAssert requestAssert:assertList){
-                String checkValue = JsonPath.parse(api.getRequestBody()).read("$."+requestAssert.getCheckList());
-                        if (checkValue.equals(requestAssert.getValue())){
-                            flag=true;
+                ResultAssert resultAssert=new ResultAssert();
+                resultAssert.setCheckList(requestAssert.getCheckList());
+                resultAssert.setValue(requestAssert.getValue());
+                if (JsonPath.parse(apiRequestResult.getResultBody()).read("$."+requestAssert.getCheckList()).toString().equals(requestAssert.getValue())){
+                    resultAssert.setResult(true);
+                }else {
+                    resultAssert.setResult(false);
+                }
+                resultAssertList.add(resultAssert);
+            }
+        }
+        return resultAssertList;
+    }
+
+    /**
+     * 判断断言返回结果集中是否有断言失败结果，有则返回false
+     * */
+    public boolean requestAssert() {
+        List<ResultAssert> resultAssertList =apiRequestResult.getResultAssert();
+        if (resultAssertList.size() > 0) {
+            for (ResultAssert resultAssert : resultAssertList) {
+                if (!resultAssert.isResult()){
+                    flag=false;
+                    return flag;
+                }else {
+                    flag=true;
                 }
             }
         } else {

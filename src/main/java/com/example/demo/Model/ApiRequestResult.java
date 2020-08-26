@@ -2,6 +2,7 @@ package com.example.demo.Model;
 
 import com.example.demo.Model.ApiModel.Header;
 import com.example.demo.Model.ApiModel.Params;
+import com.example.demo.Model.ApiModel.ResultAssert;
 
 import java.io.Serializable;
 import java.util.List;
@@ -17,6 +18,7 @@ public class ApiRequestResult implements Serializable {
     private String resultBody;
     private int resultStatus;
     private int resultTime;
+    private List<ResultAssert> resultAssert;
     private boolean resultIsPass;
     private int creatTime;
     private int updateTime;
@@ -100,6 +102,14 @@ public class ApiRequestResult implements Serializable {
 
     public void setResultTime(int resultTime) {
         this.resultTime = resultTime;
+    }
+
+    public List<ResultAssert> getResultAssert() {
+        return resultAssert;
+    }
+
+    public void setResultAssert(List<ResultAssert> resultAssert) {
+        this.resultAssert = resultAssert;
     }
 
     public boolean isResultIsPass() {

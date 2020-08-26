@@ -14,15 +14,18 @@
         <result column="result_body" jdbcType="VARCHAR" property="resultBody"/>
         <result column="result_status" jdbcType="INTEGER" property="resultStatus"/>
         <result column="result_time" jdbcType="INTEGER" property="resultTime"/>
+        <result column="result_assert" property="resultAssert"
+                typeHandler="com.example.demo.typehandler.ListTypeHandler"/>
         <result column="result_isPass" jdbcType="TINYINT" property="resultIsPass"/>
         <result column="creat_time" jdbcType="INTEGER" property="creatTime"/>
         <result column="update_time" jdbcType="INTEGER" property="updateTime"/>
     </resultMap>
     <sql id="Base_Column_List">
-        `id`,`api_id`,`api_name`,`request_header`,`request_params`,`method`,`URL`,`result_body`,`result_status`,`result_time`,`result_isPass`,`creat_time`,`update_time`
+        `id`,`api_id`,`api_name`,`request_header`,`request_params`,`method`,`URL`,`result_body`,`result_status`,`result_time`,`result_assert`,`result_isPass`,`creat_time`,`update_time`
     </sql>
     <insert id="insertApiRequestResult" parameterType="com.example.demo.Model.ApiRequestResult">
-        insert into api_request_result (`api_id`,`api_name`,`request_header`,`request_params`,`method`,`URL`,`result_body`,`result_status`,`result_time`,`result_isPass`,`creat_time`,`update_time`)
-        value (#{apiId},#{apiName},#{requestHeader,jdbcType=VARCHAR,typeHandler=com.example.demo.typehandler.ListTypeHandler,},#{requestParams,jdbcType=VARCHAR,typeHandler=com.example.demo.typehandler.ListTypeHandler},#{method},#{URL},#{resultBody},#{resultStatus},#{resultTime},#{resultIsPass},#{creatTime},#{updateTime})
+        insert into api_request_result (`api_id`,`api_name`,`request_header`,`request_params`,`method`,`URL`,`result_body`,`result_status`,`result_time`,`result_assert`,`result_isPass`,`creat_time`,`update_time`)
+        value
+        (#{apiId},#{apiName},#{requestHeader,jdbcType=VARCHAR,typeHandler=com.example.demo.typehandler.ListTypeHandler,},#{requestParams,jdbcType=VARCHAR,typeHandler=com.example.demo.typehandler.ListTypeHandler},#{method},#{URL},#{resultBody},#{resultStatus},#{resultTime},#{resultAssert,jdbcType=VARCHAR,typeHandler=com.example.demo.typehandler.ListTypeHandler},#{resultIsPass},#{creatTime},#{updateTime})
     </insert>
 </mapper>
