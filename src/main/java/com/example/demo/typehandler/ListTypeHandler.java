@@ -11,6 +11,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+
+/**
+ * List<>包装类装换为json格式-mybatis
+ * */
 public class ListTypeHandler extends BaseTypeHandler<List> {
     @Override
     public void setNonNullParameter(PreparedStatement ps, int i, List parameter, JdbcType jdbcType) throws SQLException {

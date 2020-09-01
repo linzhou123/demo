@@ -43,6 +43,9 @@ public class ProjectController {
         projectService.updateProject(project);
         return ResponseInfo.successInfo("");
     }
+    /**
+     * project删除接口
+     * */
     @DeleteMapping("/delete/{id}")
     public ResponseInfo deleteProject(@PathVariable("id") int projectId){
         List<Project> projects = projectService.findById(projectId);

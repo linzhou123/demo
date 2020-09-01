@@ -20,6 +20,9 @@ public class ApiController {
     @Resource
     ApiRequestResultService apiRequestResultService;
 
+    /**
+     * 新增api接口
+     * */
     @PostMapping("/add")
     public ResponseInfo insertApi(@RequestBody Api api) {
         List<Api> apiList = apiService.findAllByName(api.getName());
@@ -30,11 +33,17 @@ public class ApiController {
         return ResponseInfo.successInfo("");
     }
 
+    /**
+     * api分页接口
+     * */
     @GetMapping("/page")
     public ResponseInfo apiPage(@RequestParam(value = "pageNum") int pageNum,@RequestParam(value = "pageSize") int pageSize,@RequestParam(value = "apiSuiteId",required = false) Integer apiSuiteId){
             return ResponseInfo.successInfo(apiService.findAllWithPage(pageNum,pageSize,apiSuiteId));
     }
 
+    /**
+     * api编写接口
+     * */
     @PostMapping("/edit")
     public ResponseInfo updateApi(@RequestBody Api api) {
         try {
@@ -46,9 +55,11 @@ public class ApiController {
         }
     }
 
+    /**
+     * debug -api接口
+     * */
     @PostMapping("/run")
     public ResponseInfo runApi(@RequestParam int apiId) {
-
         apiRequestResultService.insertApiRequestResult(apiId);
         return ResponseInfo.successInfo("");
     }

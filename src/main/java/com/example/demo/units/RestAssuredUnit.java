@@ -94,6 +94,7 @@ public class RestAssuredUnit {
      * 获取参数
      * */
     public Map<String, Object> getParams() {
+        //json 转换List<Params>格式
         List<Params> paramsList = JSONObject.parseArray(api.getRequestParams().toString(), Params.class);
         Map<String, Object> getParams = new HashMap<String, Object>();
         try {

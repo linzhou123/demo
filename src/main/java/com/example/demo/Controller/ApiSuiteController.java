@@ -48,12 +48,16 @@ public class ApiSuiteController {
         apiSuiteService.deleteById(apiSuiteId);
         return ResponseInfo.successInfo("");
     }
-
+    /**
+     * apiSuite 分页接口
+     */
     @GetMapping("/page")
     public ResponseInfo finAllWithPage(@RequestParam(value = "pageNum", required = true) int pageNum, @RequestParam(value = "pageSize", required = true) int pageSize) {
         return ResponseInfo.successInfo(apiSuiteService.findAllWithPage(pageNum, pageSize));
     }
-
+    /**
+     * api详情获取接口
+     * */
     @GetMapping("/get/{id}")
     public ResponseInfo finById(@PathVariable(value = "id") int apiSuiteId){
         return ResponseInfo.successInfo(apiSuiteService.findAllById(apiSuiteId));
