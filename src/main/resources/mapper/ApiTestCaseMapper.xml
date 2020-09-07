@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.Mapper.ApiTestCaseMapper">
+    <resultMap id="BaseResultMap" type="com.example.demo.Model.ApiTestCase">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="project_id" jdbcType="INTEGER" property="projectId"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="creat_time" jdbcType="INTEGER" property="creatTime"/>
+        <result column="update_time" jdbcType="INTEGER" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    `id`,`name`,`project_id`,`remark`,`creat_time`,`update_time`
+    </sql>
+    <insert id="insertApiTestCase" parameterType="com.example.demo.Model.ApiTestCase">
+        insert into api_testcase (`name`,`project_id`,`remark`,`creat_time`,`update_time`)
+         value (#{name},#{projectId},#{remark},#{creatTime},#{updateTime})
+    </insert>
+    <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"></include>
+        from api_testcase
+        where id =#{id}
+    </select>
+    <select id="findByAll" resultMap="BaseResultMap" parameterType="com.example.demo.Model.ApiTestCase">
+        select
+        <include refid="Base_Column_List"></include>
+        from api_testcase
+    </select>
+
+</mapper>

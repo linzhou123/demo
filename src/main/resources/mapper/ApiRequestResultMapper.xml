@@ -3,8 +3,10 @@
 <mapper namespace="com.example.demo.Mapper.ApiRequestResultMapper">
     <resultMap id="BaseResultMap" type="com.example.demo.Model.ApiRequestResult">
         <id column="id" jdbcType="INTEGER" property="id"/>
-        <id column="api_id" jdbcType="INTEGER" property="apiId"/>
+        <result column="api_id" jdbcType="INTEGER" property="apiId"/>
         <result column="api_name" jdbcType="VARCHAR" property="apiName"/>
+        <result column="api_testcase_id" jdbcType="INTEGER" property="apiTestCaseId"/>
+        <result column="apiTestCaseStepId" jdbcType="INTEGER" property="apiTestCaseStepId"/>
         <result column="request_header" property="requestHeader"
                 typeHandler="com.example.demo.typehandler.ListTypeHandler"/>
         <result column="request_params" property="requestParams"

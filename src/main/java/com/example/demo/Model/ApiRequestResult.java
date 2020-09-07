@@ -11,6 +11,8 @@ public class ApiRequestResult implements Serializable {
     private int id;
     private int apiId;
     private String apiName;
+    private int apiTestCaseId;
+    private int apiTestCaseStepId;
     private List<Header> requestHeader;
     private List<Params> requestParams;
     private String Method;
@@ -46,6 +48,22 @@ public class ApiRequestResult implements Serializable {
 
     public void setApiName(String apiName) {
         this.apiName = apiName;
+    }
+
+    public int getApiTestCaseId() {
+        return apiTestCaseId;
+    }
+
+    public void setApiTestCaseId(int apiTestCaseId) {
+        this.apiTestCaseId = apiTestCaseId;
+    }
+
+    public int getApiTestCaseStepId() {
+        return apiTestCaseStepId;
+    }
+
+    public void setApiTestCaseStepId(int apiTestCaseStepId) {
+        this.apiTestCaseStepId = apiTestCaseStepId;
     }
 
     public List<Header> getRequestHeader() {
