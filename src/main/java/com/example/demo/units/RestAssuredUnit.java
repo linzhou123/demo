@@ -7,13 +7,11 @@ import com.example.demo.Model.ApiModel.Params;
 import com.example.demo.Model.ApiModel.RequestAssert;
 import com.example.demo.Model.ApiModel.ResultAssert;
 import com.example.demo.Model.ApiRequestResult;
+import com.example.demo.Model.ApiTestCaseStep;
 import com.jayway.jsonpath.JsonPath;
 import io.restassured.response.Response;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static io.restassured.RestAssured.given;
 
@@ -22,10 +20,14 @@ public class RestAssuredUnit {
     private Response response = null;
     private Api api;
     public ApiRequestResult apiRequestResult;
-
+    public ApiTestCaseStep apiTestCaseStep;
     public RestAssuredUnit(Api api) {
         this.api = api;
         this.apiRequestResult = new ApiRequestResult();
+    }
+    public RestAssuredUnit(ApiTestCaseStep apiTestCaseStep){
+        this.apiTestCaseStep =apiTestCaseStep;
+        this.apiRequestResult =new ApiRequestResult();
     }
 
     public ApiRequestResult requestTestRun() {
@@ -34,19 +36,20 @@ public class RestAssuredUnit {
         switch (api.getMethod()) {
             case "Post":
                 if (api.getRequestParamType().equals("raw")) {
-                    response = given().headers(getHeaders()).body(api.getRequestBody()).post(URL);
+                    response = given().headers(getHeaders(api.getRequestHeader())).body(api.getRequestBody()).post(URL);
                 } else {
-                    response = given().headers(getHeaders()).params(getParams()).when().post(URL);
+                    response = given().headers(getHeaders(api.getRequestHeader())).params(getParams(api.getRequestParams())).when().post(URL);
                 }
                 break;
             case "Get":
-                response = given().headers(getHeaders()).params(getParams()).when().get(URL);
+                response = given().headers(getHeaders(api.getRequestHeader())).params(getParams(api.getRequestParams())).when().get(URL);
                 break;
             case "Delete":
-                response = given().headers(getHeaders()).params(getParams()).when().delete(URL);
+                response = given().headers(getHeaders(api.getRequestHeader())).params(getParams(api.getRequestParams())).when().delete(URL);
                 break;
             case "Put":
-                response = given().headers(getHeaders()).params(getParams()).when().put(URL);
+                response = given().headers(getHeaders(api.getRequestHeader())).params(getParams(api.getRequestParams())).when().put(URL);
+                break;
             default:
                 return null;
         }
@@ -59,7 +62,7 @@ public class RestAssuredUnit {
         apiRequestResult.setURL(URL);
         apiRequestResult.setResultBody(response.getBody().prettyPrint());
         apiRequestResult.setResultStatus(response.getStatusCode());
-        apiRequestResult.setResultAssert(getResultAssert());
+        apiRequestResult.setResultAssert(getResultAssert(api.getRequestAssert()));
         apiRequestResult.setResultIsPass(requestAssert());
         apiRequestResult.setResultTime((int) response.getTime());
         apiRequestResult.setCreatTime((int) (System.currentTimeMillis() / 1000));
@@ -68,11 +71,57 @@ public class RestAssuredUnit {
 
     }
 
+    //执行单条用例步骤
+    public ApiRequestResult requestCaseRun(){
+        //拼接URL传入
+        String URL = apiTestCaseStep.getDomain() + apiTestCaseStep.getPath();
+        switch (apiTestCaseStep.getMethod()) {
+            case "Post":
+                if (apiTestCaseStep.getRequestParamType().equals("raw")) {
+                    response = given().headers(getHeaders(apiTestCaseStep.getRequestHeader())).body(apiTestCaseStep.getRequestBody()).post(URL);
+                } else {
+                    response = given().headers(getHeaders(apiTestCaseStep.getRequestHeader())).params(getParams(apiTestCaseStep.getRequestParams())).when().post(URL);
+                }
+                break;
+            case "Get":
+                response = given().headers(getHeaders(apiTestCaseStep.getRequestHeader())).params(getParams(apiTestCaseStep.getRequestParams())).when().get(URL);
+                break;
+            case "Delete":
+                response = given().headers(getHeaders(apiTestCaseStep.getRequestHeader())).params(getParams(apiTestCaseStep.getRequestParams())).when().delete(URL);
+                break;
+            case "Put":
+                response = given().headers(getHeaders(apiTestCaseStep.getRequestHeader())).params(getParams(apiTestCaseStep.getRequestParams())).when().put(URL);
+                break;
+            default:
+                return null;
+        }
+        //result塞入接口运行结果
+        apiRequestResult.setApiId(apiTestCaseStep.getApiId());
+        apiRequestResult.setApiName(apiTestCaseStep.getName());
+        apiRequestResult.setApiTestCaseStepId(apiTestCaseStep.getId());
+        apiRequestResult.setApiTestCaseId(apiTestCaseStep.getTestCaseId());
+        apiRequestResult.setRequestHeader(apiTestCaseStep.getRequestHeader());
+        apiRequestResult.setRequestParams(apiTestCaseStep.getRequestParams());
+        apiRequestResult.setMethod(apiTestCaseStep.getMethod());
+        apiRequestResult.setURL(URL);
+        apiRequestResult.setResultBody(response.getBody().prettyPrint());
+        apiRequestResult.setResultStatus(response.getStatusCode());
+        apiRequestResult.setResultAssert(getResultAssert(apiTestCaseStep.getRequestAssert()));
+        apiRequestResult.setResultIsPass(requestAssert());
+        apiRequestResult.setResultTime((int) response.getTime());
+        apiRequestResult.setCreatTime((int) (System.currentTimeMillis() / 1000));
+        apiRequestResult.setUpdateTime((int) (System.currentTimeMillis() / 1000));
+        return apiRequestResult;
+    }
+
     /**
      * 获取消息头
      * */
-    public Map<String, Object> getHeaders() {
-        List<Header> headerList = JSONObject.parseArray(api.getRequestHeader().toString(), Header.class);
+    public Map<String, Object> getHeaders(List<Header> hList) {
+        if(Objects.isNull(hList)){
+            return Collections.EMPTY_MAP;
+        }
+        List<Header> headerList = JSONObject.parseArray(hList.toString(), Header.class);
         Map<String, Object> getHeaders = new HashMap<String, Object>();
         try {
             if (headerList.size() > 0) {
@@ -81,7 +130,7 @@ public class RestAssuredUnit {
                 }
                 return getHeaders;
             } else {
-                return null;
+                return Collections.EMPTY_MAP;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -93,9 +142,12 @@ public class RestAssuredUnit {
     /**
      * 获取参数
      * */
-    public Map<String, Object> getParams() {
+    public Map<String, Object> getParams(List<Params> ps) {
         //json 转换List<Params>格式
-        List<Params> paramsList = JSONObject.parseArray(api.getRequestParams().toString(), Params.class);
+        if (Objects.isNull(ps)){
+            return Collections.EMPTY_MAP;
+        }
+        List<Params> paramsList = JSONObject.parseArray(ps.toString(), Params.class);
         Map<String, Object> getParams = new HashMap<String, Object>();
         try {
             if (paramsList.size() > 0) {
@@ -104,7 +156,7 @@ public class RestAssuredUnit {
                 }
                 return getParams;
             } else {
-                return null;
+                return Collections.EMPTY_MAP;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -116,10 +168,12 @@ public class RestAssuredUnit {
     /**
      * 返回断言结果集：ResultAssert
      * */
-    public List<ResultAssert> getResultAssert(){
-        List<RequestAssert> assertList = JSONObject.parseArray(api.getRequestAssert().toString(), RequestAssert.class);
+    public List<ResultAssert> getResultAssert(List<RequestAssert> rAssert){
+        if(Objects.isNull(rAssert)){
+            return Collections.EMPTY_LIST;
+        }
         List<ResultAssert> resultAssertList =new ArrayList<ResultAssert>();
-        if (assertList.size()>0){
+            List<RequestAssert> assertList = JSONObject.parseArray(rAssert.toString(), RequestAssert.class);
             for (RequestAssert requestAssert:assertList){
                 ResultAssert resultAssert=new ResultAssert();
                 resultAssert.setCheckList(requestAssert.getCheckList());
@@ -131,7 +185,6 @@ public class RestAssuredUnit {
                 }
                 resultAssertList.add(resultAssert);
             }
-        }
         return resultAssertList;
     }
 

@@ -4,6 +4,7 @@
     <resultMap id="BaseResultMap" type="com.example.demo.Model.ApiTestCaseStep">
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="api_id" jdbcType="INTEGER" property="apiId"/>
         <result column="testcase_id" jdbcType="INTEGER" property="testCaseId"/>
         <result column="domain" jdbcType="VARCHAR" property="domain"/>
         <result column="request_param_type" jdbcType="VARCHAR" property="requestParamType"/>
@@ -16,12 +17,28 @@
         <result column="path" jdbcType="VARCHAR" property="path"/>
         <result column="request_assert" property="requestAssert"
                 typeHandler="com.example.demo.typehandler.ListTypeHandler"/>
-        <result column="sort" jdbcType="VARCHAR" property="sort"/>
+        <result column="sort" jdbcType="INTEGER" property="sort"/>
         <result column="creat_time" jdbcType="INTEGER" property="creatTime"/>
         <result column="update_time" jdbcType="INTEGER" property="updateTime"/>
     </resultMap>
     <sql id="Base_Column_List">
-        `id`,`name`,`testcase_id`,`domain`,`request_param_type`,`request_header`,`request_params`,`request_body`,`method`,`path`,`request_assert`,`sort`,`creat_time`,`update_time`
+        `id`,`name`,`api_id`,`testcase_id`,`domain`,`request_param_type`,`request_header`,`request_params`,`request_body`,`method`,`path`,`request_assert`,`sort`,`creat_time`,`update_time`
     </sql>
+    <insert id="insertApiTestCaseStep" parameterType="com.example.demo.Model.ApiTestCaseStep">
+        insert  into api_testcase_step (`name`,`api_id`,`testcase_id`,`domain`,`request_param_type`,`request_header`,`request_params`,`request_body`,`method`,`path`,`request_assert`,`sort`,`creat_time`,`update_time`)
+        value (#{name},#{apiId},#{testCaseId},#{domain},#{requestParamType},
+        #{requestHeader,jdbcType=VARCHAR,typeHandler=com.example.demo.typehandler.ListTypeHandler},
+        #{requestParams,jdbcType=VARCHAR,typeHandler=com.example.demo.typehandler.ListTypeHandler},
+        #{requestBody},#{method},#{path},
+        #{requestAssert,jdbcType=VARCHAR,typeHandler=com.example.demo.typehandler.ListTypeHandler},
+        #{sort},#{creatTime},#{updateTime})
+    </insert>
+    <select id="findByTestCaseId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"></include>
+        from api_testcase_step
+        where `testcase_id` = #{testCaseId}
+        order by sort
+    </select>
 
 </mapper>

@@ -55,6 +55,11 @@ public class ApiController {
         }
     }
 
+    @GetMapping("/list")
+    public ResponseInfo findBySuiteId(@RequestParam Integer apiSuiteId){
+        return ResponseInfo.successInfo(apiService.findBySuiteId(apiSuiteId));
+    }
+
     /**
      * debug -api接口
      * */

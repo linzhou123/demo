@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.Mapper.ApiTestCaseResultMapper">
+    <resultMap id="BaseResultMap" type="com.example.demo.Model.ApiTestCaseResult">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="testcase_id" jdbcType="INTEGER" property="testCaseId"/>
+        <result column="count_results" jdbcType="INTEGER" property="countReults"/>
+        <result column="pass_results" jdbcType="INTEGER" property="passReults"/>
+        <result column="failed_results" jdbcType="INTEGER" property="failedReults"/>
+        <result column="creat_time" jdbcType="INTEGER" property="creatTime"/>
+        <result column="update_time" jdbcType="INTEGER" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        `id`,`testcase_id`,`count_results`,`pass_results`,`failed_results`,`creat_time`,`update_time`
+    </sql>
+    <insert id="insertResult" parameterType="com.example.demo.Model.ApiTestCaseResult">
+        insert into api_testcase_result (`testcase_id`,`count_results`,`pass_results`,`failed_results`,`creat_time`,`update_time`)
+        value
+        (#{testCaseId},#{countReults},#{passReults},#{failedReults},#{creatTime},#{updateTime})
+    </insert>
+</mapper>

@@ -25,7 +25,7 @@
     </sql>
     <insert id="insertApi" parameterType="com.example.demo.Model.Api">
         insert into api (`name`,`project_id`,`api_suite_id`,`domain`,`request_param_type`,`request_header`,`request_params`,`request_body`,`method`,`path`,`request_assert`,`creat_time`,`update_time`)
-            value (#{name},#{projectId},#{apiSuiteId},#{domain},#{requestParamType},#{requestHeader,jdbcType=VARCHAR,typeHandler=com.example.demo.typehandler.ListTypeHandler},#{requestParams,jdbcType=VARCHAR,typeHandler=com.example.demo.typehandler.ListTypeHandler},#{requestBody},#{method},#{path},#{requestAsset,jdbcType=VARCHAR,typeHandler=com.example.demo.typehandler.ListTypeHandler},#{creatTime},#{updateTime})
+            value (#{name},#{projectId},#{apiSuiteId},#{domain},#{requestParamType},#{requestHeader,jdbcType=VARCHAR,typeHandler=com.example.demo.typehandler.ListTypeHandler},#{requestParams,jdbcType=VARCHAR,typeHandler=com.example.demo.typehandler.ListTypeHandler},#{requestBody},#{method},#{path},#{requestAssert,jdbcType=VARCHAR,typeHandler=com.example.demo.typehandler.ListTypeHandler},#{creatTime},#{updateTime})
     </insert>
     <select id="findAllByName" resultMap="BaseResultMap" parameterType="java.lang.String">
         select

@@ -3,10 +3,10 @@ package com.example.demo.Model;
 import java.io.Serializable;
 
 public class ResponseInfo implements Serializable {
-    private Boolean success;
-    private Object data;
     private Integer code;
+    private Object data;
     private String  message;
+    private Boolean success;
 
     public Boolean getSuccess() {
         return success;

@@ -10,6 +10,7 @@ import java.util.List;
 public class ApiTestCaseStep implements Serializable {
     private int id;
     private String name;
+    private int apiId;
     private int testCaseId;
     private String domain;
     private String requestParamType;
@@ -37,6 +38,14 @@ public class ApiTestCaseStep implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getApiId() {
+        return apiId;
+    }
+
+    public void setApiId(int apiId) {
+        this.apiId = apiId;
     }
 
     public int getTestCaseId() {

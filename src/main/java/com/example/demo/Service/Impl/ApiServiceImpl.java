@@ -28,6 +28,11 @@ public class ApiServiceImpl implements ApiService {
     }
 
     @Override
+    public List<Api> findBySuiteId(Integer apiSuiteId){
+        return apiMapper.findAllByApiSuiteId(apiSuiteId);
+    }
+
+    @Override
     public Api findById(int apiId){
         return apiMapper.findById(apiId);
     }
