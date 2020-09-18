@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.Mapper.ApiTestCaseMapper">
+    <resultMap id="BaseResultMap" type="com.example.demo.Model.ApiTestCaseMerge">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="testcase_group_id" jdbcType="INTEGER" property="testCaseGroupId"/>
+        <result column="api_testcase_id" jdbcType="INTEGER" property="apiTestCaseId"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    `id`,`testcase_group_id`,`api_testcase_id`
+    </sql>
+    <insert id="insertApiTestCaseMerge" parameterType="com.example.demo.Model.ApiTestCaseMerge">
+        insert  into api_testcase_merge (`testcase_group_id`,`api_testcase_id`)
+        value (#{testCaseGroupId},#{apiTestCaseId})
+    </insert>
+
+
+</mapper>

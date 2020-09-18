@@ -29,7 +29,7 @@ public class RestAssuredUnit {
         this.apiTestCaseStep =apiTestCaseStep;
         this.apiRequestResult =new ApiRequestResult();
     }
-
+    //debug api
     public ApiRequestResult requestTestRun() {
         //拼接URL传入
         String URL = api.getDomain() + api.getPath();
@@ -113,6 +113,7 @@ public class RestAssuredUnit {
         apiRequestResult.setUpdateTime((int) (System.currentTimeMillis() / 1000));
         return apiRequestResult;
     }
+
 
     /**
      * 获取消息头

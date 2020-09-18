@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.Mapper.ApiTestCaseGroupMapper">
+    <resultMap id="BaseResultMap" type="com.example.demo.Model.ApiTestCaseGroup">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="project_id" jdbcType="INTEGER" property="projectId" />
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="creat_time" jdbcType="INTEGER" property="creatTime"/>
+        <result column="update_time" jdbcType="INTEGER" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    `id`,`project_id`,`name`,`remark`,`creat_time`,`update_time`
+    </sql>
+    <insert id="insertApiTestCaseGroup" parameterType="com.example.demo.Model.ApiTestCaseGroup">
+        insert into api_testcase_group (`name`,`project_id`,`remark`,`creat_time`,`update_time`)
+        value (#{projectId},#{name},#{remark},#{creatTime},#{updateTime})
+    </insert>
+
+</mapper>

@@ -27,7 +27,7 @@ public class ApiController {
     public ResponseInfo insertApi(@RequestBody Api api) {
         List<Api> apiList = apiService.findAllByName(api.getName());
         if (apiList.size() > 0) {
-            return ResponseInfo.errorInfo(api.getName() + "已存在");
+            return ResponseInfo.errorInfo("接口:"+api.getName() + "已存在");
         }
         apiService.insertApi(api);
         return ResponseInfo.successInfo("");
@@ -38,7 +38,7 @@ public class ApiController {
      * */
     @GetMapping("/page")
     public ResponseInfo apiPage(@RequestParam(value = "pageNum") int pageNum,@RequestParam(value = "pageSize") int pageSize,@RequestParam(value = "apiSuiteId",required = false) Integer apiSuiteId){
-            return ResponseInfo.successInfo(apiService.findAllWithPage(pageNum,pageSize,apiSuiteId));
+        return ResponseInfo.successInfo(apiService.findAllWithPage(pageNum,pageSize,apiSuiteId));
     }
 
     /**
