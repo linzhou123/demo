@@ -52,6 +52,8 @@ public class Test {
 
 
     public static void main(String[] args) {
+        String projectPath =System.getProperty("user.dir");
+        System.out.println(projectPath);
 //        Test test = new Test();
 //        test.mySQL();
 //        String sql= "select  `mistake_name` from mistake ";

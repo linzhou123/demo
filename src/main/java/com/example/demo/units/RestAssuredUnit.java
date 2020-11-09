@@ -78,7 +78,7 @@ public class RestAssuredUnit {
         switch (apiTestCaseStep.getMethod()) {
             case "Post":
                 if (apiTestCaseStep.getRequestParamType().equals("raw")) {
-                    response = given().headers(getHeaders(apiTestCaseStep.getRequestHeader())).body(apiTestCaseStep.getRequestBody()).post(URL);
+                    response = given().headers(getHeaders(apiTestCaseStep.getRequestHeader())).body(apiTestCaseStep.getRequestBody()).when().post(URL);
                 } else {
                     response = given().headers(getHeaders(apiTestCaseStep.getRequestHeader())).params(getParams(apiTestCaseStep.getRequestParams())).when().post(URL);
                 }

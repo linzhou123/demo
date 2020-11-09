@@ -14,7 +14,7 @@
     </sql>
     <insert id="insertApiTestCaseGroup" parameterType="com.example.demo.Model.ApiTestCaseGroup">
         insert into api_testcase_group (`name`,`project_id`,`remark`,`creat_time`,`update_time`)
-        value (#{projectId},#{name},#{remark},#{creatTime},#{updateTime})
+        value (#{name},#{projectId},#{remark},#{creatTime},#{updateTime})
     </insert>
 
 </mapper>
