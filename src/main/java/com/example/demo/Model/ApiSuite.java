@@ -1,62 +1,26 @@
 package com.example.demo.Model;
 
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+
 import java.io.Serializable;
 
+@Data
 public class ApiSuite implements Serializable {
-    private int id;
+    @ApiModelProperty(value = "api类别id")
+    private Integer id;
+    @ApiModelProperty(value = "api类别名称")
     private String name;
-    private int projectId;
+    @ApiModelProperty(value = "项目id")
+    private Integer projectId;
+    @ApiModelProperty(value = "备注")
     private String remark;
-    private int creatTime;
-    private int updateTime;
+    @ApiModelProperty(value = "创建时间")
+    private Integer creatTime;
+    @ApiModelProperty(value = "更新时间")
+    private Integer updateTime;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(int projectId) {
-        this.projectId = projectId;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
-    public int getCreatTime() {
-        return creatTime;
-    }
-
-    public void setCreatTime(int creatTime) {
-        this.creatTime = creatTime;
-    }
-
-    public int getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(int updateTime) {
-        this.updateTime = updateTime;
-    }
+    private static final long serialVersionUID = 1L;
 
 
 }

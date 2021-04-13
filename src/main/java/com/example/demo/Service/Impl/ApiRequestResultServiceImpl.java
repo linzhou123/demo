@@ -3,8 +3,9 @@ package com.example.demo.Service.Impl;
 import com.example.demo.Mapper.ApiMapper;
 import com.example.demo.Mapper.ApiRequestResultMapper;
 import com.example.demo.Model.Api;
+import com.example.demo.Model.ApiRequestResult;
 import com.example.demo.Service.ApiRequestResultService;
-import com.example.demo.units.RestAssuredUnit;
+import com.example.demo.utils.RestAssuredUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -18,12 +19,14 @@ public class ApiRequestResultServiceImpl implements ApiRequestResultService {
     @Resource
     private ApiMapper apiMapper;
 
-    private RestAssuredUnit restAssuredUnit;
+    private RestAssuredUtil restAssuredUtil;
 
     @Override
-    public int insertApiRequestResult(int apiId){
+    public ApiRequestResult insertApiRequestResult(int apiId){
         Api api =apiMapper.findById(apiId);
-        restAssuredUnit=new RestAssuredUnit(api);
-        return apiRequestResultMapper.insertApiRequestResult(restAssuredUnit.requestTestRun());
+        restAssuredUtil =new RestAssuredUtil(api);
+        ApiRequestResult apiRequestResult = restAssuredUtil.requestTestRun();
+        apiRequestResultMapper.insertApiRequestResult(apiRequestResult);
+        return apiRequestResult ;
     }
 }

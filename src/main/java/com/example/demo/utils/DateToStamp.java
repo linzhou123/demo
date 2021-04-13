@@ -1,6 +1,5 @@
-package com.example.demo.units;
+package com.example.demo.utils;
 
-import javax.print.DocFlavor;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -22,6 +21,12 @@ public class DateToStamp {
 
 
         return ts;
+    }
+    /*
+     *获取现在长度为10的时间戳
+     * */
+    public static  int getTimeStap (){
+        return (int) (System.currentTimeMillis() / 1000);
     }
 
     public static void main(String[] args) throws ParseException {

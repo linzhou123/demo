@@ -37,6 +37,20 @@
         from api_suite
         where `name` =#{apiSuiteName}
     </select>
+    <select id="findByProjectId" resultMap="BaseResultMap" parameterType="int">
+        select
+        <include refid="Base_Column_List"></include>
+        from api_suite
+        <if test="projectId !=null and projectId !=''">
+            where `project_id` = #{projectId}
+        </if>
+    </select>
+    <select id="findTreeByProjectId" resultType="com.example.demo.Dto.ApiSuiteTreeDto">
+        select
+        <include refid="Base_Column_List"/>
+        from api_suite
+        where `project_id` = #{projectId}
+    </select>
     <select id="findAllById" resultMap="BaseResultMap" parameterType="int">
         select
         <include refid="Base_Column_List"></include>

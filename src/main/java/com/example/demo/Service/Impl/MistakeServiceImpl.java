@@ -3,7 +3,7 @@ package com.example.demo.Service.Impl;
 import com.example.demo.Mapper.MistakeMapper;
 import com.example.demo.Model.Mistake;
 import com.example.demo.Service.MistakeService;
-import com.example.demo.units.PageInfoNew;
+import com.example.demo.utils.PageInfoNew;
 import com.github.pagehelper.PageHelper;
 import org.springframework.stereotype.Service;
 

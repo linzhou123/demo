@@ -11,9 +11,15 @@
                 typeHandler="com.example.demo.typehandler.ListTypeHandler"/>
         <result column="request_params" property="requestParams"
                 typeHandler="com.example.demo.typehandler.ListTypeHandler"/>
+        <result column="request_param_type" jdbcType="VARCHAR" property="requestParamType"/>
+        <result column="request_body" jdbcType="VARCHAR" property="requestBody"/>
+        <result column="request_data_params" property="requestDataParams"
+                typeHandler="com.example.demo.typehandler.ListTypeHandler"/>
         <result column="method" jdbcType="VARCHAR" property="method"/>
         <result column="URL" jdbcType="VARCHAR" property="URL"/>
         <result column="result_body" jdbcType="VARCHAR" property="resultBody"/>
+        <result column="response_headers" property="responseHeaders"
+                typeHandler="com.example.demo.typehandler.ListTypeHandler"/>
         <result column="result_status" jdbcType="INTEGER" property="resultStatus"/>
         <result column="result_time" jdbcType="INTEGER" property="resultTime"/>
         <result column="result_assert" property="resultAssert"
@@ -23,11 +29,20 @@
         <result column="update_time" jdbcType="INTEGER" property="updateTime"/>
     </resultMap>
     <sql id="Base_Column_List">
-        `id`,`api_id`,`api_name`,`request_header`,`request_params`,`method`,`URL`,`result_body`,`result_status`,`result_time`,`result_assert`,`result_isPass`,`creat_time`,`update_time`
+        `id`,`api_id`,`api_name`,`request_header`,`request_params`,`request_param_type`,`request_body`,`request_data_params`,`method`,`URL`,`result_body`,`response_headers`,`result_status`,`result_time`,`result_assert`,`result_isPass`,`creat_time`,`update_time`
     </sql>
     <insert id="insertApiRequestResult" parameterType="com.example.demo.Model.ApiRequestResult">
-        insert into api_request_result (`api_id`,`api_name`,`request_header`,`request_params`,`method`,`URL`,`result_body`,`result_status`,`result_time`,`result_assert`,`result_isPass`,`creat_time`,`update_time`)
+        insert into api_request_result (`api_id`,`api_name`,`request_header`,`request_params`,`request_param_type`,`request_body`,`request_data_params`,`method`,`URL`,`result_body`,`response_headers`,`result_status`,`result_time`,`result_assert`,`result_isPass`,`creat_time`,`update_time`)
         value
-        (#{apiId},#{apiName},#{requestHeader,jdbcType=VARCHAR,typeHandler=com.example.demo.typehandler.ListTypeHandler,},#{requestParams,jdbcType=VARCHAR,typeHandler=com.example.demo.typehandler.ListTypeHandler},#{method},#{URL},#{resultBody},#{resultStatus},#{resultTime},#{resultAssert,jdbcType=VARCHAR,typeHandler=com.example.demo.typehandler.ListTypeHandler},#{resultIsPass},#{creatTime},#{updateTime})
+        (#{apiId},#{apiName},
+        #{requestHeader,jdbcType=VARCHAR,typeHandler=com.example.demo.typehandler.ListTypeHandler},
+        #{requestParams,jdbcType=VARCHAR,typeHandler=com.example.demo.typehandler.ListTypeHandler},
+        #{requestParamType},#{requestBody},
+        #{requestDataParams,jdbcType=VARCHAR,typeHandler=com.example.demo.typehandler.ListTypeHandler},
+        #{method},#{URL},#{resultBody},
+        #{responseHeaders,jdbcType=VARCHAR,typeHandler=com.example.demo.typehandler.ListTypeHandler},
+        #{resultStatus},#{resultTime},
+        #{resultAssert,jdbcType=VARCHAR,typeHandler=com.example.demo.typehandler.ListTypeHandler},
+        #{resultIsPass},#{creatTime},#{updateTime})
     </insert>
 </mapper>

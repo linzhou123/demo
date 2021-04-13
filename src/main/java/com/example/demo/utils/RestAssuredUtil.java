@@ -1,4 +1,4 @@
-package com.example.demo.units;
+package com.example.demo.utils;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.demo.Model.Api;
@@ -9,78 +9,90 @@ import com.example.demo.Model.ApiModel.ResultAssert;
 import com.example.demo.Model.ApiRequestResult;
 import com.example.demo.Model.ApiTestCaseStep;
 import com.jayway.jsonpath.JsonPath;
+import com.jayway.jsonpath.PathNotFoundException;
+import io.restassured.http.Headers;
 import io.restassured.response.Response;
 
 import java.util.*;
 
 import static io.restassured.RestAssured.given;
 
-public class RestAssuredUnit {
+public class RestAssuredUtil {
     private boolean flag = false;
     private Response response = null;
     private Api api;
     public ApiRequestResult apiRequestResult;
     public ApiTestCaseStep apiTestCaseStep;
-    public RestAssuredUnit(Api api) {
+    public RestAssuredUtil(Api api) {
         this.api = api;
         this.apiRequestResult = new ApiRequestResult();
     }
-    public RestAssuredUnit(ApiTestCaseStep apiTestCaseStep){
+    public RestAssuredUtil(ApiTestCaseStep apiTestCaseStep){
         this.apiTestCaseStep =apiTestCaseStep;
         this.apiRequestResult =new ApiRequestResult();
     }
     //debug api
     public ApiRequestResult requestTestRun() {
         //拼接URL传入
-        String URL = api.getDomain() + api.getPath();
-        switch (api.getMethod()) {
-            case "Post":
-                if (api.getRequestParamType().equals("raw")) {
-                    response = given().headers(getHeaders(api.getRequestHeader())).body(api.getRequestBody()).post(URL);
-                } else {
-                    response = given().headers(getHeaders(api.getRequestHeader())).params(getParams(api.getRequestParams())).when().post(URL);
-                }
-                break;
-            case "Get":
-                response = given().headers(getHeaders(api.getRequestHeader())).params(getParams(api.getRequestParams())).when().get(URL);
-                break;
-            case "Delete":
-                response = given().headers(getHeaders(api.getRequestHeader())).params(getParams(api.getRequestParams())).when().delete(URL);
-                break;
-            case "Put":
-                response = given().headers(getHeaders(api.getRequestHeader())).params(getParams(api.getRequestParams())).when().put(URL);
-                break;
-            default:
-                return null;
+        try {
+            String URL = api.getDomain().concat(api.getPath());
+            switch (api.getMethod()) {
+                case "Post":
+                    if (api.getRequestParamType().equals("raw")) {
+                        response = given().headers(getHeaders(api.getRequestHeader())).body(api.getRequestBody()).post(URL);
+                    } else {
+                        response = given().headers(getHeaders(api.getRequestHeader())).params(getParams(api.getRequestDataParams())).when().post(URL);
+                    }
+                    break;
+                case "Get":
+                    response = given().headers(getHeaders(api.getRequestHeader())).params(getParams(api.getRequestParams())).when().get(URL);
+                    break;
+                case "Delete":
+                    response = given().headers(getHeaders(api.getRequestHeader())).params(getParams(api.getRequestParams())).when().delete(URL);
+                    break;
+                case "Put":
+                    response = given().headers(getHeaders(api.getRequestHeader())).params(getParams(api.getRequestParams())).when().put(URL);
+                    break;
+                default:
+                    response = given().headers(getHeaders(api.getRequestHeader())).params(getParams(api.getRequestParams())).when().get(URL);
+                    break;
+            }
+            //result塞入接口运行结果
+            apiRequestResult.setApiId(api.getId());
+            apiRequestResult.setApiName(api.getName());
+            apiRequestResult.setRequestHeader(api.getRequestHeader());
+            apiRequestResult.setRequestParams(api.getRequestParams());
+            apiRequestResult.setRequestParamType(api.getRequestParamType());
+            apiRequestResult.setRequestBody(api.getRequestBody());
+            apiRequestResult.setRequestDataParams(api.getRequestDataParams());
+            apiRequestResult.setMethod(api.getMethod());
+            apiRequestResult.setURL(URL);
+            apiRequestResult.setResultBody(response.getBody().prettyPrint());
+            apiRequestResult.setResponseHeaders(getRspHeaders(response));
+            apiRequestResult.setResultStatus(response.getStatusCode());
+            apiRequestResult.setResultAssert(getResultAssert(api.getRequestAssert()));
+            apiRequestResult.setResultIsPass(requestAssert());
+            apiRequestResult.setResultTime((int) response.getTime());
+            apiRequestResult.setCreatTime((int) (System.currentTimeMillis() / 1000));
+            apiRequestResult.setUpdateTime((int) (System.currentTimeMillis() / 1000));
+            return apiRequestResult;
+        }catch (Exception e){
+            apiRequestResult.setResultBody(e.toString());
+            return apiRequestResult;
         }
-        //result塞入接口运行结果
-        apiRequestResult.setApiId(api.getId());
-        apiRequestResult.setApiName(api.getName());
-        apiRequestResult.setRequestHeader(api.getRequestHeader());
-        apiRequestResult.setRequestParams(api.getRequestParams());
-        apiRequestResult.setMethod(api.getMethod());
-        apiRequestResult.setURL(URL);
-        apiRequestResult.setResultBody(response.getBody().prettyPrint());
-        apiRequestResult.setResultStatus(response.getStatusCode());
-        apiRequestResult.setResultAssert(getResultAssert(api.getRequestAssert()));
-        apiRequestResult.setResultIsPass(requestAssert());
-        apiRequestResult.setResultTime((int) response.getTime());
-        apiRequestResult.setCreatTime((int) (System.currentTimeMillis() / 1000));
-        apiRequestResult.setUpdateTime((int) (System.currentTimeMillis() / 1000));
-        return apiRequestResult;
-
     }
 
     //执行单条用例步骤
     public ApiRequestResult requestCaseRun(){
         //拼接URL传入
-        String URL = apiTestCaseStep.getDomain() + apiTestCaseStep.getPath();
+        String URL = apiTestCaseStep.getDomain().concat(apiTestCaseStep.getPath());
+        //判断请求方式 get、pst、delete、put
         switch (apiTestCaseStep.getMethod()) {
             case "Post":
                 if (apiTestCaseStep.getRequestParamType().equals("raw")) {
                     response = given().headers(getHeaders(apiTestCaseStep.getRequestHeader())).body(apiTestCaseStep.getRequestBody()).when().post(URL);
                 } else {
-                    response = given().headers(getHeaders(apiTestCaseStep.getRequestHeader())).params(getParams(apiTestCaseStep.getRequestParams())).when().post(URL);
+                    response = given().headers(getHeaders(apiTestCaseStep.getRequestHeader())).params(getParams(apiTestCaseStep.getRequestDataParams())).when().post(URL);
                 }
                 break;
             case "Get":
@@ -95,6 +107,7 @@ public class RestAssuredUnit {
             default:
                 return null;
         }
+        Headers allHeaders = response.getHeaders();
         //result塞入接口运行结果
         apiRequestResult.setApiId(apiTestCaseStep.getApiId());
         apiRequestResult.setApiName(apiTestCaseStep.getName());
@@ -102,9 +115,13 @@ public class RestAssuredUnit {
         apiRequestResult.setApiTestCaseId(apiTestCaseStep.getTestCaseId());
         apiRequestResult.setRequestHeader(apiTestCaseStep.getRequestHeader());
         apiRequestResult.setRequestParams(apiTestCaseStep.getRequestParams());
+        apiRequestResult.setRequestParamType(apiTestCaseStep.getRequestParamType());
+        apiRequestResult.setRequestBody(apiTestCaseStep.getRequestBody());
+        apiRequestResult.setRequestDataParams(apiTestCaseStep.getRequestDataParams());
         apiRequestResult.setMethod(apiTestCaseStep.getMethod());
         apiRequestResult.setURL(URL);
         apiRequestResult.setResultBody(response.getBody().prettyPrint());
+        apiRequestResult.setResponseHeaders(getRspHeaders(response));
         apiRequestResult.setResultStatus(response.getStatusCode());
         apiRequestResult.setResultAssert(getResultAssert(apiTestCaseStep.getRequestAssert()));
         apiRequestResult.setResultIsPass(requestAssert());
@@ -138,6 +155,20 @@ public class RestAssuredUnit {
         }
 
         return getHeaders;
+    }
+
+    /**
+     * 获取返回结果头部信息以list形式
+     */
+    public List<Header> getRspHeaders(Response response){
+        List<Header> headerList =new ArrayList<>();
+        response.getHeaders().asList().forEach(x->{
+            Header header =new Header();
+            header.setKey(x.getName());
+            header.setValue(x.getValue());
+            headerList.add(header);
+        });
+        return headerList;
     }
 
     /**
@@ -179,12 +210,21 @@ public class RestAssuredUnit {
                 ResultAssert resultAssert=new ResultAssert();
                 resultAssert.setCheckList(requestAssert.getCheckList());
                 resultAssert.setValue(requestAssert.getValue());
-                if (JsonPath.parse(apiRequestResult.getResultBody()).read("$."+requestAssert.getCheckList()).toString().equals(requestAssert.getValue())){
-                    resultAssert.setResult(true);
-                }else {
+                try{
+                    String realValue = JsonPath.parse(apiRequestResult.getResultBody()).read("$."+requestAssert.getCheckList()).toString();
+                    resultAssert.setRealValue(realValue);
+                    if (realValue.equals(requestAssert.getValue())){
+                        resultAssert.setResult(true);
+                    }else {
+                        resultAssert.setResult(false);
+                    }
+                    resultAssertList.add(resultAssert);
+                }catch (PathNotFoundException e){
                     resultAssert.setResult(false);
+                    resultAssertList.add(resultAssert);
+                    System.out.println(requestAssert.getCheckList());
                 }
-                resultAssertList.add(resultAssert);
+
             }
         return resultAssertList;
     }

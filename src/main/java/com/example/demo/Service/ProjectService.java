@@ -1,7 +1,7 @@
 package com.example.demo.Service;
 
 import com.example.demo.Model.Project;
-import com.example.demo.units.PageInfoNew;
+import com.example.demo.utils.PageInfoNew;
 
 import java.util.List;
 

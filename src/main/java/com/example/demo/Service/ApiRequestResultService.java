@@ -1,5 +1,7 @@
 package com.example.demo.Service;
 
+import com.example.demo.Model.ApiRequestResult;
+
 public interface ApiRequestResultService {
-    int insertApiRequestResult(int apiId);
+    ApiRequestResult insertApiRequestResult(int apiId);
 }

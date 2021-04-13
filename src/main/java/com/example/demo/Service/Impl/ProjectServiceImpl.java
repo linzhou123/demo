@@ -3,7 +3,8 @@ package com.example.demo.Service.Impl;
 import com.example.demo.Mapper.ProjectMapper;
 import com.example.demo.Model.Project;
 import com.example.demo.Service.ProjectService;
-import com.example.demo.units.PageInfoNew;
+import com.example.demo.utils.DateToStamp;
+import com.example.demo.utils.PageInfoNew;
 import com.github.pagehelper.PageHelper;
 import org.springframework.stereotype.Service;
 
@@ -19,14 +20,14 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public int insertProject(Project project){
-        project.setCreatTime((int)(System.currentTimeMillis()/1000));
-        project.setUpdateTime((int)(System.currentTimeMillis()/1000));
+        project.setCreatTime(DateToStamp.getTimeStap());
+        project.setUpdateTime(DateToStamp.getTimeStap());
         return projectMapper.insertProject(project);
     }
 
     @Override
     public int updateProject(Project project){
-        project.setUpdateTime((int)(System.currentTimeMillis()/1000));
+        project.setUpdateTime(DateToStamp.getTimeStap());
         return projectMapper.updateProject(project);
     }
 

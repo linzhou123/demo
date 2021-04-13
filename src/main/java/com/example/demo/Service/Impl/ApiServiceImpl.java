@@ -3,12 +3,15 @@ package com.example.demo.Service.Impl;
 import com.example.demo.Mapper.ApiMapper;
 import com.example.demo.Model.Api;
 import com.example.demo.Service.ApiService;
-import com.example.demo.units.PageInfoNew;
+import com.example.demo.utils.DateToStamp;
+import com.example.demo.utils.PageInfoNew;
 import com.github.pagehelper.PageHelper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class ApiServiceImpl implements ApiService {
@@ -18,8 +21,11 @@ public class ApiServiceImpl implements ApiService {
 
     @Override
     public int insertApi(Api api){
-        api.setCreatTime((int)(System.currentTimeMillis()/1000));
-        api.setUpdateTime((int)(System.currentTimeMillis()/1000));
+        if (Objects.isNull(api.getRequestAssert())){
+            api.setRequestAssert(Collections.emptyList());
+        }
+        api.setCreatTime(DateToStamp.getTimeStap());
+        api.setUpdateTime(DateToStamp.getTimeStap());
         return apiMapper.insertApi(api);
     }
     @Override
@@ -38,13 +44,18 @@ public class ApiServiceImpl implements ApiService {
     }
 
     @Override
-    public PageInfoNew<Api> findAllWithPage(int pageNum, int pageSize,Integer apsuiteId){
+    public PageInfoNew<Api> findAllWithPage(int pageNum, int pageSize, Integer apsuiteId, Integer projectId){
         PageHelper.startPage(pageNum,pageSize);
-        return new PageInfoNew<>(apiMapper.findAllByApiSuiteId(apsuiteId));
+        return new PageInfoNew<>(apiMapper.findAllToPage(apsuiteId,projectId));
     }
 
     @Override
     public int updateApi(Api api){
         return apiMapper.updateApi(api);
+    }
+
+    @Override
+    public void deleteApi(int id){
+        apiMapper.deleteApi(id);
     }
 }

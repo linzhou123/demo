@@ -8,6 +8,8 @@ public class ResponseInfo implements Serializable {
     private String  message;
     private Boolean success;
 
+    private static final long serialVersionUID = 1L;
+
     public Boolean getSuccess() {
         return success;
     }

@@ -7,6 +7,7 @@ import com.example.demo.Model.ApiTestCaseGroup;
 import com.example.demo.Model.ApiTestCaseMerge;
 import com.example.demo.Service.ApiTestCaseGroupService;
 import com.example.demo.Service.ApiTestCaseStepService;
+import com.example.demo.utils.DateToStamp;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -29,8 +30,8 @@ public class ApiTestCaseGroupServiceImpl implements ApiTestCaseGroupService {
 
     @Override
     public int insertApiTestCaseGroup(ApiTestCaseGroup apiTestCaseGroup){
-        apiTestCaseGroup.setCreatTime((int)(System.currentTimeMillis()/1000));
-        apiTestCaseGroup.setUpdateTime((int)(System.currentTimeMillis()/1000));
+        apiTestCaseGroup.setCreatTime(DateToStamp.getTimeStap());
+        apiTestCaseGroup.setUpdateTime(DateToStamp.getTimeStap());
         return apiTestCaseGroupMapper.insertApiTestCaseGroup(apiTestCaseGroup);
     }
 

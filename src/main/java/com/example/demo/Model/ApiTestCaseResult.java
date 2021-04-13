@@ -9,6 +9,8 @@ public class ApiTestCaseResult {
     private int creatTime;
     private int updateTime;
 
+    private static final long serialVersionUID = 1L;
+
     public int getId() {
         return id;
     }

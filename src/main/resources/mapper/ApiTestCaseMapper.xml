@@ -22,10 +22,40 @@
         from api_testcase
         where id =#{id}
     </select>
-    <select id="findByAll" resultMap="BaseResultMap" parameterType="com.example.demo.Model.ApiTestCase">
+    <select id="findByAll" resultMap="BaseResultMap" >
         select
         <include refid="Base_Column_List"></include>
         from api_testcase
     </select>
-
+    <select id="findByPage" resultMap="BaseResultMap" >
+        select
+        <include refid="Base_Column_List"></include>
+        from api_testcase
+        <if test="projectId !=null">
+            where `project_id` =#{projectId,jdbcType=INTEGER}
+        </if>
+        <if test="name!=null and name!=''">
+            and `name` LIKE CONCAT('%',#{name}, '%')
+        </if>
+    </select>
+    <update id="updateApiTestCase" parameterType="com.example.demo.Model.ApiTestCase">
+        update api_testcase
+        set
+        <if test="name !=null and name != ''">
+            `name` = #{name},
+        </if>
+        <if test="projectId !=null and projectId != ''">
+            `project_id` = #{projectId},
+        </if>
+        <if test="remark !=null and remark != ''">
+            `remark` = #{remark},
+        </if>
+        <if test="updateTime !=null and updateTime != ''">
+            `update_time` = #{updateTime},
+        </if>
+        where id =#{id}
+    </update>
+    <delete id="testCaseDelete" parameterType="int">
+    delete from api_testcase where id = #{testCaseId}
+</delete>
 </mapper>

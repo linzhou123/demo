@@ -13,6 +13,8 @@
         <result column="request_params" property="requestParams"
                 typeHandler="com.example.demo.typehandler.ListTypeHandler"/>
         <result column="request_body" jdbcType="VARCHAR" property="requestBody"/>
+        <result column="request_data_params" property="requestDataParams"
+                typeHandler="com.example.demo.typehandler.ListTypeHandler"/>
         <result column="method" jdbcType="VARCHAR" property="method"/>
         <result column="path" jdbcType="VARCHAR" property="path"/>
         <result column="request_assert" property="requestAssert"
@@ -21,11 +23,11 @@
         <result column="update_time" jdbcType="INTEGER" property="updateTime"/>
     </resultMap>
     <sql id="Base_Column_List">
-        `id`,`name`,`project_id`,`api_suite_id`,`domain`,`request_param_type`,`request_header`,`request_params`,`request_body`,`method`,`path`,`request_assert`,`creat_time`,`update_time`
+        `id`,`name`,`project_id`,`api_suite_id`,`domain`,`request_param_type`,`request_header`,`request_params`,`request_body`,`request_data_params`,`method`,`path`,`request_assert`,`creat_time`,`update_time`
     </sql>
     <insert id="insertApi" parameterType="com.example.demo.Model.Api">
-        insert into api (`name`,`project_id`,`api_suite_id`,`domain`,`request_param_type`,`request_header`,`request_params`,`request_body`,`method`,`path`,`request_assert`,`creat_time`,`update_time`)
-            value (#{name},#{projectId},#{apiSuiteId},#{domain},#{requestParamType},#{requestHeader,jdbcType=VARCHAR,typeHandler=com.example.demo.typehandler.ListTypeHandler},#{requestParams,jdbcType=VARCHAR,typeHandler=com.example.demo.typehandler.ListTypeHandler},#{requestBody},#{method},#{path},#{requestAssert,jdbcType=VARCHAR,typeHandler=com.example.demo.typehandler.ListTypeHandler},#{creatTime},#{updateTime})
+        insert into api (`name`,`project_id`,`api_suite_id`,`domain`,`request_param_type`,`request_header`,`request_params`,`request_data_params`,`request_body`,`method`,`path`,`request_assert`,`creat_time`,`update_time`)
+            value (#{name},#{projectId},#{apiSuiteId},#{domain},#{requestParamType},#{requestHeader,jdbcType=VARCHAR,typeHandler=com.example.demo.typehandler.ListTypeHandler},#{requestParams,jdbcType=VARCHAR,typeHandler=com.example.demo.typehandler.ListTypeHandler},#{requestBody},#{requestDataParams,jdbcType=VARCHAR,typeHandler=com.example.demo.typehandler.ListTypeHandler},#{method},#{path},#{requestAssert,jdbcType=VARCHAR,typeHandler=com.example.demo.typehandler.ListTypeHandler},#{creatTime},#{updateTime})
     </insert>
     <select id="findAllByName" resultMap="BaseResultMap" parameterType="java.lang.String">
         select
@@ -41,16 +43,41 @@
     </select>
     <update id="updateApi" parameterType="com.example.demo.Model.Api">
         update api
-        set `name` =#{name},
+        set
+        <if test="name !=null and name !=''">
+            `name` =#{name},
+        </if>
+        <if test="domain !=null and domain !=''">
             `domain` =#{domain},
+        </if>
+        <if test="requestParamType !=null and requestParamType !=''">
             `request_param_type` = #{requestParamType},
-            `request_header` =#{requestHeader,jdbcType=VARCHAR,typeHandler=com.example.demo.typehandler.ListTypeHandler},
-            `request_params` =#{requestParams,jdbcType=VARCHAR,typeHandler=com.example.demo.typehandler.ListTypeHandler},
+        </if>
+        <if test="requestHeader !=null">
+            `request_header`
+            =#{requestHeader,jdbcType=VARCHAR,typeHandler=com.example.demo.typehandler.ListTypeHandler},
+        </if>
+        <if test="requestParams !=null">
+            `request_params`
+            =#{requestParams,jdbcType=VARCHAR,typeHandler=com.example.demo.typehandler.ListTypeHandler},
+        <if test="requestBody !=null and requestBody !=''">
             `request_body` =#{requestBody},
+        </if>
+        </if>
+        <if test="requestDataParams !=null">
+            `request_data_params`
+            = #{requestDataParams,jdbcType=VARCHAR,typeHandler=com.example.demo.typehandler.ListTypeHandler},
+        </if>
+        <if test="method !=null and method !=''">
             `method` =#{method},
+        </if>
+        <if test="path !=null and path !=''">
             `path` =#{path},
+        </if>
+        <if test="requestAssert !=null">
             `request_assert`=#{requestAssert,jdbcType=VARCHAR,typeHandler=com.example.demo.typehandler.ListTypeHandler},
-            `update_time` =#{updateTime}
+        </if>
+        `update_time` =#{updateTime}
         where id =#{id};
     </update>
     <select id="findAll" resultMap="BaseResultMap" parameterType="com.example.demo.Model.Api">
@@ -62,10 +89,27 @@
         select
         <include refid="Base_Column_List"></include>
         from api
-         <if test="apiSuiteId !=null and apiSuiteId !=''">
-             where api_suite_id=#{apiSuiteId}
-         </if>
+        <if test="apiSuiteId !=null and apiSuiteId !=''">
+            where api_suite_id=#{apiSuiteId}
+        </if>
 
     </select>
+    <select id="findAllToPage" resultMap="BaseResultMap" parameterType="com.example.demo.Model.Api">
+        select
+        <include refid="Base_Column_List"></include>
+        from api
+        <where>
+            <if test="apiSuiteId !=null and apiSuiteId !=''">
+                and api_suite_id=#{apiSuiteId}
+            </if>
+            <if test="projectId !=null and projectId !=''">
+                and project_id = #{projectId}
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteApi" parameterType="int">
+        delete from api where id =#{id,jdbcType=INTEGER}
+    </delete>
 
 </mapper>
