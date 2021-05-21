@@ -16,7 +16,7 @@
     <select id="findByGroupId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
         <include refid="Base_Column_List"></include>
-        from api_testcase_group
+        from api_testcase_merge
         <if test="testCaseGroupId !=null and testCaseGroupId !=''">
             where testcase_group_id =#{testCaseGroupId}
         </if>

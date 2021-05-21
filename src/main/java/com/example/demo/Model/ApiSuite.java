@@ -16,7 +16,7 @@ public class ApiSuite implements Serializable {
     @ApiModelProperty(value = "备注")
     private String remark;
     @ApiModelProperty(value = "创建时间")
-    private Integer creatTime;
+    private Integer createTime;
     @ApiModelProperty(value = "更新时间")
     private Integer updateTime;
 

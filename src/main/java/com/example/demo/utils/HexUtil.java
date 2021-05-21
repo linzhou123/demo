@@ -1,86 +1,166 @@
 package com.example.demo.utils;
 
+import com.example.demo.Dto.HexDto;
+import com.example.demo.Enums.HexEnum;
+import com.jayway.jsonpath.JsonPath;
+import com.jayway.jsonpath.PathNotFoundException;
+import io.restassured.http.Headers;
+import io.restassured.response.Response;
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Scanner;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public class HexUtil extends Thread {
+import static io.restassured.RestAssured.given;
 
-    //定义一个Socket对象
-    Socket socket = null;
+@Slf4j
+public class HexUtil {
 
-    public HexUtil(String host, int port) {
-        try {
-            //需要服务器的IP地址和端口号，才能获得正确的Socket对象
-            socket = new Socket(host, port);
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private boolean flag = false;
+    private Response response = null;
+    private HexDto hexDto;
+    private String realValue;
 
+    public HexUtil(HexDto hexData) {
+        this.hexDto = hexData;
     }
 
-    @Override
-    public void run() {
-        //客户端一连接就可以写数据给服务器了
-        new sendMessThread().start();
-        super.run();
-        try {
-            // 读Sock里面的数据
-            InputStream s = socket.getInputStream();
+    public void getBackMsg(List<String> hexContent) throws IOException {
+        //定义一个Socket对象
+        Socket socket = null;
+        socket = new Socket(hexDto.getHost(), hexDto.getPort());
+        OutputStream os = socket.getOutputStream();
+        InputStream s = socket.getInputStream();
+        for (String h : hexContent) {
+            byte[] bytes = hexStringToByteArray(h);
+            os.write(bytes);
+            os.flush();
             byte[] buf = new byte[1024];
             int len = 0;
-            while ((len = s.read(buf)) != -1) {
-                System.out.println(getdate() + "  服务器返回：  "+byteArrayToHex2(buf));
+//            System.out.println(byteArrayToHex2(buf));
+            if ((len = s.read(buf)) != -1) {
+                System.out.println(getDate() + "  服务器返回：  " + byteArrayToHex2(buf));
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+
         }
+        os.close();
+        s.close();
+        socket.close();
     }
 
-    //往Socket里面写数据，需要新开一个线程
-    class sendMessThread extends Thread{
-        @Override
-        public void run() {
-            super.run();
-            //写操作
-            Scanner scanner=null;
-            OutputStream os= null;
-            try {
-                scanner=new Scanner(System.in);
-
-                os= socket.getOutputStream();
-                String in="";
-                do {
-                    in=scanner.next();
-                    System.out.println(in);
-                    byte[] bytes = hexStringToByteArray(in);
-                    os.write(bytes);
-                    os.flush();
-                } while (!in.equals("bye"));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            scanner.close();
-            try {
-                os.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+    public String getBackMsg(String hexContent) throws IOException {
+        //定义一个Socket对象
+        Socket socket = null;
+        socket = new Socket(hexDto.getHost(), hexDto.getPort());
+        OutputStream os = socket.getOutputStream();
+        InputStream s = socket.getInputStream();
+        byte[] bytes = hexStringToByteArray(hexContent);
+        os.write(bytes);
+        os.flush();
+        byte[] buf = new byte[1024];
+        int len = 0;
+        System.out.println(byteArrayToHex2(buf));
+        if ((len = s.read(buf)) != -1) {
+            log.info("  服务器返回：  " + byteArrayToHex2(buf));
+//                System.out.println(getDate() + "  服务器返回：  "+ byteArrayToHex2(buf));
         }
+        os.close();
+        s.close();
+        socket.close();
+        return byteArrayToHex2(buf);
     }
 
-    public static String getdate() {
+    public static String getDate() {
         Date date = new Date();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String result = format.format(date);
         return result;
+    }
+
+    /**
+     * 获取接口中数据对比设备状态是否准确,写死数据
+     */
+    public boolean getHexAssert() {
+        String url = null;
+        if(hexDto.getHost().equals("14.18.73.163")){
+            url="https://cloud.sendiag.cn/self_operator/device/page";
+        }else {
+            url="http://" + hexDto.getHost().concat(":8884/self_operator/device/page");
+        }
+        log.info("url:" + url);
+        Map<String, Object> params = new HashMap<>();
+        params.put("code", hexDto.getDeviceName());
+        params.put("pageNumber", 1);
+        params.put("pageSize", 10);
+        params.put("deviceType", hexDto.getDeviceType());
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        response = given().headers(getCookie()).params(params).when().get(url);
+        String data = response.prettyPrint();
+        log.info("获取测试数据结果:" + data);
+
+        try {
+            log.info("JsonPath解析:"+JsonPath.parse(data).read("$.data.list.length()"));
+            switch (HexEnum.valueOfType(hexDto.getDataType())) {
+                case AlarmData:
+                    realValue = JsonPath.parse(data).read("$.data.list[0].alarmStatus").toString();
+                    break;
+                case Fault:
+                    realValue = JsonPath.parse(data).read("$.data.list[0].faultStatus").toString();
+                    break;
+                case RealTimeData:
+                    realValue = JsonPath.parse(data).read("$.data.list[0].onlineStatus").toString();
+                    break;
+                default:
+                    throw new IllegalStateException("Unexpected value: " + hexDto.getDataType());
+            }
+        }catch (PathNotFoundException e){
+            log.error("JsonPath解析报错:",e);
+            return flag=false;
+        }
+
+
+        log.info("realValue:"+realValue);
+            if (realValue.equals("true")){
+                flag=true;
+            }
+            else {
+                flag=false;
+            }
+        return flag;
+    }
+
+    public Map<String, Object> getCookie() {
+        Map<String, Object> cookie = new HashMap<>();
+        Map<String, Object> params = new HashMap<>();
+        Map<String, Object> hearders = new HashMap<>();
+        hearders.put("Content-Type", "application/x-www-form-urlencoded");
+        params.put("username", hexDto.getUserName());
+        params.put("password", hexDto.getPassword());
+        params.put("submit", "login");
+        String url = null;
+        if(hexDto.getHost().equals("14.18.73.163")){
+            url="https://cloud.sendiag.cn/self_operator/login";
+        }else {
+            url = "http://" + hexDto.getHost().concat(":8884/self_operator/login");
+        }
+        log.info("url:" + url);
+//        response= given().headers(hearders).params(params).when().post(url);
+        response = given().headers(hearders).params(params).when().post(url);
+        Headers headers = response.getHeaders();
+        cookie.put("Cookie", headers.getValue("Set-Cookie"));
+        log.info("Set-Cookie:" + cookie);
+        return cookie;
     }
 
 
@@ -101,6 +181,7 @@ public class HexUtil extends Thread {
         }
         return bytes;
     }
+
     public static String byteArrayToHex(byte[] bytes) {
         StringBuilder result = new StringBuilder();
         for (int index = 0, len = bytes.length; index <= len - 1; index += 1) {
@@ -111,13 +192,14 @@ public class HexUtil extends Thread {
             result.append(chara1);
             result.append(chara2);
         }
-        int index=result.indexOf("2323");
-        String result1=result.toString();
-        result1=result.substring(0,index+4);
+        int index = result.indexOf("2323");
+        String result1 = result.toString();
+        result1 = result.substring(0, index + 4);
         return result.toString();
     }
+
     //将获取的bytes格式转换为16进制
-   public static String byteArrayToHex2(byte[] bytes) {
+    public static String byteArrayToHex2(byte[] bytes) {
         StringBuilder result = new StringBuilder();
         for (int index = 0, len = bytes.length; index <= len - 1; index += 1) {
             String invalue1 = Integer.toHexString((bytes[index] >> 4) & 0xF);
@@ -125,21 +207,11 @@ public class HexUtil extends Thread {
             result.append(invalue1);
             result.append(intValue2);
         }
-        int index=result.indexOf("2323");
-        String result1=result.toString();
-        result1=result.substring(0,index+4);
-        System.out.println("msgLength:"+(index+4));
+        int index = result.indexOf("2323");
+        String result1 = result.toString();
+        result1 = result.substring(0, index + 4);
+//        System.out.println("msgLength:"+(index+4));
         return result1;
     }
 
-        //函数入口
-    public static void main(String[] args) {
-        //需要服务器的正确的IP地址和端口号
-        HexUtil clientTest=new HexUtil("14.116.192.19", 7893);
-        clientTest.start();
-        clientTest.notify();
-        byte[] S=hexStringToByteArray("8503C6FA9EA2058372EA266DF780E7E4");
-        System.out.println(S);
-
-    }
 }

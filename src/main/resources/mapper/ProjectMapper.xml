@@ -5,14 +5,14 @@
     <id column="id" jdbcType="INTEGER" property="id"/>
     <result column="project_name" jdbcType="VARCHAR" property="projectName"/>
     <result column="description" jdbcType="VARCHAR" property="description"/>
-    <result column="creat_time" jdbcType="INTEGER" property="creatTime"/>
+    <result column="create_time" jdbcType="INTEGER" property="createTime"/>
     <result column="update_time" jdbcType="INTEGER" property="updateTime"/>
 </resultMap>
 <sql id="Base_Column_List">
-    `id`,`project_name`,`description`,`creat_time`,`update_time`
+    `id`,`project_name`,`description`,`create_time`,`update_time`
     </sql>
 <insert id="insertProject" keyProperty="id" parameterType="com.example.demo.Model.Project" useGeneratedKeys="true">
-    insert into project (`project_name`,`description`,creat_time,update_time) value (#{projectName},#{description},#{creatTime},#{updateTime})
+    insert into project (`project_name`,`description`,create_time,update_time) value (#{projectName},#{description},#{createTime},#{updateTime})
     </insert>
 <update id="updateProject" parameterType="com.example.demo.Model.Project">
     update project

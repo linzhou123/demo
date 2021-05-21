@@ -9,22 +9,22 @@
         <result column="domain" jdbcType="VARCHAR" property="domain"/>
         <result column="request_param_type" jdbcType="VARCHAR" property="requestParamType"/>
         <result column="request_header" property="requestHeader"
-                typeHandler="com.example.demo.typehandler.ListTypeHandler"/>
+                typeHandler="com.example.demo.typeHandler.ListTypeHandler"/>
         <result column="request_params" property="requestParams"
-                typeHandler="com.example.demo.typehandler.ListTypeHandler"/>
+                typeHandler="com.example.demo.typeHandler.ListTypeHandler"/>
         <result column="request_body" jdbcType="VARCHAR" property="requestBody"/>
         <result column="request_data_params" property="requestDataParams"
-                typeHandler="com.example.demo.typehandler.ListTypeHandler"/>
+                typeHandler="com.example.demo.typeHandler.ListTypeHandler"/>
         <result column="method" jdbcType="VARCHAR" property="method"/>
         <result column="path" jdbcType="VARCHAR" property="path"/>
         <result column="request_assert" property="requestAssert"
-                typeHandler="com.example.demo.typehandler.ListTypeHandler"/>
+                typeHandler="com.example.demo.typeHandler.ListTypeHandler"/>
         <result column="sort" jdbcType="INTEGER" property="sort"/>
-        <result column="creat_time" jdbcType="INTEGER" property="creatTime"/>
+        <result column="create_time" jdbcType="INTEGER" property="createTime"/>
         <result column="update_time" jdbcType="INTEGER" property="updateTime"/>
     </resultMap>
     <sql id="Base_Column_List">
-        `id`,`name`,`api_id`,`testcase_id`,`domain`,`request_param_type`,`request_header`,`request_params`,`request_body`,`request_data_params`,`method`,`path`,`request_assert`,`sort`,`creat_time`,`update_time`
+        `id`,`name`,`api_id`,`testcase_id`,`domain`,`request_param_type`,`request_header`,`request_params`,`request_body`,`request_data_params`,`method`,`path`,`request_assert`,`sort`,`create_time`,`update_time`
     </sql>
     <insert id="insertApiTestCaseStep" parameterType="com.example.demo.Model.ApiTestCaseStep">
         insert  into api_testcase_step (`name`,`api_id`,`testcase_id`,`domain`,`request_param_type`,`request_header`,`request_params`,`request_body`,`request_data_params`,`method`,`path`,`request_assert`,`sort`,`creat_time`,`update_time`)

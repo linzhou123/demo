@@ -27,6 +27,7 @@ public class ApiRequestResult implements Serializable {
     private int resultTime;
     private List<ResultAssert> resultAssert;
     private boolean resultIsPass;
+    private String exceptionBody;
     private int creatTime;
     private int updateTime;
     private static final long serialVersionUID = 1L;

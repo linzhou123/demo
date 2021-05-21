@@ -11,6 +11,7 @@ public interface ApiTestCaseStepService {
     ApiTestCaseResultDto runStep(Integer testCaseId);
     void apiTestCaseStepEdit(List<ApiTestCaseStep> apiTestCaseStepList);
     void apiTestCaseStepDelete(int StepId);
+    void apiTestCaseStepsDelete(List<Integer> ids);
     PageInfoNew<ApiTestCaseStep> findTestCaseStepPageByTestCaseId(int pageNum, int pageSize,int testCaseId);
     List<ApiTestCaseStep> findStepListByTestCaseId(int testCaseId);
 }

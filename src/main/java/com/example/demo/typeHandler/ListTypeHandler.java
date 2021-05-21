@@ -1,4 +1,4 @@
-package com.example.demo.typehandler;
+package com.example.demo.typeHandler;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;

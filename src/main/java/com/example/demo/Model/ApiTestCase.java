@@ -14,7 +14,7 @@ public class ApiTestCase implements Serializable {
     @ApiModelProperty(value = "备注")
     private String remark;
     @ApiModelProperty(value = "创建时间")
-    private int creatTime;
+    private int createTime;
     @ApiModelProperty(value = "更新时间")
     private int updateTime;
 
@@ -52,12 +52,12 @@ public class ApiTestCase implements Serializable {
         this.remark = remark;
     }
 
-    public int getCreatTime() {
-        return creatTime;
+    public int getcreateTime() {
+        return createTime;
     }
 
-    public void setCreatTime(int creatTime) {
-        this.creatTime = creatTime;
+    public void setCreateTime(int createTime) {
+        this.createTime = createTime;
     }
 
     public int getUpdateTime() {

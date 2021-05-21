@@ -6,15 +6,15 @@
         <result column="project_id" jdbcType="INTEGER" property="projectId" />
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
-        <result column="creat_time" jdbcType="INTEGER" property="creatTime"/>
+        <result column="create_time" jdbcType="INTEGER" property="createTime"/>
         <result column="update_time" jdbcType="INTEGER" property="updateTime"/>
     </resultMap>
     <sql id="Base_Column_List">
-    `id`,`project_id`,`name`,`remark`,`creat_time`,`update_time`
+    `id`,`project_id`,`name`,`remark`,`create_time`,`update_time`
     </sql>
     <insert id="insertApiTestCaseGroup" parameterType="com.example.demo.Model.ApiTestCaseGroup">
-        insert into api_testcase_group (`name`,`project_id`,`remark`,`creat_time`,`update_time`)
-        value (#{name},#{projectId},#{remark},#{creatTime},#{updateTime})
+        insert into api_testcase_group (`name`,`project_id`,`remark`,`create_time`,`update_time`)
+        value (#{name},#{projectId},#{remark},#{createTime},#{updateTime})
     </insert>
 
 </mapper>

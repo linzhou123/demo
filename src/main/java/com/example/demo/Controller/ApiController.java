@@ -1,13 +1,18 @@
 package com.example.demo.Controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.demo.Model.Api;
+import com.example.demo.Model.TestData.AlarmData;
+import com.example.demo.Model.TestData.ConfigData;
+import com.example.demo.Model.TestData.DataTest;
 import com.example.demo.Model.ResponseInfo;
+import com.example.demo.Model.TestData.FaultData;
 import com.example.demo.Service.ApiRequestResultService;
 import com.example.demo.Service.ApiService;
-import groovy.util.logging.Slf4j;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -101,4 +106,27 @@ public class ApiController {
     public ResponseInfo getApiDetails(int id) {
         return ResponseInfo.successInfo(apiService.findById(id));
     }
+
+    @PostMapping("/transfer/device/data")
+    public ResponseInfo getData(@RequestBody DataTest dataTest){
+        log.info("实时数据:"+JSONObject.toJSONString(dataTest));
+        return ResponseInfo.successInfo(dataTest);
+        }
+    @PostMapping("/transfer/device/alarm")
+    public ResponseInfo getAlarm(@RequestBody AlarmData alarmData){
+        log.info("报警数据:"+ JSONObject.toJSONString(alarmData));
+        return ResponseInfo.successInfo(alarmData);
+    }
+    @PostMapping("/transfer/device/fault")
+    public ResponseInfo getFault(@RequestBody FaultData faultData){
+        log.info("故障数据:"+JSONObject.toJSONString(faultData));
+        return ResponseInfo.successInfo(faultData);
+    }
+
+    @PostMapping("/transfer/device/config")
+    public ResponseInfo getConfig(@RequestBody ConfigData configData){
+        log.info("配置数据："+JSONObject.toJSONString(configData));
+        return ResponseInfo.successInfo(configData);
+    }
+
 }

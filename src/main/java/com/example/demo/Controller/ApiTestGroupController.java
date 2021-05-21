@@ -33,10 +33,19 @@ public class ApiTestGroupController {
     /**添加测试用例至测试用例集*/
     @PostMapping("/addCaseToGroup")
     @ApiOperation(value = "添加测试用例至测试用例集")
-    public ResponseInfo addCaseToGroup(@RequestBody ApiTestCaseMergeDto apiTestCaseMergeDto){
+    public ResponseInfo addCaseToGroup(@RequestParam ApiTestCaseMergeDto apiTestCaseMergeDto){
         apiTestCaseMergeService.insertApiTestCaseMerge(apiTestCaseMergeDto);
         return ResponseInfo.successInfo("");
     }
+
+    /**从测试用例集中删除测试用例*/
+    @DeleteMapping("/deleteCase/{id}")
+    @ApiOperation(value = "测试用例集中删除测试用例")
+    public ResponseInfo deleteCase(@PathVariable("id") Integer id){
+        return ResponseInfo.successInfo("");
+    }
+
+
     /**运行用例集-获取结果集*/
     @PostMapping("/run")
     @ApiOperation(value = "运行测试用例集")

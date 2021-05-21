@@ -6,14 +6,15 @@
         <result column="url" jdbcType="VARCHAR" property="url"/>
         <result column="hex_content" jdbcType="VARCHAR" property="hexContent"/>
         <result column="sys_back_content" jdbcType="VARCHAR" property="sysBackContent"/>
-        <result column="creat_time" jdbcType="INTEGER" property="creatTime"/>
+        <result column="is_pass" jdbcType="TINYINT" property="isPass"/>
+        <result column="create_time" jdbcType="INTEGER" property="createTime"/>
     </resultMap>
     <sql id="Base_Column_List">
-        `id`,`url`,`hex_content`,`sys_back_content`,`creat_time`
+        `id`,`url`,`hex_content`,`sys_back_content`,`is_pass`,`create_time`
     </sql>
     <insert id="insertHexRecord" parameterType="com.example.demo.Model.SendHexRecord">
-        insert into send_hex_record (`url`,`hex_content`,`sys_back_content`,`creat_time`)
+        insert into send_hex_record (`url`,`hex_content`,`sys_back_content`,`is_pass`,`create_time`)
         value
-        (#{url},#{hex_content},#{sys_back_content},#{creat_time})
+        (#{url},#{hexContent},#{sysBackContent},#{isPass},#{createTime})
     </insert>
 </mapper>

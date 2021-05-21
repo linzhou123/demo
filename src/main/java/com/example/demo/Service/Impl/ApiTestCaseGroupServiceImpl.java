@@ -1,9 +1,12 @@
 package com.example.demo.Service.Impl;
 
+import com.example.demo.Dto.ApiTestCaseResultDto;
 import com.example.demo.Mapper.ApiTestCaseGroupMapper;
+import com.example.demo.Mapper.ApiTestCaseGroupResultMapper;
 import com.example.demo.Mapper.ApiTestCaseMapper;
 import com.example.demo.Mapper.ApiTestCaseMergeMapper;
 import com.example.demo.Model.ApiTestCaseGroup;
+import com.example.demo.Model.ApiTestCaseGroupResult;
 import com.example.demo.Model.ApiTestCaseMerge;
 import com.example.demo.Service.ApiTestCaseGroupService;
 import com.example.demo.Service.ApiTestCaseStepService;
@@ -27,7 +30,10 @@ public class ApiTestCaseGroupServiceImpl implements ApiTestCaseGroupService {
 
     @Resource
     ApiTestCaseStepService apiTestCaseStepService;
+    @Resource
+    ApiTestCaseGroupResultMapper apiTestCaseGroupResultMapper;
 
+    ApiTestCaseGroupResult apiTestCaseGroupResult=new ApiTestCaseGroupResult();
     @Override
     public int insertApiTestCaseGroup(ApiTestCaseGroup apiTestCaseGroup){
         apiTestCaseGroup.setCreatTime(DateToStamp.getTimeStap());
@@ -36,11 +42,25 @@ public class ApiTestCaseGroupServiceImpl implements ApiTestCaseGroupService {
     }
 
     @Override
-    public void runTestGroup(int testCaseGroudId){
+    public void runTestGroup(int testCaseGroupId){
 
-        List<ApiTestCaseMerge> apiTestCaseMergeList=  apiTestCaseMergeMapper.findByGroupId(testCaseGroudId);
+        int count=0,pass = 0,failed =0;
+        List<ApiTestCaseMerge> apiTestCaseMergeList=  apiTestCaseMergeMapper.findByGroupId(testCaseGroupId);
+        count=apiTestCaseMergeList.size();
+        apiTestCaseGroupResult.setCountResult(count);
         for (ApiTestCaseMerge apiTestCaseMerge: apiTestCaseMergeList){
-            apiTestCaseStepService.runStep(apiTestCaseMerge.getApiTestCaseId());
+           ApiTestCaseResultDto apiTestCaseResultDto =apiTestCaseStepService.runStep(apiTestCaseMerge.getApiTestCaseId());
+           if (apiTestCaseResultDto.getApiTestCaseResult().getFailedResults()>0){
+               failed+=1;
+           }else{
+               pass+=1;
+           }
         }
+        apiTestCaseGroupResult.setTestCaseGroupId(testCaseGroupId);
+        apiTestCaseGroupResult.setFailedResult(failed);
+        apiTestCaseGroupResult.setPassResult(pass);
+        apiTestCaseGroupResult.setCreatTime(DateToStamp.getTimeStap());
+        apiTestCaseGroupResult.setUpdateTime(DateToStamp.getTimeStap());
+        apiTestCaseGroupResultMapper.insertResult(apiTestCaseGroupResult);
     }
 }

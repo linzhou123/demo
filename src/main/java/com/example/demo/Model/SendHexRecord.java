@@ -9,5 +9,6 @@ public class SendHexRecord implements Serializable {
     private String url;
     private String hexContent;
     private String sysBackContent;
-    private int creatTime;
+    private Boolean isPass;
+    private int createTime;
 }

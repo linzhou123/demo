@@ -6,16 +6,16 @@
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="project_id" jdbcType="INTEGER" property="projectId"/>
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
-        <result column="creat_time" jdbcType="INTEGER" property="creatTime"/>
+        <result column="create_time" jdbcType="INTEGER" property="createTime"/>
         <result column="update_time" jdbcType="INTEGER" property="updateTime"/>
     </resultMap>
     <sql id="Base_Column_List">
-    `id`,`name`,`project_id`,`remark`,`creat_time`,`update_time`
+    `id`,`name`,`project_id`,`remark`,`create_time`,`update_time`
     </sql>
 
     <insert id="insertApiSuite" keyProperty="id" parameterType="com.example.demo.Model.ApiSuite"
             useGeneratedKeys="true">
-        insert into api_suite (`name`,`project_id`,`remark`,`creat_time`,`update_time`) value (#{name},#{projectId},#{remark},#{creatTime},#{updateTime})
+        insert into api_suite (`name`,`project_id`,`remark`,`create_time`,`update_time`) value (#{name},#{projectId},#{remark},#{createTime},#{updateTime})
     </insert>
     <update id="updateApiSuite" parameterType="com.example.demo.Model.ApiSuite">
         update api_suite

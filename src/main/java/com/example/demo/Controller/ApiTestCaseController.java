@@ -73,6 +73,18 @@ public class ApiTestCaseController {
         return ResponseInfo.successInfo("");
     }
 
+    @PostMapping("/Step/deletes")
+    @ApiOperation(value = "批量删除测试用例接口")
+    @ApiImplicitParam(name="ids",value = "id列表",required = true,dataType = "List")
+    public ResponseInfo deleteStepsInCase(List<Integer> ids){
+        if (ids.size()>0){
+            apiTestCaseStepService.apiTestCaseStepsDelete(ids);
+            return ResponseInfo.successInfo("");
+        }else {
+            return ResponseInfo.errorInfo("ids不能为空");
+        }
+    }
+
     @GetMapping("/page")
     @ApiOperation(value = "测试用例分页接口")
     @ApiImplicitParams({

@@ -37,7 +37,7 @@ public class ApiTestCaseStep implements Serializable {
     @ApiModelProperty(value = "步骤顺序下标")
     private int sort;
     @ApiModelProperty(value = "测试用例创建时间")
-    private int creatTime;
+    private int createTime;
     @ApiModelProperty(value = "测试用例更新时间")
     private int updateTime;
 
@@ -155,12 +155,12 @@ public class ApiTestCaseStep implements Serializable {
         this.sort = sort;
     }
 
-    public int getCreatTime() {
-        return creatTime;
+    public int getcreateTime() {
+        return createTime;
     }
 
-    public void setCreatTime(int creatTime) {
-        this.creatTime = creatTime;
+    public void setCreateTime(int createTime) {
+        this.createTime = createTime;
     }
 
     public int getUpdateTime() {

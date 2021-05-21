@@ -17,7 +17,7 @@ public class ApiTestCaseServiceImpl implements ApiTestCaseService {
     ApiTestCaseMapper apiTestCaseMapper;
     @Override
     public int insertApiTestCase(ApiTestCase apiTestCase){
-        apiTestCase.setCreatTime(DateToStamp.getTimeStap());
+        apiTestCase.setCreateTime(DateToStamp.getTimeStap());
         apiTestCase.setUpdateTime(DateToStamp.getTimeStap());
         return apiTestCaseMapper.insertApiTestCase(apiTestCase);
     }

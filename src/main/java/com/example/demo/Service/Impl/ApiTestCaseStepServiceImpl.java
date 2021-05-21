@@ -3,17 +3,17 @@ package com.example.demo.Service.Impl;
 import com.alibaba.fastjson.JSON;
 import com.example.demo.Dto.ApiTestCaseResultDto;
 import com.example.demo.Mapper.ApiRequestResultMapper;
+import com.example.demo.Mapper.ApiTestCaseMapper;
 import com.example.demo.Mapper.ApiTestCaseResultMapper;
 import com.example.demo.Mapper.ApiTestCaseStepMapper;
-import com.example.demo.Model.ApiRequestResult;
-import com.example.demo.Model.ApiTestCaseResult;
-import com.example.demo.Model.ApiTestCaseStep;
+import com.example.demo.Model.*;
 import com.example.demo.Service.ApiTestCaseStepService;
 import com.example.demo.utils.DateToStamp;
 import com.example.demo.utils.PageInfoNew;
 import com.example.demo.utils.RestAssuredUtil;
 import com.github.pagehelper.PageHelper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -32,6 +32,9 @@ public class ApiTestCaseStepServiceImpl implements ApiTestCaseStepService {
     @Resource
     ApiTestCaseResultMapper apiTestCaseResultMapper;
 
+    @Resource
+    ApiTestCaseMapper apiTestCaseMapper;
+
     @Override
     public int insertStepToTestCase(List<ApiTestCaseStep> apiTestCaseStepList){
         //根据testCaseId获取step总数
@@ -47,14 +50,18 @@ public class ApiTestCaseStepServiceImpl implements ApiTestCaseStepService {
     @Override
     public ApiTestCaseResultDto runStep(Integer testCaseId){
         List<ApiTestCaseStep> apiTestCaseSteps=apiTestCaseStepMapper.findByTestCaseId(testCaseId);
+        ApiTestCase apiTestCase =apiTestCaseMapper.findById(testCaseId);
         ApiTestCaseResult apiTestCaseResult=new ApiTestCaseResult();
         int pass=0;
         int failed=0;
         int count =0;
         List<ApiRequestResult> apiRequestResults = new ArrayList<>();
         ApiTestCaseResultDto apiTestCaseResultDto =new ApiTestCaseResultDto();
-        int stratTime =(int) System.currentTimeMillis();
+        int stratTime =(int)System.currentTimeMillis();
         for (ApiTestCaseStep apiTestCaseStep:apiTestCaseSteps){
+            Api api =new Api();
+            BeanUtils.copyProperties(apiTestCaseStep,api);
+            log.info("api:....."+api.toString());
             RestAssuredUtil restAssuredUtil =new RestAssuredUtil(apiTestCaseStep);
             ApiRequestResult apiRequestResult= restAssuredUtil.requestCaseRun();
             log.info(JSON.toJSONString(apiRequestResult));
@@ -67,17 +74,19 @@ public class ApiTestCaseStepServiceImpl implements ApiTestCaseStepService {
                 failed+=1;
             }
         }
-        int endTime =(int) System.currentTimeMillis();
+        int endTime =(int)System.currentTimeMillis();
         apiTestCaseResult.setTestCaseId(testCaseId);
-        apiTestCaseResult.setCountReults(count);
-        apiTestCaseResult.setPassReults(pass);
-        apiTestCaseResult.setFailedReults(failed);
-        apiTestCaseResult.setCreatTime(DateToStamp.getTimeStap());
+        apiTestCaseResult.setCountResults(count);
+        apiTestCaseResult.setPassResults(pass);
+        apiTestCaseResult.setFailedResults(failed);
+        apiTestCaseResult.setCreateTime(DateToStamp.getTimeStap());
         apiTestCaseResult.setUpdateTime(DateToStamp.getTimeStap());
+        apiTestCaseResult.setTestRunTime(endTime-stratTime);
         apiTestCaseResultMapper.insertResult(apiTestCaseResult);
         apiTestCaseResultDto.setApiRequestResults(apiRequestResults);
         apiTestCaseResultDto.setApiTestCaseResult(apiTestCaseResult);
-        apiTestCaseResultDto.setRunTime(endTime-stratTime);
+        apiTestCaseResultDto.setCaseName(apiTestCase.getName());
+//        apiTestCaseResultDto.setRunTime(endTime-stratTime);
         return apiTestCaseResultDto;
     }
 
@@ -95,6 +104,13 @@ public class ApiTestCaseStepServiceImpl implements ApiTestCaseStepService {
     @Override
     public void apiTestCaseStepDelete(int StepId) {
         apiTestCaseStepMapper.deleteStepByStepId(StepId);
+    }
+
+    @Override
+    public void apiTestCaseStepsDelete(List<Integer> ids){
+        for (int id:ids){
+            apiTestCaseStepMapper.deleteStepByStepId(id);
+        }
     }
 
     @Override

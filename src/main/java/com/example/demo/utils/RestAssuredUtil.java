@@ -12,30 +12,49 @@ import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.PathNotFoundException;
 import io.restassured.http.Headers;
 import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
 
 import static io.restassured.RestAssured.given;
-
+@Slf4j
 public class RestAssuredUtil {
     private boolean flag = false;
     private Response response = null;
     private Api api;
     public ApiRequestResult apiRequestResult;
     public ApiTestCaseStep apiTestCaseStep;
+    private RequestSpecification requestSpecification;
     public RestAssuredUtil(Api api) {
         this.api = api;
         this.apiRequestResult = new ApiRequestResult();
+        requestSpecification =given();
     }
     public RestAssuredUtil(ApiTestCaseStep apiTestCaseStep){
         this.apiTestCaseStep =apiTestCaseStep;
         this.apiRequestResult =new ApiRequestResult();
+        requestSpecification =given();
+    }
+    //
+    public void applyHeaders(){
+        requestSpecification.headers(getHeaders(api.getRequestHeader()));
     }
     //debug api
     public ApiRequestResult requestTestRun() {
         //拼接URL传入
+        log.info("---------开始执行自动化接口用例---------");
+        String URL = api.getDomain().concat(api.getPath());
+        apiRequestResult.setApiId(api.getId());
+        apiRequestResult.setApiName(api.getName());
+        apiRequestResult.setRequestHeader(api.getRequestHeader());
+        apiRequestResult.setRequestParams(api.getRequestParams());
+        apiRequestResult.setRequestParamType(api.getRequestParamType());
+        apiRequestResult.setRequestBody(api.getRequestBody());
+        apiRequestResult.setRequestDataParams(api.getRequestDataParams());
+        apiRequestResult.setMethod(api.getMethod());
+        apiRequestResult.setURL(URL);
         try {
-            String URL = api.getDomain().concat(api.getPath());
             switch (api.getMethod()) {
                 case "Post":
                     if (api.getRequestParamType().equals("raw")) {
@@ -57,58 +76,36 @@ public class RestAssuredUtil {
                     response = given().headers(getHeaders(api.getRequestHeader())).params(getParams(api.getRequestParams())).when().get(URL);
                     break;
             }
+        }catch (Exception e){
+            apiRequestResult.setCreatTime(DateToStamp.getTimeStap());
+            apiRequestResult.setUpdateTime(DateToStamp.getTimeStap());
+            apiRequestResult.setExceptionBody(e.getMessage());
+            log.error("运行自动化接口报错:",e);
+            return apiRequestResult;
+        }
+
             //result塞入接口运行结果
-            apiRequestResult.setApiId(api.getId());
-            apiRequestResult.setApiName(api.getName());
-            apiRequestResult.setRequestHeader(api.getRequestHeader());
-            apiRequestResult.setRequestParams(api.getRequestParams());
-            apiRequestResult.setRequestParamType(api.getRequestParamType());
-            apiRequestResult.setRequestBody(api.getRequestBody());
-            apiRequestResult.setRequestDataParams(api.getRequestDataParams());
-            apiRequestResult.setMethod(api.getMethod());
-            apiRequestResult.setURL(URL);
+            apiRequestResult.setExceptionBody("无异常");
             apiRequestResult.setResultBody(response.getBody().prettyPrint());
             apiRequestResult.setResponseHeaders(getRspHeaders(response));
             apiRequestResult.setResultStatus(response.getStatusCode());
             apiRequestResult.setResultAssert(getResultAssert(api.getRequestAssert()));
             apiRequestResult.setResultIsPass(requestAssert());
             apiRequestResult.setResultTime((int) response.getTime());
-            apiRequestResult.setCreatTime((int) (System.currentTimeMillis() / 1000));
-            apiRequestResult.setUpdateTime((int) (System.currentTimeMillis() / 1000));
+            apiRequestResult.setCreatTime(DateToStamp.getTimeStap());
+            apiRequestResult.setUpdateTime(DateToStamp.getTimeStap());
+            log.info("获取接口自动化用例结果:"+apiRequestResult.toString());
+            log.info("---------接口自动化用例运行完成---------");
             return apiRequestResult;
-        }catch (Exception e){
-            apiRequestResult.setResultBody(e.toString());
-            return apiRequestResult;
-        }
+
     }
 
     //执行单条用例步骤
     public ApiRequestResult requestCaseRun(){
         //拼接URL传入
+        log.info("---------开始执行自动化接口用例---------");
         String URL = apiTestCaseStep.getDomain().concat(apiTestCaseStep.getPath());
         //判断请求方式 get、pst、delete、put
-        switch (apiTestCaseStep.getMethod()) {
-            case "Post":
-                if (apiTestCaseStep.getRequestParamType().equals("raw")) {
-                    response = given().headers(getHeaders(apiTestCaseStep.getRequestHeader())).body(apiTestCaseStep.getRequestBody()).when().post(URL);
-                } else {
-                    response = given().headers(getHeaders(apiTestCaseStep.getRequestHeader())).params(getParams(apiTestCaseStep.getRequestDataParams())).when().post(URL);
-                }
-                break;
-            case "Get":
-                response = given().headers(getHeaders(apiTestCaseStep.getRequestHeader())).params(getParams(apiTestCaseStep.getRequestParams())).when().get(URL);
-                break;
-            case "Delete":
-                response = given().headers(getHeaders(apiTestCaseStep.getRequestHeader())).params(getParams(apiTestCaseStep.getRequestParams())).when().delete(URL);
-                break;
-            case "Put":
-                response = given().headers(getHeaders(apiTestCaseStep.getRequestHeader())).params(getParams(apiTestCaseStep.getRequestParams())).when().put(URL);
-                break;
-            default:
-                return null;
-        }
-        Headers allHeaders = response.getHeaders();
-        //result塞入接口运行结果
         apiRequestResult.setApiId(apiTestCaseStep.getApiId());
         apiRequestResult.setApiName(apiTestCaseStep.getName());
         apiRequestResult.setApiTestCaseStepId(apiTestCaseStep.getId());
@@ -120,14 +117,47 @@ public class RestAssuredUtil {
         apiRequestResult.setRequestDataParams(apiTestCaseStep.getRequestDataParams());
         apiRequestResult.setMethod(apiTestCaseStep.getMethod());
         apiRequestResult.setURL(URL);
+        try{
+
+            switch (apiTestCaseStep.getMethod()) {
+                case "Post":
+                    if (apiTestCaseStep.getRequestParamType().equals("raw")) {
+                        response = given().headers(getHeaders(apiTestCaseStep.getRequestHeader())).body(apiTestCaseStep.getRequestBody()).when().post(URL);
+                    } else {
+                        response = given().headers(getHeaders(apiTestCaseStep.getRequestHeader())).params(getParams(apiTestCaseStep.getRequestDataParams())).when().post(URL);
+                    }
+                    break;
+                case "Get":
+                    response = given().headers(getHeaders(apiTestCaseStep.getRequestHeader())).params(getParams(apiTestCaseStep.getRequestParams())).when().get(URL);
+                    break;
+                case "Delete":
+                    response = given().headers(getHeaders(apiTestCaseStep.getRequestHeader())).params(getParams(apiTestCaseStep.getRequestParams())).when().delete(URL);
+                    break;
+                case "Put":
+                    response = given().headers(getHeaders(apiTestCaseStep.getRequestHeader())).params(getParams(apiTestCaseStep.getRequestParams())).when().put(URL);
+                    break;
+                default:
+                    return null;
+            }
+        }catch (Exception e){
+            log.error("运行自动化接口报错:",e);
+            apiRequestResult.setExceptionBody(e.getMessage());
+            apiRequestResult.setCreatTime(DateToStamp.getTimeStap());
+            apiRequestResult.setUpdateTime(DateToStamp.getTimeStap());
+            return apiRequestResult;
+        }
+        Headers allHeaders = response.getHeaders();
+        //result塞入接口运行结果
         apiRequestResult.setResultBody(response.getBody().prettyPrint());
         apiRequestResult.setResponseHeaders(getRspHeaders(response));
         apiRequestResult.setResultStatus(response.getStatusCode());
         apiRequestResult.setResultAssert(getResultAssert(apiTestCaseStep.getRequestAssert()));
         apiRequestResult.setResultIsPass(requestAssert());
+        apiRequestResult.setExceptionBody("无异常");
         apiRequestResult.setResultTime((int) response.getTime());
-        apiRequestResult.setCreatTime((int) (System.currentTimeMillis() / 1000));
-        apiRequestResult.setUpdateTime((int) (System.currentTimeMillis() / 1000));
+        apiRequestResult.setCreatTime(DateToStamp.getTimeStap());
+        apiRequestResult.setUpdateTime(DateToStamp.getTimeStap());
+        log.info("---------接口自动化用例运行完成---------");
         return apiRequestResult;
     }
 
@@ -151,7 +181,7 @@ public class RestAssuredUtil {
                 return Collections.EMPTY_MAP;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("获取消息头报错：",e);
         }
 
         return getHeaders;
@@ -191,7 +221,7 @@ public class RestAssuredUtil {
                 return Collections.EMPTY_MAP;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("获取参数报错：",e);
         }
 
         return getParams;
@@ -220,6 +250,7 @@ public class RestAssuredUtil {
                     }
                     resultAssertList.add(resultAssert);
                 }catch (PathNotFoundException e){
+                    log.error("解析失败，无该元素："+requestAssert.getCheckList());
                     resultAssert.setResult(false);
                     resultAssertList.add(resultAssert);
                     System.out.println(requestAssert.getCheckList());

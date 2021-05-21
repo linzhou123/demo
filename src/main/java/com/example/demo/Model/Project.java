@@ -12,7 +12,7 @@ public class Project implements Serializable {
     @ApiModelProperty(value = "详细描述")
     private String description;
     @ApiModelProperty(value = "创建时间")
-    private int creatTime;
+    private int createTime;
     @ApiModelProperty(value = "更新时间")
     private int updateTime;
 
@@ -42,12 +42,12 @@ public class Project implements Serializable {
         this.description = description;
     }
 
-    public int getCreatTime() {
-        return creatTime;
+    public int getcreateTime() {
+        return createTime;
     }
 
-    public void setCreatTime(int creatTime) {
-        this.creatTime = creatTime;
+    public void setCreateTime(int createTime) {
+        this.createTime = createTime;
     }
 
     public int getUpdateTime() {

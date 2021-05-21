@@ -10,6 +10,6 @@ import java.util.List;
 public class ApiTestCaseResultDto{
     ApiTestCaseResult apiTestCaseResult;
     List<ApiRequestResult> apiRequestResults;
-    int runTime;
+    String caseName;
     private static final long serialVersionUID = 1L;
 }
