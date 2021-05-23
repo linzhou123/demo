@@ -1,24 +1,16 @@
 package com.example.demo.Model.ApiModel;
 
-import java.io.Serializable;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
+import java.io.Serializable;
+@Data
 public class RequestAssert implements Serializable {
+    @ApiModelProperty(value = "校验jsonPath表达式")
     private String checkList;
+    @ApiModelProperty(value = "校验预期值")
     private String value;
 
-    public String getCheckList() {
-        return checkList;
-    }
+    private static final long serialVersionUID = 1L;
 
-    public void setCheckList(String checkList) {
-        this.checkList = checkList;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
 }

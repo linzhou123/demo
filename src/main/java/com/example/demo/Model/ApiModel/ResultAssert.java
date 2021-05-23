@@ -1,44 +1,21 @@
 package com.example.demo.Model.ApiModel;
 
-import java.io.Serializable;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
+import java.io.Serializable;
+@Data
 public class ResultAssert implements Serializable {
+    @ApiModelProperty(value = "校验jsonPath表达式")
     private String checkList;
+    @ApiModelProperty(value = "校验预期值")
     private String value;
+    @ApiModelProperty(value = "respon返回值")
     private String realValue;
+    @ApiModelProperty(value = "判断结果是否成功")
     private boolean result;
 
-    public String getCheckList() {
-        return checkList;
-    }
-
-    public void setCheckList(String checkList) {
-        this.checkList = checkList;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-    public String getRealValue() {
-        return realValue;
-    }
-
-    public void setRealValue(String realValue) {
-        this.realValue = realValue;
-    }
-
-    public boolean isResult() {
-        return result;
-    }
-
-    public void setResult(boolean result) {
-        this.result = result;
-    }
+    private static final long serialVersionUID = 1L;
 
     @Override
     public String toString(){

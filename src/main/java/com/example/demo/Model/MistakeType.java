@@ -1,6 +1,9 @@
 package com.example.demo.Model;
 
+import lombok.Data;
+
 import java.io.Serializable;
+@Data
 public class MistakeType implements Serializable {
 
     private int id;
@@ -9,29 +12,7 @@ public class MistakeType implements Serializable {
 
     private String mistakeName;
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setMistakeType(int mistakeType) {
-        this.mistakeType = mistakeType;
-    }
-
-    public void setMistakeName(String mistakeName) {
-        this.mistakeName = mistakeName;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public int getMistakeType() {
-        return mistakeType;
-    }
-
-    public String getMistakeName() {
-        return mistakeName;
-    }
+    private static final long serialVersionUID = 1L;
 
 
 }

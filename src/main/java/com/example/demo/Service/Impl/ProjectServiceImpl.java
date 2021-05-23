@@ -20,7 +20,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public int insertProject(Project project){
-        project.setCreatTime(DateToStamp.getTimeStap());
+        project.setCreateTime(DateToStamp.getTimeStap());
         project.setUpdateTime(DateToStamp.getTimeStap());
         return projectMapper.insertProject(project);
     }

@@ -10,7 +10,7 @@
         <result column="hex_content" jdbcType="VARCHAR" property="hexContent"/>
         <result column="data_type" jdbcType="INTEGER" property="dataType"/>
         <result column="device_type" jdbcType="INTEGER" property="deviceType"/>
-        <result column="creat_time" jdbcType="INTEGER" property="creatTime"/>
+        <result column="creat_time" jdbcType="INTEGER" property="createTime"/>
         <result column="update_time" jdbcType="INTEGER" property="updateTime"/>
     </resultMap>
     <sql id="Base_Column_List">
@@ -19,7 +19,7 @@
     <insert id="insertHexData" parameterType="com.example.demo.Model.SendHexRecord">
         insert into hex_data (`host`,`port`,`name`,`device_name`,`hex_content`,`data_type`,`device_type`,`creat_time`,`update_time`)
         value
-        (#{host},#{port},#{name},#{deviceName},#{hexContent},#{dataType},#{deviceType},#{creatTime},#{updateTime})
+        (#{host},#{port},#{name},#{deviceName},#{hexContent},#{dataType},#{deviceType},#{createTime},#{updateTime})
     </insert>
     <select id="getAllHexData" resultMap="BaseResultMap">
         select

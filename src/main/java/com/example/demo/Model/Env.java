@@ -3,8 +3,10 @@ package com.example.demo.Model;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
-public class Env {
+public class Env implements Serializable {
     private int id;
     @ApiModelProperty(value = "项目id")
     private int projectId;
@@ -16,4 +18,6 @@ public class Env {
     private int createTime;
     @ApiModelProperty(value = "更新时间")
     private int updateTime;
+
+    private static final long serialVersionUID = 1L;
 }

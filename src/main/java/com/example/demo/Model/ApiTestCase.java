@@ -1,9 +1,11 @@
 package com.example.demo.Model;
 
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
 import java.io.Serializable;
 
+@Data
 public class ApiTestCase implements Serializable {
     @ApiModelProperty(value = "测试用例id")
     private int id;
@@ -20,51 +22,4 @@ public class ApiTestCase implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(int projectId) {
-        this.projectId = projectId;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
-    public int getcreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(int createTime) {
-        this.createTime = createTime;
-    }
-
-    public int getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(int updateTime) {
-        this.updateTime = updateTime;
-    }
 }

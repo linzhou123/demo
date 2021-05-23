@@ -1,9 +1,10 @@
 package com.example.demo.Model;
 
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
 import java.io.Serializable;
-
+@Data
 public class Project implements Serializable {
     @ApiModelProperty(value = "项目id")
     private int id;
@@ -17,44 +18,4 @@ public class Project implements Serializable {
     private int updateTime;
 
     private static final long serialVersionUID = 1L;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getProjectName() {
-        return projectName;
-    }
-
-    public void setProjectName(String projectName) {
-        this.projectName = projectName;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public int getcreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(int createTime) {
-        this.createTime = createTime;
-    }
-
-    public int getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(int updateTime) {
-        this.updateTime = updateTime;
-    }
 }

@@ -29,13 +29,13 @@
     <insert id="insertApiTestCaseStep" parameterType="com.example.demo.Model.ApiTestCaseStep">
         insert  into api_testcase_step (`name`,`api_id`,`testcase_id`,`domain`,`request_param_type`,`request_header`,`request_params`,`request_body`,`request_data_params`,`method`,`path`,`request_assert`,`sort`,`creat_time`,`update_time`)
         value (#{name},#{apiId},#{testCaseId},#{domain},#{requestParamType},
-        #{requestHeader,jdbcType=VARCHAR,typeHandler=com.example.demo.typehandler.ListTypeHandler},
-        #{requestParams,jdbcType=VARCHAR,typeHandler=com.example.demo.typehandler.ListTypeHandler},
+        #{requestHeader,jdbcType=VARCHAR,typeHandler=com.example.demo.typeHandler.ListTypeHandler},
+        #{requestParams,jdbcType=VARCHAR,typeHandler=com.example.demo.typeHandler.ListTypeHandler},
         #{requestBody},
-        #{requestDataParams,jdbcType=VARCHAR,typeHandler=com.example.demo.typehandler.ListTypeHandler},
+        #{requestDataParams,jdbcType=VARCHAR,typeHandler=com.example.demo.typeHandler.ListTypeHandler},
         #{method},#{path},
-        #{requestAssert,jdbcType=VARCHAR,typeHandler=com.example.demo.typehandler.ListTypeHandler},
-        #{sort},#{creatTime},#{updateTime})
+        #{requestAssert,jdbcType=VARCHAR,typeHandler=com.example.demo.typeHandler.ListTypeHandler},
+        #{sort},#{createTime},#{updateTime})
     </insert>
 
     <select id="findByTestCaseId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
@@ -65,16 +65,16 @@
             `request_param_type` = #{requestParamType},
         </if>
         <if test="requestHeader !=null">
-            `request_header` = #{requestHeader,jdbcType=VARCHAR,typeHandler=com.example.demo.typehandler.ListTypeHandler},
+            `request_header` = #{requestHeader,jdbcType=VARCHAR,typeHandler=com.example.demo.typeHandler.ListTypeHandler},
         </if>
         <if test="requestParams !=null">
-            `request_params` = #{requestParams,jdbcType=VARCHAR,typeHandler=com.example.demo.typehandler.ListTypeHandler},
+            `request_params` = #{requestParams,jdbcType=VARCHAR,typeHandler=com.example.demo.typeHandler.ListTypeHandler},
         </if>
         <if test="requestBody !=null and requestBody !=''">
             `request_body` = #{requestBody},
         </if>
         <if test="requestDataParams !=null">
-            `request_data_params` = #{requestDataParams,jdbcType=VARCHAR,typeHandler=com.example.demo.typehandler.ListTypeHandler},
+            `request_data_params` = #{requestDataParams,jdbcType=VARCHAR,typeHandler=com.example.demo.typeHandler.ListTypeHandler},
         </if>
         <if test="method !=null and method !=''">
             `method` = #{method},
@@ -83,7 +83,7 @@
             `path` = #{path},
         </if>
         <if test="requestAssert !=null">
-            `request_assert` = #{requestAssert,jdbcType=VARCHAR,typeHandler=com.example.demo.typehandler.ListTypeHandler},
+            `request_assert` = #{requestAssert,jdbcType=VARCHAR,typeHandler=com.example.demo.typeHandler.ListTypeHandler},
         </if>
         <if test="sort !=null and sort !=''">
             `sort` = #{sort},

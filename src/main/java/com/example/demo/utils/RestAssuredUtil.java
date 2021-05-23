@@ -77,7 +77,7 @@ public class RestAssuredUtil {
                     break;
             }
         }catch (Exception e){
-            apiRequestResult.setCreatTime(DateToStamp.getTimeStap());
+            apiRequestResult.setCreateTime(DateToStamp.getTimeStap());
             apiRequestResult.setUpdateTime(DateToStamp.getTimeStap());
             apiRequestResult.setExceptionBody(e.getMessage());
             log.error("运行自动化接口报错:",e);
@@ -92,7 +92,7 @@ public class RestAssuredUtil {
             apiRequestResult.setResultAssert(getResultAssert(api.getRequestAssert()));
             apiRequestResult.setResultIsPass(requestAssert());
             apiRequestResult.setResultTime((int) response.getTime());
-            apiRequestResult.setCreatTime(DateToStamp.getTimeStap());
+            apiRequestResult.setCreateTime(DateToStamp.getTimeStap());
             apiRequestResult.setUpdateTime(DateToStamp.getTimeStap());
             log.info("获取接口自动化用例结果:"+apiRequestResult.toString());
             log.info("---------接口自动化用例运行完成---------");
@@ -142,7 +142,7 @@ public class RestAssuredUtil {
         }catch (Exception e){
             log.error("运行自动化接口报错:",e);
             apiRequestResult.setExceptionBody(e.getMessage());
-            apiRequestResult.setCreatTime(DateToStamp.getTimeStap());
+            apiRequestResult.setCreateTime(DateToStamp.getTimeStap());
             apiRequestResult.setUpdateTime(DateToStamp.getTimeStap());
             return apiRequestResult;
         }
@@ -155,7 +155,7 @@ public class RestAssuredUtil {
         apiRequestResult.setResultIsPass(requestAssert());
         apiRequestResult.setExceptionBody("无异常");
         apiRequestResult.setResultTime((int) response.getTime());
-        apiRequestResult.setCreatTime(DateToStamp.getTimeStap());
+        apiRequestResult.setCreateTime(DateToStamp.getTimeStap());
         apiRequestResult.setUpdateTime(DateToStamp.getTimeStap());
         log.info("---------接口自动化用例运行完成---------");
         return apiRequestResult;

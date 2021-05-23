@@ -4,10 +4,11 @@ import com.example.demo.Model.ApiModel.Header;
 import com.example.demo.Model.ApiModel.Params;
 import com.example.demo.Model.ApiModel.RequestAssert;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.List;
-
+@Data
 public class ApiTestCaseStep implements Serializable {
     private int id;
     @ApiModelProperty(value = "步骤名称")
@@ -43,131 +44,4 @@ public class ApiTestCaseStep implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getApiId() {
-        return apiId;
-    }
-
-    public void setApiId(int apiId) {
-        this.apiId = apiId;
-    }
-
-    public int getTestCaseId() {
-        return testCaseId;
-    }
-
-    public void setTestCaseId(int testCaseId) {
-        this.testCaseId = testCaseId;
-    }
-
-    public String getDomain() {
-        return domain;
-    }
-
-    public void setDomain(String domain) {
-        this.domain = domain;
-    }
-
-    public String getRequestParamType() {
-        return requestParamType;
-    }
-
-    public void setRequestParamType(String requestParamType) {
-        this.requestParamType = requestParamType;
-    }
-
-    public List<Header> getRequestHeader() {
-        return requestHeader;
-    }
-
-    public void setRequestHeader(List<Header> requestHeader) {
-        this.requestHeader = requestHeader;
-    }
-
-    public List<Params> getRequestParams() {
-        return requestParams;
-    }
-
-    public List<Params> getRequestDataParams() {
-        return requestDataParams;
-    }
-
-    public void setRequestDataParams(List<Params> requestDataParams) {
-        this.requestDataParams = requestDataParams;
-    }
-
-    public void setRequestParams(List<Params> requestParams) {
-        this.requestParams = requestParams;
-    }
-
-    public String getRequestBody() {
-        return requestBody;
-    }
-
-    public void setRequestBody(String requestBody) {
-        this.requestBody = requestBody;
-    }
-
-    public String getMethod() {
-        return method;
-    }
-
-    public void setMethod(String method) {
-        this.method = method;
-    }
-
-    public String getPath() {
-        return path;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
-    }
-
-    public List<RequestAssert> getRequestAssert() {
-        return requestAssert;
-    }
-
-    public void setRequestAssert(List<RequestAssert> requestAssert) {
-        this.requestAssert = requestAssert;
-    }
-
-    public int getSort() {
-        return sort;
-    }
-
-    public void setSort(int sort) {
-        this.sort = sort;
-    }
-
-    public int getcreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(int createTime) {
-        this.createTime = createTime;
-    }
-
-    public int getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(int updateTime) {
-        this.updateTime = updateTime;
-    }
 }

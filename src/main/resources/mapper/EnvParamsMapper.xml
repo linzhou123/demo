@@ -7,7 +7,8 @@
         <result column="project_id" jdbcType="INTEGER" property="projectId"/>
         <result column="type" jdbcType="INTEGER" property="type"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
-        <result column="value" jdbcType="VARCHAR" property="value"/>
+        <result column="value" property="value"
+                typeHandler="com.example.demo.typeHandler.ListTypeHandler"/>
         <result column="create_time" jdbcType="INTEGER" property="createTime"/>
         <result column="update_time" jdbcType="INTEGER" property="updateTime"/>
     </resultMap>
@@ -16,7 +17,13 @@
     </sql>
     <insert id="insert" parameterType="com.example.demo.Model.EnvParams">
         insert into env_params (`env_id`,`project_id`,`type`,`name`,`value`,`create_time`,`update_time`)
-        value (#{envId},#{projectId},#{type},#{name},#{value},#{createTime},#{updateTime})
+        value (#{envId},#{projectId},#{type},#{name},
+        #{value,jdbcType=VARCHAR,typeHandler=com.example.demo.typeHandler.ListTypeHandler},#{createTime},#{updateTime})
     </insert>
-    <select id="selectByProjectId"
+    <select id="selectByProjectId" resultMap="BaseResultMap" parameterType="int">
+        select
+        <include refid="Base_Column_List"/>
+        from env_params
+        where project_id =#{projectId}
+    </select>
 </mapper>

@@ -29,7 +29,7 @@ public class HexDataServiceImpl implements HexDataService {
 
     @Override
     public void insertHexData(HexData hexData) {
-        hexData.setCreatTime(DateToStamp.getTimeStap());
+        hexData.setCreateTime(DateToStamp.getTimeStap());
         hexData.setUpdateTime(DateToStamp.getTimeStap());
         hexDataMapper.insertHexData(hexData);
     }
@@ -50,7 +50,7 @@ public class HexDataServiceImpl implements HexDataService {
             sendHexRecord.setIsPass(hexUtil.getHexAssert());
             sendHexRecord.setHexContent(data.getHexContent());
             sendHexRecord.setSysBackContent(content);
-            sendHexRecord.setCreatTime(DateToStamp.getTimeStap());
+            sendHexRecord.setCreateTime(DateToStamp.getTimeStap());
             sendHexRecord.setUrl(data.getHost().concat(":").concat(String.valueOf(data.getPort())));
             sendHexRecordMapper.insertHexRecord(sendHexRecord);
             return sendHexRecord;

@@ -27,7 +27,13 @@
     </sql>
     <insert id="insertApi" parameterType="com.example.demo.Model.Api">
         insert into api (`name`,`project_id`,`api_suite_id`,`domain`,`request_param_type`,`request_header`,`request_params`,`request_data_params`,`request_body`,`method`,`path`,`request_assert`,`create_time`,`update_time`)
-            value (#{name},#{projectId},#{apiSuiteId},#{domain},#{requestParamType},#{requestHeader,jdbcType=VARCHAR,typeHandler=com.example.demo.typehandler.ListTypeHandler},#{requestParams,jdbcType=VARCHAR,typeHandler=com.example.demo.typehandler.ListTypeHandler},#{requestBody},#{requestDataParams,jdbcType=VARCHAR,typeHandler=com.example.demo.typehandler.ListTypeHandler},#{method},#{path},#{requestAssert,jdbcType=VARCHAR,typeHandler=com.example.demo.typehandler.ListTypeHandler},#{createTime},#{updateTime})
+            value (#{name},#{projectId},#{apiSuiteId},#{domain},#{requestParamType},
+            #{requestHeader,jdbcType=VARCHAR,typeHandler=com.example.demo.typeHandler.ListTypeHandler},
+            #{requestParams,jdbcType=VARCHAR,typeHandler=com.example.demo.typeHandler.ListTypeHandler},
+            #{requestBody},
+            #{requestDataParams,jdbcType=VARCHAR,typeHandler=com.example.demo.typeHandler.ListTypeHandler},
+            #{method},#{path},#{requestAssert,jdbcType=VARCHAR,typeHandler=com.example.demo.typeHandler.ListTypeHandler},
+            #{createTime},#{updateTime})
     </insert>
     <select id="findAllByName" resultMap="BaseResultMap" parameterType="java.lang.String">
         select
@@ -55,7 +61,7 @@
         </if>
         <if test="requestHeader !=null">
             `request_header`
-            =#{requestHeader,jdbcType=VARCHAR,typeHandler=com.example.demo.typehandler.ListTypeHandler},
+            =#{requestHeader,jdbcType=VARCHAR,typeHandler=com.example.demo.typeHandler.ListTypeHandler},
         </if>
         <if test="requestParams !=null">
             `request_params`
@@ -66,7 +72,7 @@
         </if>
         <if test="requestDataParams !=null">
             `request_data_params`
-            = #{requestDataParams,jdbcType=VARCHAR,typeHandler=com.example.demo.typehandler.ListTypeHandler},
+            = #{requestDataParams,jdbcType=VARCHAR,typeHandler=com.example.demo.typeHandler.ListTypeHandler},
         </if>
         <if test="method !=null and method !=''">
             `method` =#{method},
@@ -75,7 +81,7 @@
             `path` =#{path},
         </if>
         <if test="requestAssert !=null">
-            `request_assert`=#{requestAssert,jdbcType=VARCHAR,typeHandler=com.example.demo.typehandler.ListTypeHandler},
+            `request_assert`=#{requestAssert,jdbcType=VARCHAR,typeHandler=com.example.demo.typeHandler.ListTypeHandler},
         </if>
         `update_time` =#{updateTime}
         where id =#{id};

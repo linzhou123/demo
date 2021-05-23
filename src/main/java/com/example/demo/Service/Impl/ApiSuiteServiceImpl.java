@@ -27,7 +27,7 @@ public class ApiSuiteServiceImpl implements ApiSuiteService {
 
     @Override
     public int insertApiSuite(ApiSuite apiSuite){
-        apiSuite.setCreatTime(DateToStamp.getTimeStap());
+        apiSuite.setCreateTime(DateToStamp.getTimeStap());
         apiSuite.setUpdateTime(DateToStamp.getTimeStap());
         return apiSuiteMapper.insertApiSuite(apiSuite);
     }

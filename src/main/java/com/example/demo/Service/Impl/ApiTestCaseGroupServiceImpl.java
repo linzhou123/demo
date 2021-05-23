@@ -36,7 +36,7 @@ public class ApiTestCaseGroupServiceImpl implements ApiTestCaseGroupService {
     ApiTestCaseGroupResult apiTestCaseGroupResult=new ApiTestCaseGroupResult();
     @Override
     public int insertApiTestCaseGroup(ApiTestCaseGroup apiTestCaseGroup){
-        apiTestCaseGroup.setCreatTime(DateToStamp.getTimeStap());
+        apiTestCaseGroup.setCreateTime(DateToStamp.getTimeStap());
         apiTestCaseGroup.setUpdateTime(DateToStamp.getTimeStap());
         return apiTestCaseGroupMapper.insertApiTestCaseGroup(apiTestCaseGroup);
     }
@@ -59,7 +59,7 @@ public class ApiTestCaseGroupServiceImpl implements ApiTestCaseGroupService {
         apiTestCaseGroupResult.setTestCaseGroupId(testCaseGroupId);
         apiTestCaseGroupResult.setFailedResult(failed);
         apiTestCaseGroupResult.setPassResult(pass);
-        apiTestCaseGroupResult.setCreatTime(DateToStamp.getTimeStap());
+        apiTestCaseGroupResult.setCreateTime(DateToStamp.getTimeStap());
         apiTestCaseGroupResult.setUpdateTime(DateToStamp.getTimeStap());
         apiTestCaseGroupResultMapper.insertResult(apiTestCaseGroupResult);
     }

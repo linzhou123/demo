@@ -1,7 +1,9 @@
 package com.example.demo.Model;
 
-import java.io.Serializable;
+import lombok.Data;
 
+import java.io.Serializable;
+@Data
 public class ResponseInfo implements Serializable {
     private Integer code;
     private Object data;
