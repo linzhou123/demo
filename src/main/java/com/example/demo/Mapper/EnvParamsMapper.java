@@ -8,5 +8,6 @@ import java.util.List;
 public interface EnvParamsMapper {
     void insert(EnvParams envParams);
     List<EnvParams> selectByProjectId(@Param(value = "projectId") int projectId);
+    EnvParams selectByName(@Param(value = "name") String name);
 
 }

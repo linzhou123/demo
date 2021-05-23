@@ -1,19 +1,20 @@
 package com.example.demo.utils;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.example.demo.Mapper.EnvParamsMapper;
 import com.example.demo.Model.Api;
-import com.example.demo.Model.ApiModel.Header;
-import com.example.demo.Model.ApiModel.Params;
-import com.example.demo.Model.ApiModel.RequestAssert;
-import com.example.demo.Model.ApiModel.ResultAssert;
+import com.example.demo.Model.ApiModel.*;
 import com.example.demo.Model.ApiRequestResult;
 import com.example.demo.Model.ApiTestCaseStep;
+import com.example.demo.Model.EnvParams;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.PathNotFoundException;
 import io.restassured.http.Headers;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.*;
 
@@ -26,6 +27,8 @@ public class RestAssuredUtil {
     public ApiRequestResult apiRequestResult;
     public ApiTestCaseStep apiTestCaseStep;
     private RequestSpecification requestSpecification;
+    @Autowired
+    private EnvParamsMapper envParamsMapper;
     public RestAssuredUtil(Api api) {
         this.api = api;
         this.apiRequestResult = new ApiRequestResult();
@@ -45,6 +48,9 @@ public class RestAssuredUtil {
         //拼接URL传入
         log.info("---------开始执行自动化接口用例---------");
         String URL = api.getDomain().concat(api.getPath());
+        if(api.getEnvId()!=0){
+            URL=getStringByEnv(URL,api.getEnvId());
+        }
         apiRequestResult.setApiId(api.getId());
         apiRequestResult.setApiName(api.getName());
         apiRequestResult.setRequestHeader(api.getRequestHeader());
@@ -279,5 +285,31 @@ public class RestAssuredUtil {
             return flag;
         }
         return flag;
+    }
+    /**
+     * 判断字符串是否存在标识@
+     * */
+    public String getStringByEnv(String str,int envId){
+        if (str.indexOf("@")!=-1){
+            int start = str.indexOf("{")+1;
+            int end =str.indexOf("}");
+            String s =str.substring(start,end);
+            String oldString ="@{"+s+"}";
+            log.info("截取开始字符串位置:"+start+",截取结束字符串位置:"+end+",获取截取字符串:"+s);
+            EnvParams envParams=new EnvParams();
+            envParams=envParamsMapper.selectByName(s);
+            log.info(JSON.toJSONString(envParams));
+            if (!envParams.getName().isEmpty()){
+                for (EnvGParams envGParams:envParams.getValue()){
+                    if (envId==envGParams.getEnvId()){
+                        str.replace(oldString,envGParams.getEnvValue());
+                        log.info("获取修改后字符串:"+str);
+                    }
+                }
+            }
+        }else {
+            return str;
+        }
+        return str;
     }
 }

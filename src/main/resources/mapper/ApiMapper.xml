@@ -3,6 +3,7 @@
 <mapper namespace="com.example.demo.Mapper.ApiMapper">
     <resultMap id="BaseResultMap" type="com.example.demo.Model.Api">
         <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="env_id" jdbcType="INTEGER" property="envId"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="project_id" jdbcType="INTEGER" property="projectId"/>
         <result column="api_suite_id" jdbcType="INTEGER" property="apiSuiteId"/>
@@ -23,11 +24,11 @@
         <result column="update_time" jdbcType="INTEGER" property="updateTime"/>
     </resultMap>
     <sql id="Base_Column_List">
-        `id`,`name`,`project_id`,`api_suite_id`,`domain`,`request_param_type`,`request_header`,`request_params`,`request_body`,`request_data_params`,`method`,`path`,`request_assert`,`create_time`,`update_time`
+        `id`,`env_id`,`name`,`project_id`,`api_suite_id`,`domain`,`request_param_type`,`request_header`,`request_params`,`request_body`,`request_data_params`,`method`,`path`,`request_assert`,`create_time`,`update_time`
     </sql>
     <insert id="insertApi" parameterType="com.example.demo.Model.Api">
-        insert into api (`name`,`project_id`,`api_suite_id`,`domain`,`request_param_type`,`request_header`,`request_params`,`request_data_params`,`request_body`,`method`,`path`,`request_assert`,`create_time`,`update_time`)
-            value (#{name},#{projectId},#{apiSuiteId},#{domain},#{requestParamType},
+        insert into api (`env_id`,`name`,`project_id`,`api_suite_id`,`domain`,`request_param_type`,`request_header`,`request_params`,`request_data_params`,`request_body`,`method`,`path`,`request_assert`,`create_time`,`update_time`)
+            value (#{envId},#{name},#{projectId},#{apiSuiteId},#{domain},#{requestParamType},
             #{requestHeader,jdbcType=VARCHAR,typeHandler=com.example.demo.typeHandler.ListTypeHandler},
             #{requestParams,jdbcType=VARCHAR,typeHandler=com.example.demo.typeHandler.ListTypeHandler},
             #{requestBody},
@@ -50,6 +51,9 @@
     <update id="updateApi" parameterType="com.example.demo.Model.Api">
         update api
         set
+        <if test="envId!=null and envId !=''">
+            `env_id`=#{envId}
+        </if>
         <if test="name !=null and name !=''">
             `name` =#{name},
         </if>

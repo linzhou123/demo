@@ -3,6 +3,7 @@
 <mapper namespace="com.example.demo.Mapper.ApiTestCaseMapper">
     <resultMap id="BaseResultMap" type="com.example.demo.Model.ApiTestCase">
         <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="env_id" jdbcType="INTEGER" property="envId"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="project_id" jdbcType="INTEGER" property="projectId"/>
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
@@ -10,11 +11,11 @@
         <result column="update_time" jdbcType="INTEGER" property="updateTime"/>
     </resultMap>
     <sql id="Base_Column_List">
-    `id`,`name`,`project_id`,`remark`,`create_time`,`update_time`
+    `id`,`env_id`,`name`,`project_id`,`remark`,`create_time`,`update_time`
     </sql>
     <insert id="insertApiTestCase" parameterType="com.example.demo.Model.ApiTestCase">
-        insert into api_testcase (`name`,`project_id`,`remark`,`create_time`,`update_time`)
-         value (#{name},#{projectId},#{remark},#{createTime},#{updateTime})
+        insert into api_testcase (`env_id`,`name`,`project_id`,`remark`,`create_time`,`update_time`)
+         value (#{envId},#{name},#{projectId},#{remark},#{createTime},#{updateTime})
     </insert>
     <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
@@ -41,6 +42,9 @@
     <update id="updateApiTestCase" parameterType="com.example.demo.Model.ApiTestCase">
         update api_testcase
         set
+        <if test="envId!=null and envId !=''">
+        `env_id`=#{envId}
+        </if>
         <if test="name !=null and name != ''">
             `name` = #{name},
         </if>

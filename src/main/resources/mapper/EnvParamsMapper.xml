@@ -3,7 +3,6 @@
 <mapper namespace="com.example.demo.Mapper.EnvParamsMapper">
     <resultMap id="BaseResultMap" type="com.example.demo.Model.EnvParams">
         <id column="id" jdbcType="INTEGER" property="id" />
-        <result column="env_id" jdbcType="INTEGER" property="envId"/>
         <result column="project_id" jdbcType="INTEGER" property="projectId"/>
         <result column="type" jdbcType="INTEGER" property="type"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
@@ -13,11 +12,11 @@
         <result column="update_time" jdbcType="INTEGER" property="updateTime"/>
     </resultMap>
     <sql id="Base_Column_List">
-        `id`,`env_id`,`project_id`,`type`,`name`,`value`,`create_time`,`update_time`
+        `id`,`project_id`,`type`,`name`,`value`,`create_time`,`update_time`
     </sql>
     <insert id="insert" parameterType="com.example.demo.Model.EnvParams">
-        insert into env_params (`env_id`,`project_id`,`type`,`name`,`value`,`create_time`,`update_time`)
-        value (#{envId},#{projectId},#{type},#{name},
+        insert into env_params (`project_id`,`type`,`name`,`value`,`create_time`,`update_time`)
+        value (#{projectId},#{type},#{name},
         #{value,jdbcType=VARCHAR,typeHandler=com.example.demo.typeHandler.ListTypeHandler},#{createTime},#{updateTime})
     </insert>
     <select id="selectByProjectId" resultMap="BaseResultMap" parameterType="int">
@@ -25,5 +24,11 @@
         <include refid="Base_Column_List"/>
         from env_params
         where project_id =#{projectId}
+    </select>
+    <select id="selectByName" parameterType="String">
+        select
+        <include refid="Base_Column_List"/>
+        from env_params
+        where  `name` =#{name}
     </select>
 </mapper>

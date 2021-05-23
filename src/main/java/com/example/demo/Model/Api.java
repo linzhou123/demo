@@ -12,6 +12,8 @@ import java.util.List;
 public class Api implements Serializable {
     @ApiModelProperty(value = "apiId")
     private int id;
+    @ApiModelProperty(value = "环境变量id")
+    private int envId;
     @ApiModelProperty(value = "名称")
     private String name;
     @ApiModelProperty(value = "项目id")

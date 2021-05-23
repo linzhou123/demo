@@ -9,6 +9,8 @@ import java.io.Serializable;
 public class ApiTestCase implements Serializable {
     @ApiModelProperty(value = "测试用例id")
     private int id;
+    @ApiModelProperty(value = "环境变量id")
+    private int envId;
     @ApiModelProperty(value = "测试用例名称")
     private String name;
     @ApiModelProperty(value = "项目id")
