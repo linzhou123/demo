@@ -1,6 +1,7 @@
 package com.example.demo.Model;
 
 import com.example.demo.Model.ApiModel.Header;
+import com.example.demo.Model.ApiModel.ParameterExtraction;
 import com.example.demo.Model.ApiModel.Params;
 import com.example.demo.Model.ApiModel.RequestAssert;
 import io.swagger.annotations.ApiModelProperty;
@@ -35,6 +36,8 @@ public class ApiTestCaseStep implements Serializable {
     private String path;
     @ApiModelProperty(value = "请求断言")
     private List<RequestAssert> requestAssert;
+    @ApiModelProperty(value = "提取参数内容")
+    List<ParameterExtraction> parameterExtractions;
     @ApiModelProperty(value = "步骤顺序下标")
     private int sort;
     @ApiModelProperty(value = "测试用例创建时间")

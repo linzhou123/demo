@@ -10,7 +10,7 @@ public class ResultAssert implements Serializable {
     private String checkList;
     @ApiModelProperty(value = "校验预期值")
     private String value;
-    @ApiModelProperty(value = "respon返回值")
+    @ApiModelProperty(value = "response返回值")
     private String realValue;
     @ApiModelProperty(value = "判断结果是否成功")
     private boolean result;

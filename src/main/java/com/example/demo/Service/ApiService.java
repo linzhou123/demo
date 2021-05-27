@@ -1,6 +1,8 @@
 package com.example.demo.Service;
 
 import com.example.demo.Model.Api;
+import com.example.demo.Model.ApiModel.GetExtractions;
+import com.example.demo.Model.ApiRequestResult;
 import com.example.demo.utils.PageInfoNew;
 
 import java.util.List;
@@ -19,4 +21,6 @@ public interface ApiService {
     int updateApi(Api api);
 
     void deleteApi(int id);
+
+    ApiRequestResult requestTestRun(Api api, List<GetExtractions> getExtractionsList);
 }

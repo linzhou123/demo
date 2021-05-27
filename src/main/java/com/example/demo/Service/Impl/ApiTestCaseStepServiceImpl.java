@@ -1,16 +1,16 @@
 package com.example.demo.Service.Impl;
 
-import com.alibaba.fastjson.JSON;
 import com.example.demo.Dto.ApiTestCaseResultDto;
 import com.example.demo.Mapper.ApiRequestResultMapper;
 import com.example.demo.Mapper.ApiTestCaseMapper;
 import com.example.demo.Mapper.ApiTestCaseResultMapper;
 import com.example.demo.Mapper.ApiTestCaseStepMapper;
 import com.example.demo.Model.*;
+import com.example.demo.Model.ApiModel.GetExtractions;
+import com.example.demo.Service.ApiService;
 import com.example.demo.Service.ApiTestCaseStepService;
 import com.example.demo.utils.DateToStamp;
 import com.example.demo.utils.PageInfoNew;
-import com.example.demo.utils.RestAssuredUtil;
 import com.github.pagehelper.PageHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+
 @Slf4j
 @Service
 public class ApiTestCaseStepServiceImpl implements ApiTestCaseStepService {
@@ -34,6 +35,9 @@ public class ApiTestCaseStepServiceImpl implements ApiTestCaseStepService {
 
     @Resource
     ApiTestCaseMapper apiTestCaseMapper;
+
+    @Resource
+    ApiService apiService;
 
     @Override
     public int insertStepToTestCase(List<ApiTestCaseStep> apiTestCaseStepList){
@@ -55,16 +59,19 @@ public class ApiTestCaseStepServiceImpl implements ApiTestCaseStepService {
         int pass=0;
         int failed=0;
         int count =0;
-        List<ApiRequestResult> apiRequestResults = new ArrayList<>();
+        List<ApiRequestResult> apiRequestResults= new ArrayList<>();
+        List<GetExtractions> getExtractionsList =new ArrayList<>();
         ApiTestCaseResultDto apiTestCaseResultDto =new ApiTestCaseResultDto();
         int stratTime =(int)System.currentTimeMillis();
         for (ApiTestCaseStep apiTestCaseStep:apiTestCaseSteps){
+            log.info("获取测试用例步骤:"+apiTestCaseStep.toString());
             Api api =new Api();
             BeanUtils.copyProperties(apiTestCaseStep,api);
-            log.info("api:....."+api.toString());
-            RestAssuredUtil restAssuredUtil =new RestAssuredUtil(apiTestCaseStep);
-            ApiRequestResult apiRequestResult= restAssuredUtil.requestCaseRun();
-            log.info(JSON.toJSONString(apiRequestResult));
+            ApiRequestResult apiRequestResult= apiService.requestTestRun(api, getExtractionsList);
+            apiRequestResult.setApiId(apiTestCaseStep.getApiId());
+            apiRequestResult.setApiTestCaseId(apiTestCaseStep.getTestCaseId());
+            apiRequestResult.setApiTestCaseStepId(apiTestCaseStep.getId());
+            getExtractionsList.addAll(apiRequestResult.getResultExtractions());
             apiRequestResults.add(apiRequestResult);
             apiRequestResultMapper.insertApiRequestResult(apiRequestResult);
             count+=1;
@@ -74,6 +81,7 @@ public class ApiTestCaseStepServiceImpl implements ApiTestCaseStepService {
                 failed+=1;
             }
         }
+        log.info("获取测试用例结果集:"+apiRequestResults);
         int endTime =(int)System.currentTimeMillis();
         apiTestCaseResult.setTestCaseId(testCaseId);
         apiTestCaseResult.setCountResults(count);
@@ -86,7 +94,6 @@ public class ApiTestCaseStepServiceImpl implements ApiTestCaseStepService {
         apiTestCaseResultDto.setApiRequestResults(apiRequestResults);
         apiTestCaseResultDto.setApiTestCaseResult(apiTestCaseResult);
         apiTestCaseResultDto.setCaseName(apiTestCase.getName());
-//        apiTestCaseResultDto.setRunTime(endTime-stratTime);
         return apiTestCaseResultDto;
     }
 

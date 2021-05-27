@@ -110,6 +110,7 @@ public class RestAssuredUtil {
     public ApiRequestResult requestCaseRun(){
         //拼接URL传入
         log.info("---------开始执行自动化接口用例---------");
+        log.info("获取接口测试用例参数:"+JSON.toJSONString(apiTestCaseStep));
         String URL = apiTestCaseStep.getDomain().concat(apiTestCaseStep.getPath());
         //判断请求方式 get、pst、delete、put
         apiRequestResult.setApiId(apiTestCaseStep.getApiId());

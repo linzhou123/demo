@@ -25,7 +25,7 @@
         from env_params
         where project_id =#{projectId}
     </select>
-    <select id="selectByName" parameterType="String">
+    <select id="selectByName" parameterType="String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from env_params

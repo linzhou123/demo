@@ -1,8 +1,6 @@
 package com.example.demo.Model;
 
-import com.example.demo.Model.ApiModel.Header;
-import com.example.demo.Model.ApiModel.Params;
-import com.example.demo.Model.ApiModel.ResultAssert;
+import com.example.demo.Model.ApiModel.*;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -45,6 +43,8 @@ public class ApiRequestResult implements Serializable {
     private List<ResultAssert> resultAssert;
     @ApiModelProperty(value = "返回结果断言结果")
     private boolean resultIsPass;
+    @ApiModelProperty(value = "返回提取参数结果")
+    private List<GetExtractions> resultExtractions;
     @ApiModelProperty(value = "报错信息")
     private String exceptionBody;
     @ApiModelProperty(value = "创建时间")

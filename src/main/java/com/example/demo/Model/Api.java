@@ -1,6 +1,7 @@
 package com.example.demo.Model;
 
 import com.example.demo.Model.ApiModel.Header;
+import com.example.demo.Model.ApiModel.ParameterExtraction;
 import com.example.demo.Model.ApiModel.Params;
 import com.example.demo.Model.ApiModel.RequestAssert;
 import io.swagger.annotations.ApiModelProperty;
@@ -38,6 +39,8 @@ public class Api implements Serializable {
     private String path;
     @ApiModelProperty(value = "断言校验")
     private List<RequestAssert> requestAssert;
+    @ApiModelProperty(value = "提取参数内容")
+    List<ParameterExtraction> parameterExtractions;
     @ApiModelProperty(value = "创建时间")
     private int createTime;
     @ApiModelProperty(value = "更新时间")

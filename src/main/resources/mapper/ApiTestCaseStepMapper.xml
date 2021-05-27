@@ -19,12 +19,14 @@
         <result column="path" jdbcType="VARCHAR" property="path"/>
         <result column="request_assert" property="requestAssert"
                 typeHandler="com.example.demo.typeHandler.ListTypeHandler"/>
+        <result column="parameter_extractions" property="parameterExtractions"
+                typeHandler="com.example.demo.typeHandler.ListTypeHandler"/>
         <result column="sort" jdbcType="INTEGER" property="sort"/>
         <result column="create_time" jdbcType="INTEGER" property="createTime"/>
         <result column="update_time" jdbcType="INTEGER" property="updateTime"/>
     </resultMap>
     <sql id="Base_Column_List">
-        `id`,`name`,`api_id`,`testcase_id`,`domain`,`request_param_type`,`request_header`,`request_params`,`request_body`,`request_data_params`,`method`,`path`,`request_assert`,`sort`,`create_time`,`update_time`
+        `id`,`name`,`api_id`,`testcase_id`,`domain`,`request_param_type`,`request_header`,`request_params`,`request_body`,`request_data_params`,`method`,`path`,`request_assert`,`parameter_extractions`,`sort`,`create_time`,`update_time`
     </sql>
     <insert id="insertApiTestCaseStep" parameterType="com.example.demo.Model.ApiTestCaseStep">
         insert  into api_testcase_step (`name`,`api_id`,`testcase_id`,`domain`,`request_param_type`,`request_header`,`request_params`,`request_body`,`request_data_params`,`method`,`path`,`request_assert`,`sort`,`creat_time`,`update_time`)
@@ -35,6 +37,7 @@
         #{requestDataParams,jdbcType=VARCHAR,typeHandler=com.example.demo.typeHandler.ListTypeHandler},
         #{method},#{path},
         #{requestAssert,jdbcType=VARCHAR,typeHandler=com.example.demo.typeHandler.ListTypeHandler},
+        #{parameterExtractions,jdbcType=VARCHAR,typeHandler=com.example.demo.typeHandler.ListTypeHandler},
         #{sort},#{createTime},#{updateTime})
     </insert>
 
@@ -84,6 +87,9 @@
         </if>
         <if test="requestAssert !=null">
             `request_assert` = #{requestAssert,jdbcType=VARCHAR,typeHandler=com.example.demo.typeHandler.ListTypeHandler},
+        </if>
+        <if test="parameterExtractions !=null">
+            `parameter_xtractions`=#{parameterExtractions,jdbcType=VARCHAR,typeHandler=com.example.demo.typeHandler.ListTypeHandler},
         </if>
         <if test="sort !=null and sort !=''">
             `sort` = #{sort},
