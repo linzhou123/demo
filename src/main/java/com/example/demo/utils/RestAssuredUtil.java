@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.*;
 
 import static io.restassured.RestAssured.given;
+
 @Slf4j
 public class RestAssuredUtil {
     private boolean flag = false;
@@ -29,27 +30,31 @@ public class RestAssuredUtil {
     private RequestSpecification requestSpecification;
     @Autowired
     private EnvParamsMapper envParamsMapper;
+
     public RestAssuredUtil(Api api) {
         this.api = api;
         this.apiRequestResult = new ApiRequestResult();
-        requestSpecification =given();
+        requestSpecification = given();
     }
-    public RestAssuredUtil(ApiTestCaseStep apiTestCaseStep){
-        this.apiTestCaseStep =apiTestCaseStep;
-        this.apiRequestResult =new ApiRequestResult();
-        requestSpecification =given();
+
+    public RestAssuredUtil(ApiTestCaseStep apiTestCaseStep) {
+        this.apiTestCaseStep = apiTestCaseStep;
+        this.apiRequestResult = new ApiRequestResult();
+        requestSpecification = given();
     }
+
     //
-    public void applyHeaders(){
+    public void applyHeaders() {
         requestSpecification.headers(getHeaders(api.getRequestHeader()));
     }
+
     //debug api
     public ApiRequestResult requestTestRun() {
         //拼接URL传入
         log.info("---------开始执行自动化接口用例---------");
         String URL = api.getDomain().concat(api.getPath());
-        if(api.getEnvId()!=0){
-            URL=getStringByEnv(URL,api.getEnvId());
+        if (api.getEnvId() != 0) {
+            URL = getStringByEnv(URL, api.getEnvId());
         }
         apiRequestResult.setApiId(api.getId());
         apiRequestResult.setApiName(api.getName());
@@ -82,35 +87,35 @@ public class RestAssuredUtil {
                     response = given().headers(getHeaders(api.getRequestHeader())).params(getParams(api.getRequestParams())).when().get(URL);
                     break;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             apiRequestResult.setCreateTime(DateToStamp.getTimeStap());
             apiRequestResult.setUpdateTime(DateToStamp.getTimeStap());
             apiRequestResult.setExceptionBody(e.getMessage());
-            log.error("运行自动化接口报错:",e);
+            log.error("运行自动化接口报错:", e);
             return apiRequestResult;
         }
 
-            //result塞入接口运行结果
-            apiRequestResult.setExceptionBody("无异常");
-            apiRequestResult.setResultBody(response.getBody().prettyPrint());
-            apiRequestResult.setResponseHeaders(getRspHeaders(response));
-            apiRequestResult.setResultStatus(response.getStatusCode());
-            apiRequestResult.setResultAssert(getResultAssert(api.getRequestAssert()));
-            apiRequestResult.setResultIsPass(requestAssert());
-            apiRequestResult.setResultTime((int) response.getTime());
-            apiRequestResult.setCreateTime(DateToStamp.getTimeStap());
-            apiRequestResult.setUpdateTime(DateToStamp.getTimeStap());
-            log.info("获取接口自动化用例结果:"+apiRequestResult.toString());
-            log.info("---------接口自动化用例运行完成---------");
-            return apiRequestResult;
+        //result塞入接口运行结果
+        apiRequestResult.setExceptionBody("无异常");
+        apiRequestResult.setResultBody(response.getBody().prettyPrint());
+        apiRequestResult.setResponseHeaders(getRspHeaders(response));
+        apiRequestResult.setResultStatus(response.getStatusCode());
+        apiRequestResult.setResultAssert(getResultAssert(api.getRequestAssert()));
+        apiRequestResult.setResultIsPass(requestAssert());
+        apiRequestResult.setResultTime((int) response.getTime());
+        apiRequestResult.setCreateTime(DateToStamp.getTimeStap());
+        apiRequestResult.setUpdateTime(DateToStamp.getTimeStap());
+        log.info("获取接口自动化用例结果:" + apiRequestResult.toString());
+        log.info("---------接口自动化用例运行完成---------");
+        return apiRequestResult;
 
     }
 
     //执行单条用例步骤
-    public ApiRequestResult requestCaseRun(){
+    public ApiRequestResult requestCaseRun() {
         //拼接URL传入
         log.info("---------开始执行自动化接口用例---------");
-        log.info("获取接口测试用例参数:"+JSON.toJSONString(apiTestCaseStep));
+        log.info("获取接口测试用例参数:" + JSON.toJSONString(apiTestCaseStep));
         String URL = apiTestCaseStep.getDomain().concat(apiTestCaseStep.getPath());
         //判断请求方式 get、pst、delete、put
         apiRequestResult.setApiId(apiTestCaseStep.getApiId());
@@ -124,7 +129,7 @@ public class RestAssuredUtil {
         apiRequestResult.setRequestDataParams(apiTestCaseStep.getRequestDataParams());
         apiRequestResult.setMethod(apiTestCaseStep.getMethod());
         apiRequestResult.setURL(URL);
-        try{
+        try {
 
             switch (apiTestCaseStep.getMethod()) {
                 case "Post":
@@ -146,8 +151,8 @@ public class RestAssuredUtil {
                 default:
                     return null;
             }
-        }catch (Exception e){
-            log.error("运行自动化接口报错:",e);
+        } catch (Exception e) {
+            log.error("运行自动化接口报错:", e);
             apiRequestResult.setExceptionBody(e.getMessage());
             apiRequestResult.setCreateTime(DateToStamp.getTimeStap());
             apiRequestResult.setUpdateTime(DateToStamp.getTimeStap());
@@ -171,9 +176,9 @@ public class RestAssuredUtil {
 
     /**
      * 获取消息头
-     * */
+     */
     public Map<String, Object> getHeaders(List<Header> hList) {
-        if(Objects.isNull(hList)){
+        if (Objects.isNull(hList)) {
             return Collections.EMPTY_MAP;
         }
         List<Header> headerList = JSONObject.parseArray(hList.toString(), Header.class);
@@ -188,7 +193,7 @@ public class RestAssuredUtil {
                 return Collections.EMPTY_MAP;
             }
         } catch (Exception e) {
-            log.error("获取消息头报错：",e);
+            log.error("获取消息头报错：", e);
         }
 
         return getHeaders;
@@ -197,10 +202,10 @@ public class RestAssuredUtil {
     /**
      * 获取返回结果头部信息以list形式
      */
-    public List<Header> getRspHeaders(Response response){
-        List<Header> headerList =new ArrayList<>();
-        response.getHeaders().asList().forEach(x->{
-            Header header =new Header();
+    public List<Header> getRspHeaders(Response response) {
+        List<Header> headerList = new ArrayList<>();
+        response.getHeaders().asList().forEach(x -> {
+            Header header = new Header();
             header.setKey(x.getName());
             header.setValue(x.getValue());
             headerList.add(header);
@@ -210,10 +215,10 @@ public class RestAssuredUtil {
 
     /**
      * 获取参数
-     * */
+     */
     public Map<String, Object> getParams(List<Params> ps) {
         //json 转换List<Params>格式
-        if (Objects.isNull(ps)){
+        if (Objects.isNull(ps)) {
             return Collections.EMPTY_MAP;
         }
         List<Params> paramsList = JSONObject.parseArray(ps.toString(), Params.class);
@@ -228,7 +233,7 @@ public class RestAssuredUtil {
                 return Collections.EMPTY_MAP;
             }
         } catch (Exception e) {
-            log.error("获取参数报错：",e);
+            log.error("获取参数报错：", e);
         }
 
         return getParams;
@@ -236,49 +241,49 @@ public class RestAssuredUtil {
 
     /**
      * 返回断言结果集：ResultAssert
-     * */
-    public List<ResultAssert> getResultAssert(List<RequestAssert> rAssert){
-        if(Objects.isNull(rAssert)){
+     */
+    public List<ResultAssert> getResultAssert(List<RequestAssert> rAssert) {
+        if (Objects.isNull(rAssert)) {
             return Collections.EMPTY_LIST;
         }
-        List<ResultAssert> resultAssertList =new ArrayList<ResultAssert>();
-            List<RequestAssert> assertList = JSONObject.parseArray(rAssert.toString(), RequestAssert.class);
-            for (RequestAssert requestAssert:assertList){
-                ResultAssert resultAssert=new ResultAssert();
-                resultAssert.setCheckList(requestAssert.getCheckList());
-                resultAssert.setValue(requestAssert.getValue());
-                try{
-                    String realValue = JsonPath.parse(apiRequestResult.getResultBody()).read("$."+requestAssert.getCheckList()).toString();
-                    resultAssert.setRealValue(realValue);
-                    if (realValue.equals(requestAssert.getValue())){
-                        resultAssert.setResult(true);
-                    }else {
-                        resultAssert.setResult(false);
-                    }
-                    resultAssertList.add(resultAssert);
-                }catch (PathNotFoundException e){
-                    log.error("解析失败，无该元素："+requestAssert.getCheckList());
+        List<ResultAssert> resultAssertList = new ArrayList<ResultAssert>();
+        List<RequestAssert> assertList = JSONObject.parseArray(rAssert.toString(), RequestAssert.class);
+        for (RequestAssert requestAssert : assertList) {
+            ResultAssert resultAssert = new ResultAssert();
+            resultAssert.setCheckList(requestAssert.getCheckList());
+            resultAssert.setValue(requestAssert.getValue());
+            try {
+                String realValue = JsonPath.parse(apiRequestResult.getResultBody()).read("$." + requestAssert.getCheckList()).toString();
+                resultAssert.setRealValue(realValue);
+                if (realValue.equals(requestAssert.getValue())) {
+                    resultAssert.setResult(true);
+                } else {
                     resultAssert.setResult(false);
-                    resultAssertList.add(resultAssert);
-                    System.out.println(requestAssert.getCheckList());
                 }
-
+                resultAssertList.add(resultAssert);
+            } catch (PathNotFoundException e) {
+                log.error("解析失败，无该元素：" + requestAssert.getCheckList());
+                resultAssert.setResult(false);
+                resultAssertList.add(resultAssert);
+                System.out.println(requestAssert.getCheckList());
             }
+
+        }
         return resultAssertList;
     }
 
     /**
      * 判断断言返回结果集中是否有断言失败结果，有则返回false
-     * */
+     */
     public boolean requestAssert() {
-        List<ResultAssert> resultAssertList =apiRequestResult.getResultAssert();
+        List<ResultAssert> resultAssertList = apiRequestResult.getResultAssert();
         if (resultAssertList.size() > 0) {
             for (ResultAssert resultAssert : resultAssertList) {
-                if (!resultAssert.isResult()){
-                    flag=false;
+                if (!resultAssert.isResult()) {
+                    flag = false;
                     return flag;
-                }else {
-                    flag=true;
+                } else {
+                    flag = true;
                 }
             }
         } else {
@@ -287,28 +292,29 @@ public class RestAssuredUtil {
         }
         return flag;
     }
+
     /**
      * 判断字符串是否存在标识@
-     * */
-    public String getStringByEnv(String str,int envId){
-        if (str.indexOf("@")!=-1){
-            int start = str.indexOf("{")+1;
-            int end =str.indexOf("}");
-            String s =str.substring(start,end);
-            String oldString ="@{"+s+"}";
-            log.info("截取开始字符串位置:"+start+",截取结束字符串位置:"+end+",获取截取字符串:"+s);
-            EnvParams envParams=new EnvParams();
-            envParams=envParamsMapper.selectByName(s);
+     */
+    public String getStringByEnv(String str, int envId) {
+        if (str.indexOf("@") != -1) {
+            int start = str.indexOf("{") + 1;
+            int end = str.indexOf("}");
+            String s = str.substring(start, end);
+            String oldString = "@{" + s + "}";
+            log.info("截取开始字符串位置:" + start + ",截取结束字符串位置:" + end + ",获取截取字符串:" + s);
+            EnvParams envParams = new EnvParams();
+            envParams = envParamsMapper.selectByName(s);
             log.info(JSON.toJSONString(envParams));
-            if (!envParams.getName().isEmpty()){
-                for (EnvGParams envGParams:envParams.getValue()){
-                    if (envId==envGParams.getEnvId()){
-                        str.replace(oldString,envGParams.getEnvValue());
-                        log.info("获取修改后字符串:"+str);
+            if (!envParams.getName().isEmpty()) {
+                for (EnvGParams envGParams : envParams.getValue()) {
+                    if (envId == envGParams.getEnvId()) {
+                        str.replace(oldString, envGParams.getEnvValue());
+                        log.info("获取修改后字符串:" + str);
                     }
                 }
             }
-        }else {
+        } else {
             return str;
         }
         return str;

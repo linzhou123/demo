@@ -7,6 +7,8 @@ import java.util.List;
 public interface MistakeMapper {
 
     int insertMistake(Mistake mistake);
+
     List<Mistake> findByDescriptionOrNot(String description);
+
     List<Mistake> findAll();
 }

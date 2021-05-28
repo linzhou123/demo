@@ -11,7 +11,7 @@ public class Env implements Serializable {
     @ApiModelProperty(value = "项目id")
     private int projectId;
     @ApiModelProperty(value = "环境变量名称")
-    private String name ;
+    private String name;
     @ApiModelProperty(value = "备注")
     private String remark;
     @ApiModelProperty(value = "创建时间")

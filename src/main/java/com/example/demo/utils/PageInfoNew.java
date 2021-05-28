@@ -62,7 +62,6 @@ public class PageInfoNew<T> implements Serializable {
     }
 
 
-
     public int getPageNum() {
         return pageNum;
     }

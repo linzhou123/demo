@@ -23,12 +23,12 @@
         from api_testcase
         where id =#{id}
     </select>
-    <select id="findByAll" resultMap="BaseResultMap" >
+    <select id="findByAll" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"></include>
         from api_testcase
     </select>
-    <select id="findByPage" resultMap="BaseResultMap" >
+    <select id="findByPage" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"></include>
         from api_testcase
@@ -43,7 +43,7 @@
         update api_testcase
         set
         <if test="envId!=null and envId !=''">
-        `env_id`=#{envId}
+            `env_id`=#{envId}
         </if>
         <if test="name !=null and name != ''">
             `name` = #{name},

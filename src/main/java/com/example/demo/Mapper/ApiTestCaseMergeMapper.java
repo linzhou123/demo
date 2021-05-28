@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface ApiTestCaseMergeMapper {
     void insertApiTestCaseMerge(ApiTestCaseMerge apiTestCaseMerge);
+
     List<ApiTestCaseMerge> findByGroupId(@Param(value = "testCaseGroupId") int testCaseGroupId);
 }

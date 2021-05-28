@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.List;
+
 @Data
 public class ApiTestCaseMergeDto {
     @ApiModelProperty(value = "测试用例集id")

@@ -22,7 +22,7 @@ public class EnvParamsController {
 
     @PostMapping("/add")
     @ApiOperation(value = "环境变量参数添加接口")
-    public ResponseInfo add(@RequestBody  EnvParams envParams){
+    public ResponseInfo add(@RequestBody EnvParams envParams) {
         envParams.setCreateTime(DateToStamp.getTimeStap());
         envParams.setUpdateTime(DateToStamp.getTimeStap());
         envParamsService.insert(envParams);

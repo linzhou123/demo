@@ -14,7 +14,7 @@ public class ApiTestCase implements Serializable {
     @ApiModelProperty(value = "测试用例名称")
     private String name;
     @ApiModelProperty(value = "项目id")
-    private  int projectId;
+    private int projectId;
     @ApiModelProperty(value = "备注")
     private String remark;
     @ApiModelProperty(value = "创建时间")

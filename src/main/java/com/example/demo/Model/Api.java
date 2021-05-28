@@ -9,6 +9,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.List;
+
 @Data
 public class Api implements Serializable {
     @ApiModelProperty(value = "apiId")
@@ -49,10 +50,10 @@ public class Api implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Override
-    public String toString(){
-        return "[id="+id+",name="+name+",projectId="+projectId+",apiSuiteId="+apiSuiteId+",domain="+domain+
-                ",requestParamType" +requestParamType+",requestHeader="+requestHeader+",requestParams="
-                +requestParams+",requestBody="+requestBody+",method="+method+",path="+path+",requestAssert="
-                +requestAssert+",createTime="+createTime+",updateTime"+updateTime+"]";
+    public String toString() {
+        return "[id=" + id + ",name=" + name + ",projectId=" + projectId + ",apiSuiteId=" + apiSuiteId + ",domain=" + domain +
+                ",requestParamType" + requestParamType + ",requestHeader=" + requestHeader + ",requestParams="
+                + requestParams + ",requestBody=" + requestBody + ",method=" + method + ",path=" + path + ",requestAssert="
+                + requestAssert + ",createTime=" + createTime + ",updateTime" + updateTime + "]";
     }
 }

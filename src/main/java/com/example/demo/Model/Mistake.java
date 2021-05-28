@@ -10,7 +10,7 @@ public class Mistake implements Serializable {
     private int id;
     @NotBlank(message = "name不能为空")
     private String name;
-    private int type ;
+    private int type;
     @NotBlank(message = "description不能为空")
     private String description;
     private int mistakeLevel;

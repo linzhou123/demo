@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
+
 @Data
 public class ResultAssert implements Serializable {
     @ApiModelProperty(value = "校验jsonPath表达式")
@@ -18,7 +19,7 @@ public class ResultAssert implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Override
-    public String toString(){
-        return "{ checkList:'"+checkList+"', value:'"+value+"',realValue：’"+realValue+"',result:'"+result+"'}";
+    public String toString() {
+        return "{ checkList:'" + checkList + "', value:'" + value + "',realValue：’" + realValue + "',result:'" + result + "'}";
     }
 }

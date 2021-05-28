@@ -89,10 +89,10 @@ public class HexUtil {
      */
     public boolean getHexAssert() {
         String url = null;
-        if(hexDto.getHost().equals("14.18.73.163")){
-            url="https://cloud.sendiag.cn/self_operator/device/page";
-        }else {
-            url="http://" + hexDto.getHost().concat(":8884/self_operator/device/page");
+        if (hexDto.getHost().equals("14.18.73.163")) {
+            url = "https://cloud.sendiag.cn/self_operator/device/page";
+        } else {
+            url = "http://" + hexDto.getHost().concat(":8884/self_operator/device/page");
         }
         log.info("url:" + url);
         Map<String, Object> params = new HashMap<>();
@@ -110,7 +110,7 @@ public class HexUtil {
         log.info("获取测试数据结果:" + data);
 
         try {
-            log.info("JsonPath解析:"+JsonPath.parse(data).read("$.data.list.length()"));
+            log.info("JsonPath解析:" + JsonPath.parse(data).read("$.data.list.length()"));
             switch (HexEnum.valueOfType(hexDto.getDataType())) {
                 case AlarmData:
                     realValue = JsonPath.parse(data).read("$.data.list[0].alarmStatus").toString();
@@ -124,19 +124,18 @@ public class HexUtil {
                 default:
                     throw new IllegalStateException("Unexpected value: " + hexDto.getDataType());
             }
-        }catch (PathNotFoundException e){
-            log.error("JsonPath解析报错:",e);
-            return flag=false;
+        } catch (PathNotFoundException e) {
+            log.error("JsonPath解析报错:", e);
+            return flag = false;
         }
 
 
-        log.info("realValue:"+realValue);
-            if (realValue.equals("true")){
-                flag=true;
-            }
-            else {
-                flag=false;
-            }
+        log.info("realValue:" + realValue);
+        if (realValue.equals("true")) {
+            flag = true;
+        } else {
+            flag = false;
+        }
         return flag;
     }
 
@@ -149,9 +148,9 @@ public class HexUtil {
         params.put("password", hexDto.getPassword());
         params.put("submit", "login");
         String url = null;
-        if(hexDto.getHost().equals("14.18.73.163")){
-            url="https://cloud.sendiag.cn/self_operator/login";
-        }else {
+        if (hexDto.getHost().equals("14.18.73.163")) {
+            url = "https://cloud.sendiag.cn/self_operator/login";
+        } else {
             url = "http://" + hexDto.getHost().concat(":8884/self_operator/login");
         }
         log.info("url:" + url);

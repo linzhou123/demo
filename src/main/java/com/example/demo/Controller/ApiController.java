@@ -54,12 +54,12 @@ public class ApiController {
             @ApiImplicitParam(name = "pageNum", value = "页数", required = true, dataType = "int"),
             @ApiImplicitParam(name = "pageSize", value = "每页长度", required = true, dataType = "int"),
             @ApiImplicitParam(name = "apiSuiteId", value = "api类别的id", required = false, dataType = "int"),
-            @ApiImplicitParam(name = "projectId", value = "项目id", required = false,dataType = "int")
+            @ApiImplicitParam(name = "projectId", value = "项目id", required = false, dataType = "int")
     })
     public ResponseInfo apiPage(int pageNum,
                                 int pageSize,
-                                Integer apiSuiteId,Integer projectId) {
-        return ResponseInfo.successInfo(apiService.findAllWithPage(pageNum, pageSize, apiSuiteId,projectId));
+                                Integer apiSuiteId, Integer projectId) {
+        return ResponseInfo.successInfo(apiService.findAllWithPage(pageNum, pageSize, apiSuiteId, projectId));
     }
 
     /**
@@ -78,14 +78,14 @@ public class ApiController {
 
     @DeleteMapping("/delete/{id}")
     @ApiOperation("删除api接口")
-    public ResponseInfo deleteApi(@PathVariable(value = "id")int id){
+    public ResponseInfo deleteApi(@PathVariable(value = "id") int id) {
         apiService.deleteApi(id);
         return ResponseInfo.successInfo("");
     }
 
     @GetMapping("/list")
     @ApiOperation(value = "api列表接口")
-    @ApiImplicitParam(name ="apiSuiteId",value = "api类别的id",required = true,dataType = "int")
+    @ApiImplicitParam(name = "apiSuiteId", value = "api类别的id", required = true, dataType = "int")
     public ResponseInfo findBySuiteId(Integer apiSuiteId) {
         return ResponseInfo.successInfo(apiService.findBySuiteId(apiSuiteId));
     }
@@ -95,37 +95,39 @@ public class ApiController {
      */
     @PostMapping("/run")
     @ApiOperation(value = "api调试接口")
-    @ApiImplicitParam(name ="id",value = "apiId",required = true,dataType = "int")
+    @ApiImplicitParam(name = "id", value = "apiId", required = true, dataType = "int")
     public ResponseInfo runApi(int id) {
         return ResponseInfo.successInfo(apiRequestResultService.insertApiRequestResult(id));
     }
 
     @GetMapping("/details")
     @ApiOperation(value = "获取api详情接口", notes = "通过id获取api详情")
-    @ApiImplicitParam(name ="id",value = "apiId",required = true,dataType = "int")
+    @ApiImplicitParam(name = "id", value = "apiId", required = true, dataType = "int")
     public ResponseInfo getApiDetails(int id) {
         return ResponseInfo.successInfo(apiService.findById(id));
     }
 
     @PostMapping("/transfer/device/data")
-    public ResponseInfo getData(@RequestBody DataTest dataTest){
-        log.info("实时数据:"+JSONObject.toJSONString(dataTest));
+    public ResponseInfo getData(@RequestBody DataTest dataTest) {
+        log.info("实时数据:" + JSONObject.toJSONString(dataTest));
         return ResponseInfo.successInfo(dataTest);
-        }
+    }
+
     @PostMapping("/transfer/device/alarm")
-    public ResponseInfo getAlarm(@RequestBody AlarmData alarmData){
-        log.info("报警数据:"+ JSONObject.toJSONString(alarmData));
+    public ResponseInfo getAlarm(@RequestBody AlarmData alarmData) {
+        log.info("报警数据:" + JSONObject.toJSONString(alarmData));
         return ResponseInfo.successInfo(alarmData);
     }
+
     @PostMapping("/transfer/device/fault")
-    public ResponseInfo getFault(@RequestBody FaultData faultData){
-        log.info("故障数据:"+JSONObject.toJSONString(faultData));
+    public ResponseInfo getFault(@RequestBody FaultData faultData) {
+        log.info("故障数据:" + JSONObject.toJSONString(faultData));
         return ResponseInfo.successInfo(faultData);
     }
 
     @PostMapping("/transfer/device/config")
-    public ResponseInfo getConfig(@RequestBody ConfigData configData){
-        log.info("配置数据："+JSONObject.toJSONString(configData));
+    public ResponseInfo getConfig(@RequestBody ConfigData configData) {
+        log.info("配置数据：" + JSONObject.toJSONString(configData));
         return ResponseInfo.successInfo(configData);
     }
 

@@ -56,38 +56,44 @@ public class ApiSuiteController {
         apiSuiteService.deleteById(apiSuiteId);
         return ResponseInfo.successInfo("");
     }
+
     /**
      * apiSuite 分页接口
      */
     @GetMapping("/page")
     @ApiOperation(value = "测试用例分页接口")
     @ApiImplicitParams({
-            @ApiImplicitParam(name="pageNum",value = "页数",required = true,dataType = "int"),
-            @ApiImplicitParam(name="pageSize",value = "每页长度",required = true,dataType = "int"),
-            @ApiImplicitParam(name="projetctId",value = "项目id",required = false,dataType = "int"),
+            @ApiImplicitParam(name = "pageNum", value = "页数", required = true, dataType = "int"),
+            @ApiImplicitParam(name = "pageSize", value = "每页长度", required = true, dataType = "int"),
+            @ApiImplicitParam(name = "projetctId", value = "项目id", required = false, dataType = "int"),
     })
     public ResponseInfo finAllWithPage(int pageNum,
                                        int pageSize,
                                        int projetctId) {
-        return ResponseInfo.successInfo(apiSuiteService.findAllWithPage(pageNum, pageSize,projetctId));
+        return ResponseInfo.successInfo(apiSuiteService.findAllWithPage(pageNum, pageSize, projetctId));
     }
+
     /**
      * api详情获取接口
-     * */
+     */
     @GetMapping("/get/{id}")
     @ApiOperation(value = "获取api详情接口")
-    public ResponseInfo findById(@PathVariable(value = "id") int apiSuiteId){
+    public ResponseInfo findById(@PathVariable(value = "id") int apiSuiteId) {
         return ResponseInfo.successInfo(apiSuiteService.findAllById(apiSuiteId));
     }
+
     @GetMapping("/list")
     @ApiOperation(value = "根据项目id获取api类别列表")
-    public ResponseInfo findByProjectId(@RequestParam(value = "projectId") int projectId){
+    public ResponseInfo findByProjectId(@RequestParam(value = "projectId") int projectId) {
         return ResponseInfo.successInfo(apiSuiteService.findByProjectId(projectId));
     }
-    /**api分类树状图接口*/
+
+    /**
+     * api分类树状图接口
+     */
     @GetMapping("/listTree")
     @ApiOperation(value = "根据项目id获取api类别树")
-    public ResponseInfo findTreeDtoByProjectId(@RequestParam(value = "projectId") int projectId){
+    public ResponseInfo findTreeDtoByProjectId(@RequestParam(value = "projectId") int projectId) {
         return ResponseInfo.successInfo(apiSuiteService.findTreeDtoByProjectId(projectId));
     }
 }

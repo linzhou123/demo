@@ -68,16 +68,19 @@
             `request_param_type` = #{requestParamType},
         </if>
         <if test="requestHeader !=null">
-            `request_header` = #{requestHeader,jdbcType=VARCHAR,typeHandler=com.example.demo.typeHandler.ListTypeHandler},
+            `request_header` =
+            #{requestHeader,jdbcType=VARCHAR,typeHandler=com.example.demo.typeHandler.ListTypeHandler},
         </if>
         <if test="requestParams !=null">
-            `request_params` = #{requestParams,jdbcType=VARCHAR,typeHandler=com.example.demo.typeHandler.ListTypeHandler},
+            `request_params` =
+            #{requestParams,jdbcType=VARCHAR,typeHandler=com.example.demo.typeHandler.ListTypeHandler},
         </if>
         <if test="requestBody !=null and requestBody !=''">
             `request_body` = #{requestBody},
         </if>
         <if test="requestDataParams !=null">
-            `request_data_params` = #{requestDataParams,jdbcType=VARCHAR,typeHandler=com.example.demo.typeHandler.ListTypeHandler},
+            `request_data_params` =
+            #{requestDataParams,jdbcType=VARCHAR,typeHandler=com.example.demo.typeHandler.ListTypeHandler},
         </if>
         <if test="method !=null and method !=''">
             `method` = #{method},
@@ -86,7 +89,8 @@
             `path` = #{path},
         </if>
         <if test="requestAssert !=null">
-            `request_assert` = #{requestAssert,jdbcType=VARCHAR,typeHandler=com.example.demo.typeHandler.ListTypeHandler},
+            `request_assert` =
+            #{requestAssert,jdbcType=VARCHAR,typeHandler=com.example.demo.typeHandler.ListTypeHandler},
         </if>
         <if test="parameterExtractions !=null">
             `parameter_xtractions`=#{parameterExtractions,jdbcType=VARCHAR,typeHandler=com.example.demo.typeHandler.ListTypeHandler},

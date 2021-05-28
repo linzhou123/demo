@@ -21,19 +21,20 @@ public class MistakeController {
     @PostMapping("/add")
     public ResponseInfo insertMistake(@RequestBody @Valid Mistake mistake, BindingResult result) {
 
-        if (result.hasErrors()){
+        if (result.hasErrors()) {
             return ResponseInfo.errorInfo(result.getFieldError().getDefaultMessage());
         }
         List<Mistake> mistakes = mistakeService.findByDescriptionOrNot(mistake.getDescription());
-        if (mistakes.size()>0){
-            return  ResponseInfo.errorInfo(mistake.getDescription()+"伤害描述已存在,请详细描述");
+        if (mistakes.size() > 0) {
+            return ResponseInfo.errorInfo(mistake.getDescription() + "伤害描述已存在,请详细描述");
         }
         mistakeService.insertMistake(mistake);
 
         return ResponseInfo.successInfo("");
     }
+
     @GetMapping("/page")
-    public ResponseInfo getMistakePage(@RequestParam(value = "pageNum",required = true) int pageNum ,@RequestParam(value = "pageSize",required = true) int pageSize){
-        return ResponseInfo.successInfo(mistakeService.finAllWithPage(pageNum,pageSize));
+    public ResponseInfo getMistakePage(@RequestParam(value = "pageNum", required = true) int pageNum, @RequestParam(value = "pageSize", required = true) int pageSize) {
+        return ResponseInfo.successInfo(mistakeService.finAllWithPage(pageNum, pageSize));
     }
 }

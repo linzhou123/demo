@@ -7,7 +7,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class ApiTestCaseResultDto{
+public class ApiTestCaseResultDto {
     ApiTestCaseResult apiTestCaseResult;
     List<ApiRequestResult> apiRequestResults;
     String caseName;

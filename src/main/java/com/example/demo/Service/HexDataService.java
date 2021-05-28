@@ -9,9 +9,9 @@ import java.util.List;
 public interface HexDataService {
     void insertHexData(HexData hexData);
 
-    SendHexRecord debugHexData(Integer id,String username,String password,String host, Integer port);
+    SendHexRecord debugHexData(Integer id, String username, String password, String host, Integer port);
 
-    List<SendHexRecord> runHexData(String username,String password,String host,Integer port);
+    List<SendHexRecord> runHexData(String username, String password, String host, Integer port);
 
     PageInfoNew<HexData> getHexPage(int pageNum, int pageSize);
 

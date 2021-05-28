@@ -10,7 +10,10 @@ public interface MistakeService {
 
 
     int insertMistake(Mistake mistake);
+
     List<Mistake> findByDescriptionOrNot(String description);
+
     List<Mistake> findAll();
+
     PageInfoNew<Mistake> finAllWithPage(int pageNum, int pageSize);
 }

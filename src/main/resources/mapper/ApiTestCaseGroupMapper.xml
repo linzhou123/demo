@@ -3,7 +3,7 @@
 <mapper namespace="com.example.demo.Mapper.ApiTestCaseGroupMapper">
     <resultMap id="BaseResultMap" type="com.example.demo.Model.ApiTestCaseGroup">
         <id column="id" jdbcType="INTEGER" property="id"/>
-        <result column="project_id" jdbcType="INTEGER" property="projectId" />
+        <result column="project_id" jdbcType="INTEGER" property="projectId"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
         <result column="create_time" jdbcType="INTEGER" property="createTime"/>

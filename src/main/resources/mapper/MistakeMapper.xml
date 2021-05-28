@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.Mapper.MistakeMapper">
-<resultMap id="BaseResultMap" type="com.example.demo.Model.Mistake">
-    <id column="id" jdbcType="INTEGER" property="id"/>
-    <result column="name" jdbcType="VARCHAR" property="name"/>
-    <result column="type" jdbcType="VARCHAR" property="type"/>
-    <result column="description" jdbcType="VARCHAR" property="description"/>
-    <result column="mistake_level" jdbcType="INTEGER" property="mistakeLevel"/>
-</resultMap>
-<sql id="Base_Column_List">
+    <resultMap id="BaseResultMap" type="com.example.demo.Model.Mistake">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="type" jdbcType="VARCHAR" property="type"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="mistake_level" jdbcType="INTEGER" property="mistakeLevel"/>
+    </resultMap>
+    <sql id="Base_Column_List">
         `id`,`name`,`type`,`description`,`mistake_level`
     </sql>
-<insert id="insertMistake" keyProperty="id" parameterType="com.example.demo.Model.Mistake" useGeneratedKeys="true">
+    <insert id="insertMistake" keyProperty="id" parameterType="com.example.demo.Model.Mistake" useGeneratedKeys="true">
     insert into mistake (`name`,`type`,`description`,`mistake_level`) value (#{name},#{type},#{description},#{mistakeLevel})
     </insert>
-<select id="findAll" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List"></include>
-    from mistake
-</select>
-<select id="findByDescriptionOrNot" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List"></include>
-    from mistake
-    where description=#{description}
-</select>
+    <select id="findAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from mistake
+    </select>
+    <select id="findByDescriptionOrNot" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from mistake
+        where description=#{description}
+    </select>
 </mapper>

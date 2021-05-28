@@ -4,5 +4,6 @@ import com.example.demo.Model.ApiTestCaseGroup;
 
 public interface ApiTestCaseGroupService {
     int insertApiTestCaseGroup(ApiTestCaseGroup apiTestCaseGroup);
+
     void runTestGroup(int testCaseGroudId);
 }

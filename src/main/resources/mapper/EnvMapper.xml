@@ -35,8 +35,8 @@
         <if test="name !=null and name != ''">
             `name`=#{name},
         </if>
-            `remark`=#{remark},
-            `update_time`=#{update_time}
-            where id =#{id}
+        `remark`=#{remark},
+        `update_time`=#{update_time}
+        where id =#{id}
     </update>
 </mapper>

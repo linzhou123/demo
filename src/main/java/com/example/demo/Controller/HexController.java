@@ -38,8 +38,8 @@ public class HexController {
             @ApiImplicitParam(name = "host", value = "所有hex发往的域名", required = false, dataType = "String"),
             @ApiImplicitParam(name = "port", value = "所有hex发往的域名端口", required = false, dataType = "Integer"),
     })
-    public ResponseInfo debugHexData(Integer id,String username,String password,String host, Integer port) {
-        return ResponseInfo.successInfo(hexDataService.debugHexData(id,username,password, host, port));
+    public ResponseInfo debugHexData(Integer id, String username, String password, String host, Integer port) {
+        return ResponseInfo.successInfo(hexDataService.debugHexData(id, username, password, host, port));
     }
 
     @PostMapping("/run")
@@ -50,13 +50,13 @@ public class HexController {
             @ApiImplicitParam(name = "host", value = "所有hex发往的域名", required = false, dataType = "String"),
             @ApiImplicitParam(name = "port", value = "所有hex发往的域名端口", required = false, dataType = "Integer"),
     })
-    public ResponseInfo runHexData(String username,String password, String host, Integer port) {
-        return ResponseInfo.successInfo(hexDataService.runHexData(username,password,host,port));
+    public ResponseInfo runHexData(String username, String password, String host, Integer port) {
+        return ResponseInfo.successInfo(hexDataService.runHexData(username, password, host, port));
     }
 
     @DeleteMapping("/delete/{id}")
     @ApiOperation("删除hex接口")
-    public ResponseInfo deleteApi(@PathVariable(value = "id")int id){
+    public ResponseInfo deleteApi(@PathVariable(value = "id") int id) {
         hexDataService.deleteHex(id);
         return ResponseInfo.successInfo("");
     }

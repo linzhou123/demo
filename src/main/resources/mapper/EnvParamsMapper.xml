@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.Mapper.EnvParamsMapper">
     <resultMap id="BaseResultMap" type="com.example.demo.Model.EnvParams">
-        <id column="id" jdbcType="INTEGER" property="id" />
+        <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="project_id" jdbcType="INTEGER" property="projectId"/>
         <result column="type" jdbcType="INTEGER" property="type"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
@@ -29,6 +29,6 @@
         select
         <include refid="Base_Column_List"/>
         from env_params
-        where  `name` =#{name}
+        where `name` =#{name}
     </select>
 </mapper>

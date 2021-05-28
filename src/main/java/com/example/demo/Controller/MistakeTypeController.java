@@ -13,8 +13,9 @@ import javax.annotation.Resource;
 public class MistakeTypeController {
     @Resource
     private MistakeTypeService mistakeTypeService;
+
     @GetMapping("/findall")
-    public ResponseInfo findall(){
+    public ResponseInfo findall() {
         return ResponseInfo.successInfo(mistakeTypeService.getMistakeTypeAll());
     }
 }

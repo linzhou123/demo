@@ -3,6 +3,7 @@ package com.example.demo.Model;
 import lombok.Data;
 
 import java.io.Serializable;
+
 @Data
 public class MistakeType implements Serializable {
 

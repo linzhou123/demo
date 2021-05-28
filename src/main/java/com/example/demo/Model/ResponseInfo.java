@@ -3,11 +3,12 @@ package com.example.demo.Model;
 import lombok.Data;
 
 import java.io.Serializable;
+
 @Data
 public class ResponseInfo implements Serializable {
     private Integer code;
     private Object data;
-    private String  message;
+    private String message;
     private Boolean success;
 
     private static final long serialVersionUID = 1L;
@@ -44,23 +45,24 @@ public class ResponseInfo implements Serializable {
         this.message = message;
     }
 
-    public ResponseInfo(){
+    public ResponseInfo() {
 
     }
 
-    public ResponseInfo (Integer code,String message,Object data,Boolean success){
-                this.code=code;
-                this.message=message;
-                this.data=data;
-                this.success=success;
+    public ResponseInfo(Integer code, String message, Object data, Boolean success) {
+        this.code = code;
+        this.message = message;
+        this.data = data;
+        this.success = success;
     }
+
     public static ResponseInfo successInfo(Object data) {
-        return new ResponseInfo(200,"操作成功",data,true);
-    }
-    public static ResponseInfo errorInfo(String message){
-        return new ResponseInfo(520,message,"",false);
+        return new ResponseInfo(200, "操作成功", data, true);
     }
 
+    public static ResponseInfo errorInfo(String message) {
+        return new ResponseInfo(520, message, "", false);
+    }
 
 
 }

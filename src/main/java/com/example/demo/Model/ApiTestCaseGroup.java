@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
+
 @Data
 public class ApiTestCaseGroup implements Serializable {
     @ApiModelProperty(value = "测试用例集id")

@@ -74,9 +74,9 @@
         <if test="requestParams !=null">
             `request_params`
             =#{requestParams,jdbcType=VARCHAR,typeHandler=com.example.demo.typeHandler.ListTypeHandler},
-        <if test="requestBody !=null and requestBody !=''">
-            `request_body` =#{requestBody},
-        </if>
+            <if test="requestBody !=null and requestBody !=''">
+                `request_body` =#{requestBody},
+            </if>
         </if>
         <if test="requestDataParams !=null">
             `request_data_params`

@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
+
 @Data
 public class SendHexRecord implements Serializable {
     private int id;

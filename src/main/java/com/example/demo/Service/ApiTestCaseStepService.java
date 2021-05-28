@@ -8,10 +8,16 @@ import java.util.List;
 
 public interface ApiTestCaseStepService {
     int insertStepToTestCase(List<ApiTestCaseStep> apiTestCaseStepList);
+
     ApiTestCaseResultDto runStep(Integer testCaseId);
+
     void apiTestCaseStepEdit(List<ApiTestCaseStep> apiTestCaseStepList);
+
     void apiTestCaseStepDelete(int StepId);
+
     void apiTestCaseStepsDelete(List<Integer> ids);
-    PageInfoNew<ApiTestCaseStep> findTestCaseStepPageByTestCaseId(int pageNum, int pageSize,int testCaseId);
+
+    PageInfoNew<ApiTestCaseStep> findTestCaseStepPageByTestCaseId(int pageNum, int pageSize, int testCaseId);
+
     List<ApiTestCaseStep> findStepListByTestCaseId(int testCaseId);
 }

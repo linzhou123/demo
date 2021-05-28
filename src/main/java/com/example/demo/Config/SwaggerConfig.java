@@ -11,7 +11,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration //必须存在
 @EnableSwagger2 //必须存在
-public class SwaggerConfig{
+public class SwaggerConfig {
     @Bean
     public Docket customDocket() {
         return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo());
@@ -26,10 +26,12 @@ public class SwaggerConfig{
                 .paths(PathSelectors.any())
                 .build();
     }*/
+
     /**
      * name:开发者姓名
      * url:开发者网址
      * email:开发者邮箱
+     *
      * @return
      */
     private ApiInfo apiInfo() {
