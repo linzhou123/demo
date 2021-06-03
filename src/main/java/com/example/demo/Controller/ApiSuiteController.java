@@ -65,12 +65,12 @@ public class ApiSuiteController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "pageNum", value = "页数", required = true, dataType = "int"),
             @ApiImplicitParam(name = "pageSize", value = "每页长度", required = true, dataType = "int"),
-            @ApiImplicitParam(name = "projetctId", value = "项目id", required = false, dataType = "int"),
+            @ApiImplicitParam(name = "projectId", value = "项目id", required = false, dataType = "int"),
     })
     public ResponseInfo finAllWithPage(int pageNum,
                                        int pageSize,
-                                       int projetctId) {
-        return ResponseInfo.successInfo(apiSuiteService.findAllWithPage(pageNum, pageSize, projetctId));
+                                       int projectId) {
+        return ResponseInfo.successInfo(apiSuiteService.findAllWithPage(pageNum, pageSize, projectId));
     }
 
     /**

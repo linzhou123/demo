@@ -36,6 +36,7 @@ public class HexUtil {
         //定义一个Socket对象
         Socket socket = null;
         socket = new Socket(hexDto.getHost(), hexDto.getPort());
+        socket.setSoTimeout(5000);
         OutputStream os = socket.getOutputStream();
         InputStream s = socket.getInputStream();
         for (String h : hexContent) {
@@ -59,6 +60,7 @@ public class HexUtil {
         //定义一个Socket对象
         Socket socket = null;
         socket = new Socket(hexDto.getHost(), hexDto.getPort());
+        socket.setSoTimeout(5000);
         OutputStream os = socket.getOutputStream();
         InputStream s = socket.getInputStream();
         byte[] bytes = hexStringToByteArray(hexContent);
@@ -106,7 +108,7 @@ public class HexUtil {
             e.printStackTrace();
         }
         response = given().headers(getCookie()).params(params).when().get(url);
-        String data = response.prettyPrint();
+        String data = response.getBody().prettyPrint();
         log.info("获取测试数据结果:" + data);
 
         try {
@@ -142,8 +144,8 @@ public class HexUtil {
     public Map<String, Object> getCookie() {
         Map<String, Object> cookie = new HashMap<>();
         Map<String, Object> params = new HashMap<>();
-        Map<String, Object> hearders = new HashMap<>();
-        hearders.put("Content-Type", "application/x-www-form-urlencoded");
+        Map<String, Object> headerMap = new HashMap<>();
+        headerMap.put("Content-Type", "application/x-www-form-urlencoded");
         params.put("username", hexDto.getUserName());
         params.put("password", hexDto.getPassword());
         params.put("submit", "login");
@@ -154,8 +156,8 @@ public class HexUtil {
             url = "http://" + hexDto.getHost().concat(":8884/self_operator/login");
         }
         log.info("url:" + url);
-//        response= given().headers(hearders).params(params).when().post(url);
-        response = given().headers(hearders).params(params).when().post(url);
+//        response= given().headers(headerMap).params(params).when().post(url);
+        response = given().headers(headerMap).params(params).when().post(url);
         Headers headers = response.getHeaders();
         cookie.put("Cookie", headers.getValue("Set-Cookie"));
         log.info("Set-Cookie:" + cookie);

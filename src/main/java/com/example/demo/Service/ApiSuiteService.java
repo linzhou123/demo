@@ -14,7 +14,7 @@ public interface ApiSuiteService {
 
     int deleteById(int apiSuiteId);
 
-    PageInfoNew<ApiSuite> findAllWithPage(int pageNum, int pageSize, int projetctId);
+    PageInfoNew<ApiSuite> findAllWithPage(int pageNum, int pageSize, int projectId);
 
     List<ApiSuite> findAll();
 

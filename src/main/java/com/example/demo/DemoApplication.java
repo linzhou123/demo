@@ -13,8 +13,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class DemoApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(DemoApplication.class, args);
         log.info("---------项目启动------------");
+        SpringApplication.run(DemoApplication.class, args);
+        log.info("---------项目启动完成------------");
     }
 
 }

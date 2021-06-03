@@ -72,9 +72,9 @@ public class ApiSuiteServiceImpl implements ApiSuiteService {
     }
 
     @Override
-    public PageInfoNew<ApiSuite> findAllWithPage(int pageNum,int pageSize,int projetctId){
+    public PageInfoNew<ApiSuite> findAllWithPage(int pageNum,int pageSize,int projectId){
         PageHelper.startPage(pageNum,pageSize);
-        return new PageInfoNew<>(apiSuiteMapper.findByProjectId(projetctId));
+        return new PageInfoNew<>(apiSuiteMapper.findByProjectId(projectId));
     }
 
     @Override
