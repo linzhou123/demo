@@ -1,5 +1,6 @@
 package com.example.demo.Service;
 
+import com.example.demo.Dto.ApiTestCaseResultDto;
 import com.example.demo.Model.ApiTestCase;
 import com.example.demo.utils.PageInfoNew;
 
@@ -13,4 +14,6 @@ public interface ApiTestCaseService {
     PageInfoNew<ApiTestCase> findByPage(int pageNum, int pageSize, Integer projectId, String name);
 
     void testCaseDelete(int testCaseId);
+
+    ApiTestCaseResultDto runCase(Integer testCaseId);
 }

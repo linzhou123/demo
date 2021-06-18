@@ -10,6 +10,8 @@ public class ApiTestCaseResult implements Serializable {
     private int id;
     @ApiModelProperty(value = "测试用例id")
     private int testCaseId;
+    @ApiModelProperty(value = "计划id")
+    private int planId;
     @ApiModelProperty(value = "测试用例步骤总数")
     private int countResults;
     @ApiModelProperty(value = "测试用例步骤通过数量")

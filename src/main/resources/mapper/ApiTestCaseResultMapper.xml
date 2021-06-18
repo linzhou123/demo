@@ -4,6 +4,7 @@
     <resultMap id="BaseResultMap" type="com.example.demo.Model.ApiTestCaseResult">
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="testcase_id" jdbcType="INTEGER" property="testCaseId"/>
+        <result column="plan_id" jdbcType="INTEGER" property="planId"/>
         <result column="count_results" jdbcType="INTEGER" property="countResults"/>
         <result column="pass_results" jdbcType="INTEGER" property="passResults"/>
         <result column="failed_results" jdbcType="INTEGER" property="failedResults"/>
@@ -12,11 +13,11 @@
         <result column="update_time" jdbcType="INTEGER" property="updateTime"/>
     </resultMap>
     <sql id="Base_Column_List">
-        `id`,`testcase_id`,`count_results`,`pass_results`,`failed_results`,`test_run_time`,`create_time`,`update_time`
+        `id`,`testcase_id`,`plan_id`,`count_results`,`pass_results`,`failed_results`,`test_run_time`,`create_time`,`update_time`
     </sql>
     <insert id="insertResult" parameterType="com.example.demo.Model.ApiTestCaseResult">
-        insert into api_testcase_result (`testcase_id`,`count_results`,`pass_results`,`failed_results`,`test_run_time`,`create_time`,`update_time`)
+        insert into api_testcase_result (`testcase_id`,`plan_id`,`count_results`,`pass_results`,`failed_results`,`test_run_time`,`create_time`,`update_time`)
         value
-        (#{testCaseId},#{countResults},#{passResults},#{failedResults},#{testRunTime},#{createTime},#{updateTime})
+        (#{testCaseId},#{planId},#{countResults},#{passResults},#{failedResults},#{testRunTime},#{createTime},#{updateTime})
     </insert>
 </mapper>

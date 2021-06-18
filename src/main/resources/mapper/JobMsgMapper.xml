@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.Mapper.JobMsgMapper">
+    <resultMap id="BaseResultMap" type="com.example.demo.Model.JobMsg">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="group_id_list" property="groupIdList"/>
+        <result column="job_name" jdbcType="VARCHAR" property="jobName"/>
+        <result column="env_id" jdbcType="INTEGER" property="envId"/>
+        <result column="cron_expression" jdbcType="VARCHAR" property="cronExpression"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="is_send_email" jdbcType="TINYINT" property="isSendEmail"/>
+        <result column="email_list" jdbcType="VARCHAR" property="emailList"/>
+        <result column="create_time" jdbcType="INTEGER" property="createTime"/>
+        <result column="update_time" jdbcType="INTEGER" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        `id`,`group_id_list`,`job_name`,`env_id`,`cron_expression`,`remark`,`status`,`is_send_email`,`email_list`,`create_time`,`update_time`
+    </sql>
+    <insert id="add" parameterType="com.example.demo.Model.JobMsg" useGeneratedKeys="true" keyProperty="id">
+        insert into job_msg(`group_id_list`,`job_name`,`env_id`,`cron_expression`,`remark`,`status`,`is_send_email`,`email_list`,`create_time`,`update_time`)
+        value (#{groupIdList},#{jobName},#{envId},#{cronExpression},#{remark},#{status},#{isSendEmail},#{emailList},#{createTime},#{updateTime})
+    </insert>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from job_msg
+    </select>
+    <update id="updateJob" parameterType="com.example.demo.Model.JobMsg">
+        update job_msg
+        set
+        `group_id_list` =#{groupIdList},
+        <if test="jobName!='' and jobName!=null">
+            `job_name` = #{jobName,jdbcType=VARCHAR},
+        </if>
+        <if test="envId!=0 and envId!=''">
+            `env_id`=#{envId},
+        </if>
+        <if test="cronExpression!=null and cronExpression!=''">
+            `cron_expression`=#{cronExpression,jdbcType=VARCHAR},
+        </if>
+        `remark` =#{remark},
+        `status` =#{status},
+        `is_send_email` =#{isSendEmail},
+        `email_list` =#{emailList},
+        `update_time` = #{updateTime}
+        where `id` =#{id}
+    </update>
+    <delete id="deleteJobById" parameterType="int">
+        delete from job_msg where id =#{id,jdbcType=INTEGER}
+    </delete>
+</mapper>

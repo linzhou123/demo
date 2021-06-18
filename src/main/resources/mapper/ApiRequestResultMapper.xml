@@ -7,6 +7,7 @@
         <result column="api_name" jdbcType="VARCHAR" property="apiName"/>
         <result column="api_testcase_id" jdbcType="INTEGER" property="apiTestCaseId"/>
         <result column="api_testcase_step_id" jdbcType="INTEGER" property="apiTestCaseStepId"/>
+        <result column="plan_id" jdbcType="INTEGER" property="planId"/>
         <result column="request_header" property="requestHeader"
                 typeHandler="com.example.demo.typeHandler.ListTypeHandler"/>
         <result column="request_params" property="requestParams"
@@ -32,12 +33,12 @@
         <result column="update_time" jdbcType="INTEGER" property="updateTime"/>
     </resultMap>
     <sql id="Base_Column_List">
-        `id`,`api_id`,`api_name`,`api_testcase_id`,`api_testcase_step_id`,`request_header`,`request_params`,`request_param_type`,`request_body`,`request_data_params`,`method`,`URL`,`result_body`,`response_headers`,`result_status`,`result_time`,`result_assert`,`result_isPass`,`result_extractions`,`exception_body`,`create_time`,`update_time`
+        `id`,`api_id`,`api_name`,`api_testcase_id`,`api_testcase_step_id`,plan_id,`request_header`,`request_params`,`request_param_type`,`request_body`,`request_data_params`,`method`,`URL`,`result_body`,`response_headers`,`result_status`,`result_time`,`result_assert`,`result_isPass`,`result_extractions`,`exception_body`,`create_time`,`update_time`
     </sql>
     <insert id="insertApiRequestResult" parameterType="com.example.demo.Model.ApiRequestResult">
-        insert into api_request_result (`api_id`,`api_name`,`api_testcase_id`,`api_testcase_step_id`,`request_header`,`request_params`,`request_param_type`,`request_body`,`request_data_params`,`method`,`URL`,`result_body`,`response_headers`,`result_status`,`result_time`,`result_assert`,`result_isPass`,`result_extractions`,`exception_body`,`create_time`,`update_time`)
+        insert into api_request_result (`api_id`,`api_name`,`api_testcase_id`,`api_testcase_step_id`,`plan_id`,`request_header`,`request_params`,`request_param_type`,`request_body`,`request_data_params`,`method`,`URL`,`result_body`,`response_headers`,`result_status`,`result_time`,`result_assert`,`result_isPass`,`result_extractions`,`exception_body`,`create_time`,`update_time`)
         value
-        (#{apiId},#{apiName},#{apiTestCaseId},#{apiTestCaseStepId},
+        (#{apiId},#{apiName},#{apiTestCaseId},#{apiTestCaseStepId},#{planId},
         #{requestHeader,jdbcType=VARCHAR,typeHandler=com.example.demo.typeHandler.ListTypeHandler},
         #{requestParams,jdbcType=VARCHAR,typeHandler=com.example.demo.typeHandler.ListTypeHandler},
         #{requestParamType},#{requestBody},

@@ -18,6 +18,8 @@ public class ApiRequestResult implements Serializable {
     private int apiTestCaseId;
     @ApiModelProperty(value = "测试步骤id")
     private int apiTestCaseStepId;
+    @ApiModelProperty(value = "计划id")
+    private int planId;
     @ApiModelProperty(value = "请求头部信息")
     private List<Header> requestHeader;
     @ApiModelProperty(value = "请求入参")

@@ -40,11 +40,11 @@ public class ApiTestCaseStepServiceImpl implements ApiTestCaseStepService {
     ApiService apiService;
 
     @Override
-    public int insertStepToTestCase(List<ApiTestCaseStep> apiTestCaseStepList){
+    public int insertStepToTestCase(List<ApiTestCaseStep> apiTestCaseStepList) {
         //根据testCaseId获取step总数
-        int sortIndex =apiTestCaseStepMapper.findByTestCaseId(apiTestCaseStepList.get(0).getTestCaseId()).size();
-        for (ApiTestCaseStep apiTestCaseStep:apiTestCaseStepList){
-            sortIndex+=1;
+        int sortIndex = apiTestCaseStepMapper.findByTestCaseId(apiTestCaseStepList.get(0).getTestCaseId()).size();
+        for (ApiTestCaseStep apiTestCaseStep : apiTestCaseStepList) {
+            sortIndex += 1;
             apiTestCaseStep.setSort(sortIndex);
             apiTestCaseStepMapper.insertApiTestCaseStep(apiTestCaseStep);
         }
@@ -52,45 +52,45 @@ public class ApiTestCaseStepServiceImpl implements ApiTestCaseStepService {
     }
 
     @Override
-    public ApiTestCaseResultDto runStep(Integer testCaseId){
-        List<ApiTestCaseStep> apiTestCaseSteps=apiTestCaseStepMapper.findByTestCaseId(testCaseId);
-        ApiTestCase apiTestCase =apiTestCaseMapper.findById(testCaseId);
-        ApiTestCaseResult apiTestCaseResult=new ApiTestCaseResult();
-        int pass=0;
-        int failed=0;
-        int count =0;
-        List<ApiRequestResult> apiRequestResults= new ArrayList<>();
-        List<GetExtractions> getExtractionsList =new ArrayList<>();
-        ApiTestCaseResultDto apiTestCaseResultDto =new ApiTestCaseResultDto();
-        int stratTime =(int)System.currentTimeMillis();
-        for (ApiTestCaseStep apiTestCaseStep:apiTestCaseSteps){
-            log.info("获取测试用例步骤:"+apiTestCaseStep.toString());
-            Api api =new Api();
-            BeanUtils.copyProperties(apiTestCaseStep,api);
-            ApiRequestResult apiRequestResult= apiService.requestTestRun(api, getExtractionsList);
+    public ApiTestCaseResultDto runStep(Integer testCaseId) {
+        List<ApiTestCaseStep> apiTestCaseSteps = apiTestCaseStepMapper.findByTestCaseId(testCaseId);
+        ApiTestCase apiTestCase = apiTestCaseMapper.findById(testCaseId);
+        ApiTestCaseResult apiTestCaseResult = new ApiTestCaseResult();
+        int pass = 0;
+        int failed = 0;
+        int count = 0;
+        List<ApiRequestResult> apiRequestResults = new ArrayList<>();
+        List<GetExtractions> getExtractionsList = new ArrayList<>();
+        ApiTestCaseResultDto apiTestCaseResultDto = new ApiTestCaseResultDto();
+        int startTime = (int) System.currentTimeMillis();
+        for (ApiTestCaseStep apiTestCaseStep : apiTestCaseSteps) {
+            log.info("获取测试用例步骤:" + apiTestCaseStep.toString());
+            Api api = new Api();
+            BeanUtils.copyProperties(apiTestCaseStep, api);
+            ApiRequestResult apiRequestResult = apiService.requestTestRun(api, getExtractionsList);
             apiRequestResult.setApiId(apiTestCaseStep.getApiId());
             apiRequestResult.setApiTestCaseId(apiTestCaseStep.getTestCaseId());
             apiRequestResult.setApiTestCaseStepId(apiTestCaseStep.getId());
             getExtractionsList.addAll(apiRequestResult.getResultExtractions());
             apiRequestResults.add(apiRequestResult);
-            apiRequestResultMapper.insertApiRequestResult(apiRequestResult);
-            count+=1;
-            if (apiRequestResult.isResultIsPass()){
-                pass+=1;
-            }else {
-                failed+=1;
+//            apiRequestResultMapper.insertApiRequestResult(apiRequestResult);
+            count += 1;
+            if (apiRequestResult.isResultIsPass()) {
+                pass += 1;
+            } else {
+                failed += 1;
             }
         }
-        log.info("获取测试用例结果集:"+apiRequestResults);
-        int endTime =(int)System.currentTimeMillis();
+        log.info("获取测试用例结果集:" + apiRequestResults);
+        int endTime = (int) System.currentTimeMillis();
         apiTestCaseResult.setTestCaseId(testCaseId);
         apiTestCaseResult.setCountResults(count);
         apiTestCaseResult.setPassResults(pass);
         apiTestCaseResult.setFailedResults(failed);
         apiTestCaseResult.setCreateTime(DateToStamp.getTimeStap());
         apiTestCaseResult.setUpdateTime(DateToStamp.getTimeStap());
-        apiTestCaseResult.setTestRunTime(endTime-stratTime);
-        apiTestCaseResultMapper.insertResult(apiTestCaseResult);
+        apiTestCaseResult.setTestRunTime(endTime - startTime);
+//        apiTestCaseResultMapper.insertResult(apiTestCaseResult);
         apiTestCaseResultDto.setApiRequestResults(apiRequestResults);
         apiTestCaseResultDto.setApiTestCaseResult(apiTestCaseResult);
         apiTestCaseResultDto.setCaseName(apiTestCase.getName());
@@ -98,10 +98,10 @@ public class ApiTestCaseStepServiceImpl implements ApiTestCaseStepService {
     }
 
     @Override
-    public void apiTestCaseStepEdit(List<ApiTestCaseStep> apiTestCaseStepList){
-        int sortIndex =0;
-        for (ApiTestCaseStep apiTestCaseStep:apiTestCaseStepList){
-            sortIndex+=1;
+    public void apiTestCaseStepEdit(List<ApiTestCaseStep> apiTestCaseStepList) {
+        int sortIndex = 0;
+        for (ApiTestCaseStep apiTestCaseStep : apiTestCaseStepList) {
+            sortIndex += 1;
             apiTestCaseStep.setSort(sortIndex);
             apiTestCaseStep.setUpdateTime(DateToStamp.getTimeStap());
             apiTestCaseStepMapper.updateApiTestCaseStep(apiTestCaseStep);
@@ -114,24 +114,22 @@ public class ApiTestCaseStepServiceImpl implements ApiTestCaseStepService {
     }
 
     @Override
-    public void apiTestCaseStepsDelete(List<Integer> ids){
-        for (int id:ids){
+    public void apiTestCaseStepsDelete(List<Integer> ids) {
+        for (int id : ids) {
             apiTestCaseStepMapper.deleteStepByStepId(id);
         }
     }
 
     @Override
-    public PageInfoNew<ApiTestCaseStep> findTestCaseStepPageByTestCaseId(int pageNum, int pageSize, int testCaseId){
-        PageHelper.startPage(pageNum,pageSize);
+    public PageInfoNew<ApiTestCaseStep> findTestCaseStepPageByTestCaseId(int pageNum, int pageSize, int testCaseId) {
+        PageHelper.startPage(pageNum, pageSize);
         return new PageInfoNew<>(apiTestCaseStepMapper.findByTestCaseId(testCaseId));
     }
 
     @Override
-    public  List<ApiTestCaseStep> findStepListByTestCaseId(int testCaseId){
+    public List<ApiTestCaseStep> findStepListByTestCaseId(int testCaseId) {
         return apiTestCaseStepMapper.findByTestCaseId(testCaseId);
     }
-
-
 
 
 }
