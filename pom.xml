@@ -35,6 +35,11 @@
                 </exclusion>
             </exclusions>
         </dependency>-->
+        <!--引入aop包，用作切面日志-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger2</artifactId>

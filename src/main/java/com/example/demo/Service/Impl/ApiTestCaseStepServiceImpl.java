@@ -115,8 +115,10 @@ public class ApiTestCaseStepServiceImpl implements ApiTestCaseStepService {
 
     @Override
     public void apiTestCaseStepsDelete(List<Integer> ids) {
-        for (int id : ids) {
-            apiTestCaseStepMapper.deleteStepByStepId(id);
+        if (!ids.isEmpty()) {
+            for (int id : ids) {
+                apiTestCaseStepMapper.deleteStepByStepId(id);
+            }
         }
     }
 
