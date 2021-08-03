@@ -51,6 +51,13 @@
         from api_suite
         where `project_id` = #{projectId}
     </select>
+    <select id="findAllByBP" resultMap="BaseResultMap" parameterType="com.example.demo.Model.ApiSuite">
+        select
+        <include refid="Base_Column_List"></include>
+        from api_suite
+        where `name` =#{apiSuiteName} and
+        `project_id` =#{projectId}
+    </select>
     <select id="findAllById" resultMap="BaseResultMap" parameterType="int">
         select
         <include refid="Base_Column_List"></include>

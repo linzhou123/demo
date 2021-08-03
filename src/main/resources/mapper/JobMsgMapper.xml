@@ -46,6 +46,15 @@
         `update_time` = #{updateTime}
         where `id` =#{id}
     </update>
+
+    <update id="modifyState" parameterType="com.example.demo.Model.JobMsg">
+        update job_msg
+        set
+        `status` =#{status},
+        `update_time` = #{updateTime}
+        where `id` =#{id}
+    </update>
+
     <delete id="deleteJobById" parameterType="int">
         delete from job_msg where id =#{id,jdbcType=INTEGER}
     </delete>

@@ -48,4 +48,10 @@ public class JobController {
         jobMsgService.deleteJob(id);
         return ResponseInfo.successInfo("");
     }
+    @PostMapping("/modifyState")
+    @ApiOperation(value = "修改任务状态接口")
+    public ResponseInfo modifyState(@RequestBody JobMsg jobMsg){
+        jobMsgService.modifyState(jobMsg);
+        return ResponseInfo.successInfo("");
+    }
 }

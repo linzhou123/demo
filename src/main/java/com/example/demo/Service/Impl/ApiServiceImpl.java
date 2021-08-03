@@ -15,7 +15,9 @@ import com.example.demo.utils.PageInfoNew;
 import com.github.pagehelper.PageHelper;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.PathNotFoundException;
+import io.restassured.RestAssured;
 import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -23,8 +25,6 @@ import javax.annotation.Resource;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static io.restassured.RestAssured.given;
 
 @Service
 @Slf4j
@@ -82,7 +82,15 @@ public class ApiServiceImpl implements ApiService {
         //拼接URL传入
         Response response = null;
         ApiRequestResult apiRequestResult = new ApiRequestResult();
-
+        RequestSpecification requestSpecification = RestAssured.given();
+        requestSpecification.headers(getHeaders(api.getRequestHeader(), getExtractionsList));
+        if (!api.getMethod().equalsIgnoreCase("get")){
+            if (api.getRequestParamType().equals("raw")){
+                requestSpecification.body(api.getRequestBody());
+            }
+        }else {
+            requestSpecification.params(getParams(api.getRequestParams(), getExtractionsList));
+        }
         log.info("---------开始执行自动化接口用例---------");
         String URL = api.getDomain().concat(api.getPath());
         if (api.getEnvId() != 0) {
@@ -100,20 +108,16 @@ public class ApiServiceImpl implements ApiService {
         try {
             switch (api.getMethod()) {
                 case "Post":
-                    if (api.getRequestParamType().equals("raw")) {
-                        response = given().headers(getHeaders(api.getRequestHeader(), getExtractionsList)).body(api.getRequestBody()).post(URL);
-                    } else {
-                        response = given().headers(getHeaders(api.getRequestHeader(), getExtractionsList)).params(getParams(api.getRequestDataParams(), getExtractionsList)).when().post(URL);
-                    }
+                    response =requestSpecification.when().post(URL);
                     break;
                 case "Get":
-                    response = given().headers(getHeaders(api.getRequestHeader(), getExtractionsList)).params(getParams(api.getRequestParams(), getExtractionsList)).when().get(URL);
+                    response =requestSpecification.when().get(URL);
                     break;
                 case "Delete":
-                    response = given().headers(getHeaders(api.getRequestHeader(), getExtractionsList)).params(getParams(api.getRequestParams(), getExtractionsList)).when().delete(URL);
+                    response =requestSpecification.when().delete(URL);
                     break;
                 case "Put":
-                    response = given().headers(getHeaders(api.getRequestHeader(), getExtractionsList)).params(getParams(api.getRequestParams(), getExtractionsList)).when().put(URL);
+                    response =requestSpecification.when().put(URL);
                     break;
                 default:
                     apiRequestResult.setExceptionBody("不支持该请求方式 :" + URL);

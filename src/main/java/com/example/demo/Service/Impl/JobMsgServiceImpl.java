@@ -6,6 +6,7 @@ import com.example.demo.Mapper.*;
 import com.example.demo.Model.*;
 import com.example.demo.Service.ApiTestCaseStepService;
 import com.example.demo.Service.JobMsgService;
+import com.example.demo.common.contant.ScheduleConstants;
 import com.example.demo.utils.DateToStamp;
 import com.example.demo.utils.SchedulerUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -67,6 +68,16 @@ public class JobMsgServiceImpl implements JobMsgService {
             SchedulerUtil.deleteJob(scheduler, id);
         }
         return 0;
+    }
+
+    @Override
+    public void modifyState(JobMsg jobMsg) {
+        if(jobMsg.getStatus()== ScheduleConstants.Status.NORMAL.getValue()){
+            SchedulerUtil.resumeJob(scheduler,jobMsg.getId());
+        }else if (jobMsg.getStatus()==ScheduleConstants.Status.PAUSE.getValue()){
+            SchedulerUtil.pauseJob(scheduler,jobMsg.getId());
+        }
+        jobMsgMapper.modifyState(jobMsg);
     }
 
     @Override

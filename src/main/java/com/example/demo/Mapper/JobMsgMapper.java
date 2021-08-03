@@ -12,5 +12,7 @@ public interface JobMsgMapper {
 
     int updateJob(JobMsg jobMsg);
 
+    void modifyState(JobMsg jobMsg);
+
     int deleteJobById(@Param(value = "id") int id);
 }

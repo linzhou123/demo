@@ -21,5 +21,7 @@ public interface ApiSuiteMapper {
 
     List<ApiSuite> findAllByName(@Param(value = "apiSuiteName") String apiSuiteName);
 
+    List<ApiSuite> findAllByBP(@Param(value = "apiSuiteName") String apiSuiteName,@Param(value = "projectId") Integer projectId);
+
     ApiSuite findAllById(@Param(value = "apiSuiteId") Integer apiSuiteId);
 }

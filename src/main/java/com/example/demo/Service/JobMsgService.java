@@ -9,5 +9,7 @@ public interface JobMsgService {
 
     int deleteJob(int id);
 
+    void modifyState(JobMsg jobMsg);
+
     void excJob(JobMsg jobMsg);
 }

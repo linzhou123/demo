@@ -2,7 +2,7 @@ package com.example.demo.Enums;
 
 public enum EnvTypeEnum {
 
-    STRING_TYPE("srting类型", 0),
+    STRING_TYPE("string类型", 0),
     INT_TYPE("int类型", 1),
     BOOLEAN_TYPE("boolean类型", 2);
 
