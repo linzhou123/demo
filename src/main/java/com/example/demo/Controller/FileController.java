@@ -28,20 +28,31 @@ public class FileController {
     FileService fileService;
 
     @PostMapping("/upload")
-    public ResponseInfo fileUpload(@RequestParam("file") MultipartFile file, @RequestParam(value = "projectId") int projectId){
+    public ResponseInfo fileUpload(@RequestParam("file") MultipartFile file) {
         File targetFile = new File(filepath);
-        if (!targetFile.exists()){
+        if (!targetFile.exists()) {
             targetFile.mkdirs();
         }
-        try (FileOutputStream out = new FileOutputStream(filepath + file.getOriginalFilename());){
+        try (FileOutputStream out = new FileOutputStream(filepath + file.getOriginalFilename());) {
             out.write(file.getBytes());
-            log.info("文件{}上传成功",file.getOriginalFilename());
-        }catch (Exception e){
+            log.info("文件{}上传成功", file.getOriginalFilename());
+        } catch (Exception e) {
             e.printStackTrace();
-            log.error("上传文件失败，原因={}",e.toString());
+            log.error("上传文件失败，原因={}", e.toString());
             return ResponseInfo.errorInfo(e.toString());
         }
-        fileService.AnalysisJson(filepath + file.getOriginalFilename(),projectId);
-        return ResponseInfo.successInfo("");
+        return ResponseInfo.successInfo(file.getOriginalFilename());
+    }
+
+    @PostMapping("/fileAnalysis")
+    public ResponseInfo fileAnalysis(@RequestParam(value = "fileName") String fileName,
+                                     @RequestParam(value = "projectId") int projectId,
+                                     @RequestParam(value = "url") String url) {
+        String result = fileService.AnalysisJson(filepath + fileName, projectId, url);
+        if (result.equals("导入成功")) {
+            return ResponseInfo.successInfo("");
+        } else {
+            return ResponseInfo.errorInfo(result);
+        }
     }
 }

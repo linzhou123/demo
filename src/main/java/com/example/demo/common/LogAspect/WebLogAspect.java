@@ -1,5 +1,6 @@
 package com.example.demo.common.LogAspect;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.demo.Model.ResponseInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -20,23 +21,25 @@ import javax.servlet.http.HttpServletRequest;
 public class WebLogAspect {
 
     @Pointcut("execution(public * com.example.demo.Controller..*.*(..))")
-    public void webLog(){
+    public void webLog() {
 
     }
+
     @Before("webLog()")
-    public void doBefore(JoinPoint joinPoint){
+    public void doBefore(JoinPoint joinPoint) {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        HttpServletRequest request =attributes.getRequest();
-        log.info("URL："+request.getRequestURL());
-        log.info("method:"+request.getMethod());
-        log.info("params:"+ JSONObject.toJSONString(request.getParameterMap()));
-        log.info("Header:"+JSONObject.toJSONString(request.getHeaderNames()));
+        HttpServletRequest request = attributes.getRequest();
+        log.info("URL：" + request.getRequestURL());
+        log.info("method:" + request.getMethod());
+        log.info("params:" + JSONObject.toJSONString(request.getParameterMap()));
+        log.info("Header:" + JSONObject.toJSONString(request.getHeaderNames()));
         log.info("CLASS_METHOD : " + joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName());
 
     }
-    @AfterReturning(returning = "responseInfo",pointcut = "webLog()")
-    public void doAfterReturning(ResponseInfo responseInfo){
-        log.info("code:"+responseInfo.getCode());
-        log.info("response:"+responseInfo.getData());
+
+    @AfterReturning(returning = "responseInfo", pointcut = "webLog()")
+    public void doAfterReturning(ResponseInfo responseInfo) {
+        log.info("code:" + responseInfo.getCode());
+        log.info("response:" + JSON.toJSONString(responseInfo));
     }
 }

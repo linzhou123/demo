@@ -1,13 +1,10 @@
 package com.example.demo.utils;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-
 import java.io.*;
 
 public class FileUtils {
     //读取json文件
-    public static JSONObject readJsonFile(String fileName) {
+    public static String readJsonFile(String fileName) {
         String jsonStr = "";
         try {
             File jsonFile = new File(fileName);
@@ -21,7 +18,7 @@ public class FileUtils {
             fileReader.close();
             reader.close();
             jsonStr = sb.toString();
-            return JSON.parseObject(jsonStr);
+            return jsonStr;
         } catch (IOException e) {
             e.printStackTrace();
             return null;
