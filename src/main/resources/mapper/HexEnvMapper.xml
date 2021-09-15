@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.Mapper.HexDataMapper">
+    <resultMap id="BaseResultMap" type="com.example.demo.Model.HexData">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="host" jdbcType="VARCHAR" property="host"/>
+        <result column="port" jdbcType="INTEGER" property="port"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="device_name" jdbcType="VARCHAR" property="deviceName"/>
+        <result column="hex_content" jdbcType="VARCHAR" property="hexContent"/>
+        <result column="data_type" jdbcType="INTEGER" property="dataType"/>
+        <result column="device_type" jdbcType="INTEGER" property="deviceType"/>
+        <result column="create_time" jdbcType="INTEGER" property="createTime"/>
+        <result column="update_time" jdbcType="INTEGER" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        `id`,`host`,`port`,`name`,`device_name`,`hex_content`,`data_type`,`device_type`,`create_time`,`update_time`
+    </sql>
+    <insert id="insertHexData" parameterType="com.example.demo.Model.SendHexRecord" keyProperty="id">
+        insert into hex_data (`host`,`port`,`name`,`device_name`,`hex_content`,`data_type`,`device_type`,`create_time`,`update_time`)
+        value
+        (#{host},#{port},#{name},#{deviceName},#{hexContent},#{dataType},#{deviceType},#{createTime},#{updateTime})
+    </insert>
+    <update id="updateHexData" parameterType="com.example.demo.Model.HexData">
+        update hex_data
+         set
+         <if test="host !=null and host != ''">
+             `host` =#{host},
+         </if>
+        <if test="port !=null and port != ''">
+            `port` =#{port},
+        </if>
+        <if test="name !=null and name != ''">
+            `name` =#{name},
+        </if>
+        <if test="deviceName !=null and deviceName != ''">
+            `device_name` =#{deviceName},
+        </if>
+        <if test="hexContent !=null and hexContent != ''">
+            `hex_content` =#{hexContent},
+        </if>
+        <if test="dataType !=null and dataType != ''">
+            `data_type` =#{dataType},
+        </if>
+        <if test="deviceType !=null and deviceType != ''">
+            `device_type` =#{deviceType},
+        </if>
+        `update_time` = #{updateTime}
+        where `id`=#{id};
+    </update>
+    <select id="getAllHexData" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from hex_data
+    </select>
+    <select id="getHexDataById" parameterType="int" resultType="com.example.demo.Dto.HexDto">
+        select
+        <include refid="Base_Column_List"/>
+        from hex_data
+        where `id` =#{id}
+    </select>
+    <delete id="deleteHex" parameterType="int">
+        delete from hex_data where id =#{id,jdbcType=INTEGER}
+    </delete>
+</mapper>
