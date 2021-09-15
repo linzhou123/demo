@@ -1,5 +1,6 @@
 package com.example.demo.utils;
 
+import com.example.demo.Model.TestData.PageParams;
 import com.github.pagehelper.Page;
 
 import java.io.Serializable;
@@ -33,6 +34,16 @@ public class PageInfoNew<T> implements Serializable {
      */
     public PageInfoNew(List<T> list) {
         this(list, 8);
+    }
+
+    public PageInfoNew(List<T> list, PageParams page){
+        this.pageNum=page.getPageNum();
+        this.pageNum = page.getPageNum();
+        this.pageSize = page.getPageSize();
+        this.pages = page.getPages();
+        this.list = list;
+        this.size = page.getSize();
+        this.total = page.getPageTotal();
     }
 
     /**

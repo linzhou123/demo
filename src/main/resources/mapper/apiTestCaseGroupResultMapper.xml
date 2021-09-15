@@ -11,10 +11,10 @@
         <result column="update_time" jdbcType="INTEGER" property="updateTime"/>
     </resultMap>
     <sql id="Base_Column_List">
-        `id`,`testcase_group_id`,`count_result`,`pass_result`,`failed_result`,`creat_time`,`update_time`
+        `id`,`testcase_group_id`,`count_result`,`pass_result`,`failed_result`,`create_time`,`update_time`
     </sql>
     <insert id="insertResult" parameterType="com.example.demo.Model.ApiTestCaseGroupResult">
-        insert  into api_testcase_group_result (`testcase_group_id`,`count_result`,`pass_result`,`failed_result`,`creat_time`,`update_time`)
+        insert  into api_testcase_group_result (`testcase_group_id`,`count_result`,`pass_result`,`failed_result`,`create_time`,`update_time`)
                 value (#{testCaseGroupId},#{countResult},#{passResult},#{failedResult},#{createTime},#{updateTime})
     </insert>
 </mapper>

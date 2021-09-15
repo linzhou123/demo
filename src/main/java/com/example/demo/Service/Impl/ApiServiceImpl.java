@@ -62,9 +62,9 @@ public class ApiServiceImpl implements ApiService {
     }
 
     @Override
-    public PageInfoNew<Api> findAllWithPage(int pageNum, int pageSize, Integer apsuiteId, Integer projectId) {
+    public PageInfoNew<Api> findAllWithPage(int pageNum, int pageSize, Integer apiSuiteId, Integer projectId) {
         PageHelper.startPage(pageNum, pageSize);
-        return new PageInfoNew<>(apiMapper.findAllToPage(apsuiteId, projectId));
+        return new PageInfoNew<>(apiMapper.findAllToPage(apiSuiteId, projectId));
     }
 
     @Override
@@ -87,6 +87,8 @@ public class ApiServiceImpl implements ApiService {
         if (!api.getMethod().equalsIgnoreCase("get")){
             if (api.getRequestParamType().equals("raw")){
                 requestSpecification.body(api.getRequestBody());
+            }else{
+                requestSpecification.params(getParams(api.getRequestDataParams(),getExtractionsList));
             }
         }else {
             requestSpecification.params(getParams(api.getRequestParams(), getExtractionsList));
@@ -252,7 +254,7 @@ public class ApiServiceImpl implements ApiService {
                 log.error("解析失败，无该元素：" + requestAssert.getCheckList());
                 resultAssert.setResult(false);
                 resultAssertList.add(resultAssert);
-                System.out.println(requestAssert.getCheckList());
+//                System.out.println(requestAssert.getCheckList());
             }
 
         }

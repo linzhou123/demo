@@ -19,6 +19,8 @@ public interface ApiMapper {
 
     int updateApi(Api api);
 
+    List<Api> findAllByFile(@Param(value = "apiName") String apiName,@Param(value = "projectId") int projectId);
+
     List<Api> findAll();
 
     void deleteApi(@Param(value = "id") int id);

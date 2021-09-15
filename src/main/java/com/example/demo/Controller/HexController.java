@@ -23,9 +23,14 @@ public class HexController {
 
     @PostMapping("/add")
     @ApiOperation(value = "添加hex流相关数据接口")
-    @ApiImplicitParam(name = "hexData", value = "hexData", required = true, dataType = "body")
     public ResponseInfo addHexData(@RequestBody HexData hexData) {
         hexDataService.insertHexData(hexData);
+        return ResponseInfo.successInfo("");
+    }
+    @PostMapping("/update")
+    @ApiOperation(value = "更新hex流数据接口")
+    public ResponseInfo updateHexData(@RequestBody HexData hexData){
+        hexDataService.updateHexData(hexData);
         return ResponseInfo.successInfo("");
     }
 
@@ -33,25 +38,20 @@ public class HexController {
     @ApiOperation(value = "执行一条hex流数据")
     @ApiImplicitParams({
             @ApiImplicitParam(value = "hexId", name = "id", required = true, dataType = "int"),
-            @ApiImplicitParam(name = "username", value = "对应测试数据登录账号", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "password", value = "对应测试数据登录密码", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "host", value = "所有hex发往的域名", required = false, dataType = "String"),
-            @ApiImplicitParam(name = "port", value = "所有hex发往的域名端口", required = false, dataType = "Integer"),
+            @ApiImplicitParam(name = "hexEnvId", value = "hex环境变量id", required = true, dataType = "int"),
+
     })
-    public ResponseInfo debugHexData(Integer id, String username, String password, String host, Integer port) {
-        return ResponseInfo.successInfo(hexDataService.debugHexData(id, username, password, host, port));
+    public ResponseInfo debugHexData(Integer id,int hexEnvId) {
+        return ResponseInfo.successInfo(hexDataService.debugHexData(id,hexEnvId));
     }
 
     @PostMapping("/run")
     @ApiOperation(value = "发送所有hex流")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "username", value = "对应测试数据登录账号", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "password", value = "对应测试数据登录密码", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "host", value = "所有hex发往的域名", required = false, dataType = "String"),
-            @ApiImplicitParam(name = "port", value = "所有hex发往的域名端口", required = false, dataType = "Integer"),
+            @ApiImplicitParam(name = "hexEnvId", value = "hex环境变量id", required = true, dataType = "int"),
     })
-    public ResponseInfo runHexData(String username, String password, String host, Integer port) {
-        return ResponseInfo.successInfo(hexDataService.runHexData(username, password, host, port));
+    public ResponseInfo runHexData(Integer hexEnvId) {
+        return ResponseInfo.successInfo(hexDataService.runHexData(hexEnvId));
     }
 
     @DeleteMapping("/delete/{id}")

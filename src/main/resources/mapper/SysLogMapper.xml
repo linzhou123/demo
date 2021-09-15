@@ -1,42 +1,23 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.demo.Mapper.EnvMapper">
-    <resultMap id="BaseResultMap" type="com.example.demo.Model.Env">
+<mapper namespace="com.example.demo.Mapper.SysLogMapper">
+    <resultMap id="BaseResultMap" type="com.example.demo.Model.SysLog">
         <id column="id" jdbcType="INTEGER" property="id"/>
-        <result column="project_id" jdbcType="INTEGER" property="projectId"/>
-        <result column="name" jdbcType="VARCHAR" property="name"/>
-        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="url" jdbcType="VARCHAR" property="url"/>
+        <result column="method" jdbcType="VARCHAR" property="method"/>
+        <result column="params" jdbcType="VARCHAR" property="params"/>
+        <result column="header" jdbcType="VARCHAR" property="header"/>
+        <result column="class_method" jdbcType="VARCHAR" property="classMethod"/>
+        <result column="code" jdbcType="INTEGER" property="code"/>
+        <result column="response" jdbcType="VARCHAR" property="response"/>
         <result column="create_time" jdbcType="INTEGER" property="createTime"/>
-        <result column="update_time" jdbcType="INTEGER" property="updateTime"/>
     </resultMap>
     <sql id="Base_Column_List">
-        `id`,`project_id`,`name`,`remark`,`create_time`,`update_time`
+        `id`,`url`,`method`,`params`,`header`,`class_method`,`code`,`response`,`create_time`
     </sql>
-    <insert id="insert" parameterType="com.example.demo.Model.Env">
-        insert into env(`project_id`,`name`,`remark`,`create_time`,`update_time`)
-        value (#{projectId},#{name},#{remark},#{createTime},#{updateTime})
+    <insert id="insert" keyProperty="id" parameterType="com.example.demo.Model.SysLog">
+        insert  into sys_log
+        (`url`,`method`,`params`,`header`,`class_method`,`code`,`response`,`create_time`) value
+        (#{url},#{method},#{params},#{header},#{classMethod},#{code},#{response},#{createTime})
     </insert>
-    <select id="selectByProjectId" parameterType="int" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from env where `project_id`=#{projectId}
-    </select>
-    <select id="selectById" parameterType="int" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from env where `id` =#{id}
-    </select>
-    <update id="updateEnv" parameterType="com.example.demo.Model.Env">
-        update env
-        set
-        <if test="projectId !=null and projectId != ''">
-            `project_id`=#{projectId},
-        </if>
-        <if test="name !=null and name != ''">
-            `name`=#{name},
-        </if>
-        `remark`=#{remark},
-        `update_time`=#{update_time}
-        where id =#{id}
-    </update>
 </mapper>

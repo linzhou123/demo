@@ -1,19 +1,19 @@
 package com.example.demo.Mapper;
 
-import com.example.demo.Dto.HexDto;
 import com.example.demo.Model.HexData;
+import com.example.demo.Model.HexEnv;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-public interface HexDataMapper {
-    void insertHexData(HexData hexData);
+public interface HexEnvMapper {
+    void insertHexEnv(HexEnv hexEnv);
 
-    void updateHexData(HexData hexData);
+    void updateHexEnv(HexEnv hexEnv);
 
-    List<HexData> getAllHexData();
+    List<HexData> getAllHexEnv();
 
-    HexDto getHexDataById(@Param(value = "id") int id);
+    HexEnv getHexEnvById(@Param(value = "id") int id);
 
-    void deleteHex(@Param(value = "id") int id);
+    void deleteHexEnv(@Param(value = "id") int id);
 }

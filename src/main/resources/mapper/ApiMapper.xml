@@ -28,7 +28,7 @@
     <sql id="Base_Column_List">
         `id`,`env_id`,`name`,`project_id`,`api_suite_id`,`domain`,`request_param_type`,`request_header`,`request_params`,`request_body`,`request_data_params`,`method`,`path`,`request_assert`,`parameter_extractions`,`create_time`,`update_time`
     </sql>
-    <insert id="insertApi" parameterType="com.example.demo.Model.Api">
+    <insert id="insertApi" parameterType="com.example.demo.Model.Api" keyProperty="id">
         insert into api (`env_id`,`name`,`project_id`,`api_suite_id`,`domain`,`request_param_type`,`request_header`,`request_params`,`request_body`,`request_data_params`,`method`,`path`,`request_assert`,`parameter_extractions`,`create_time`,`update_time`)
             value (#{envId},#{name},#{projectId},#{apiSuiteId},#{domain},#{requestParamType},
             #{requestHeader,jdbcType=VARCHAR,typeHandler=com.example.demo.typeHandler.ListTypeHandler},
@@ -56,7 +56,7 @@
         update api
         set
         <if test="envId!=null and envId !=''">
-            `env_id`=#{envId}
+            `env_id`=#{envId},
         </if>
         <if test="name !=null and name !=''">
             `name` =#{name},
@@ -124,7 +124,12 @@
             </if>
         </where>
     </select>
-
+    <select id="findAllByFile" resultMap="BaseResultMap" >
+        select
+        <include refid="Base_Column_List"></include>
+        from api
+        where `name` =#{apiName} and `project_id` =#{projectId}
+    </select>
     <delete id="deleteApi" parameterType="int">
         delete from api where id =#{id,jdbcType=INTEGER}
     </delete>

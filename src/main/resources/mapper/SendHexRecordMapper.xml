@@ -12,7 +12,7 @@
     <sql id="Base_Column_List">
         `id`,`url`,`hex_content`,`sys_back_content`,`is_pass`,`create_time`
     </sql>
-    <insert id="insertHexRecord" parameterType="com.example.demo.Model.SendHexRecord">
+    <insert id="insertHexRecord" keyProperty="id" parameterType="com.example.demo.Model.SendHexRecord">
         insert into send_hex_record (`url`,`hex_content`,`sys_back_content`,`is_pass`,`create_time`)
         value
         (#{url},#{hexContent},#{sysBackContent},#{isPass},#{createTime})

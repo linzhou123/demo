@@ -1,4 +1,4 @@
-package com.example.demo.Model.Response;
+package com.example.demo.Model.Response.Hex;
 
 import com.example.demo.Model.SendHexRecord;
 import lombok.Data;
@@ -7,8 +7,6 @@ import lombok.Data;
 public class SendHexRecordResponse extends SendHexRecord {
 
     private String deviceName;
-    private String dateType;
-    private String deviceType;
 
     private static final long serialVersionUID = 1L;
 }

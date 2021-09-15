@@ -265,7 +265,7 @@ public class RestAssuredUtil {
                 log.error("解析失败，无该元素：" + requestAssert.getCheckList());
                 resultAssert.setResult(false);
                 resultAssertList.add(resultAssert);
-                System.out.println(requestAssert.getCheckList());
+//                System.out.println(requestAssert.getCheckList());
             }
 
         }

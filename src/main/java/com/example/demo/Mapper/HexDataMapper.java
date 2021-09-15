@@ -9,6 +9,8 @@ import java.util.List;
 public interface HexDataMapper {
     void insertHexData(HexData hexData);
 
+    void updateHexData(HexData hexData);
+
     List<HexData> getAllHexData();
 
     HexDto getHexDataById(@Param(value = "id") int id);

@@ -33,11 +33,13 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public String AnalysisJson(String fileName, int projectId, String url) {
+        //判断读取的文件内容是否为空
         if (!StringUtils.isEmpty(FileUtils.readJsonFile(fileName))) {
+            //根据项目创建接口分类
             setApiSuite(fileName, projectId);
             List<Api> getApiList = getApiList(fileName, projectId);
             for (Api api : getApiList) {
-                if (apiMapper.findAllByName(api.getName()).size() < 1) {
+                if (apiMapper.findAllByFile(api.getName(),projectId).size() < 1) {
                     api.setDomain(url);
 //                api.setEnvId();
                     api.setCreateTime(DateToStamp.getTimeStap());

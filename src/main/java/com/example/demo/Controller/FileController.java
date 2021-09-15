@@ -47,7 +47,8 @@ public class FileController {
     @PostMapping("/fileAnalysis")
     public ResponseInfo fileAnalysis(@RequestParam(value = "fileName") String fileName,
                                      @RequestParam(value = "projectId") int projectId,
-                                     @RequestParam(value = "url") String url) {
+                                     @RequestParam(value = "url") String url,
+                                     @RequestParam(value = "envId" ) int envId) {
         String result = fileService.AnalysisJson(filepath + fileName, projectId, url);
         if (result.equals("导入成功")) {
             return ResponseInfo.successInfo("");
