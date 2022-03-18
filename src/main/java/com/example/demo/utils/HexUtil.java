@@ -78,6 +78,29 @@ public class HexUtil {
         socket.close();
         return byteArrayToHex2(buf);
     }
+    public String getBackMsg1(String hexContent) throws IOException {
+        //定义一个Socket对象
+        Socket socket = null;
+        socket = new Socket(hexDto.getHost(), hexDto.getPort());
+//        socket.setSoTimeout(5000);
+        OutputStream os = socket.getOutputStream();
+        InputStream s = socket.getInputStream();
+        byte[] bytes = hexStringToByteArray(hexContent);
+        os.write(bytes);
+        os.flush();
+        byte[] buf = new byte[1024];
+        int len = 0;
+        System.out.println("1111111"+byteArrayToHex3(buf));
+        while ((len = s.read(buf)) >0) {
+            log.info("长度"+String.valueOf(len));
+            log.info("  服务器返回：  " + hexStringToString(byteArrayToHex3(buf)));
+//                System.out.println(getDate() + "  服务器返回：  "+ byteArrayToHex2(buf));
+        }
+        os.close();
+        s.close();
+        socket.close();
+        return byteArrayToHex3(buf);
+    }
 
     public static String getDate() {
         Date date = new Date();
@@ -107,11 +130,11 @@ public class HexUtil {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        response = given().headers(getCookie()).params(params).when().get(url);
-        String data = response.getBody().prettyPrint();
-        log.info("获取测试数据结果:" + data);
 
         try {
+            response = given().headers(getCookie()).params(params).when().get(url);
+            String data = response.getBody().prettyPrint();
+            log.info("获取测试数据结果:" + data);
             log.info("JsonPath解析:" + JsonPath.parse(data).read("$.data.list.length()"));
             switch (HexEnum.valueOfType(hexDto.getDataType())) {
                 case AlarmData:
@@ -129,8 +152,10 @@ public class HexUtil {
         } catch (PathNotFoundException e) {
             log.error("JsonPath解析报错:", e);
             return flag = false;
+        }catch (Exception e){
+            log.error(e.getMessage());
+            return flag = false;
         }
-
 
         log.info("realValue:" + realValue);
         if (realValue.equals("true")) {
@@ -213,6 +238,46 @@ public class HexUtil {
         result1 = result.substring(0, index + 4);
 //        System.out.println("msgLength:"+(index+4));
         return result1;
+    }
+    //将获取的bytes格式转换为16进制
+    public static String byteArrayToHex3(byte[] bytes) {
+        StringBuilder result = new StringBuilder();
+        for (int index = 0, len = bytes.length; index <= len - 1; index += 1) {
+            String invalue1 = Integer.toHexString((bytes[index] >> 4) & 0xF);
+            String intValue2 = Integer.toHexString(bytes[index] & 0xF);
+            result.append(invalue1);
+            result.append(intValue2);
+        }
+        String result1 = result.toString();
+//        System.out.println("msgLength:"+(index+4));
+        return result1;
+    }
+
+    /**
+     * 16进制转换成为string类型字符串
+     * @param s
+     * @return
+     */
+    public static String hexStringToString(String s) {
+        if (s == null || s.equals("")) {
+            return null;
+        }
+        s = s.replace(" ", "");
+        byte[] baKeyword = new byte[s.length() / 2];
+        for (int i = 0; i < baKeyword.length; i++) {
+            try {
+                baKeyword[i] = (byte) (0xff & Integer.parseInt(s.substring(i * 2, i * 2 + 2), 16));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            s = new String(baKeyword, "UTF-8");
+            new String();
+        } catch (Exception e1) {
+            e1.printStackTrace();
+        }
+        return s;
     }
 
 }

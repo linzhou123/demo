@@ -15,7 +15,7 @@ public class HexEnv implements Serializable {
     private int port;
     @ApiModelProperty(value = "hex_env名称")
     private String name;
-    @ApiModelProperty(value = "发送平台")
+    @ApiModelProperty(value = "测试目标平台")
     private int sendPlatform;//0为大平台 1为老消控
     @ApiModelProperty(value = "发送平台账号")
     private String platformUser;

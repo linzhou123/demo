@@ -28,7 +28,7 @@
     <sql id="Base_Column_List">
         `id`,`env_id`,`name`,`project_id`,`api_suite_id`,`domain`,`request_param_type`,`request_header`,`request_params`,`request_body`,`request_data_params`,`method`,`path`,`request_assert`,`parameter_extractions`,`create_time`,`update_time`
     </sql>
-    <insert id="insertApi" parameterType="com.example.demo.Model.Api" keyProperty="id">
+    <insert id="insertApi" parameterType="com.example.demo.Model.Api" keyProperty="id" useGeneratedKeys="true">
         insert into api (`env_id`,`name`,`project_id`,`api_suite_id`,`domain`,`request_param_type`,`request_header`,`request_params`,`request_body`,`request_data_params`,`method`,`path`,`request_assert`,`parameter_extractions`,`create_time`,`update_time`)
             value (#{envId},#{name},#{projectId},#{apiSuiteId},#{domain},#{requestParamType},
             #{requestHeader,jdbcType=VARCHAR,typeHandler=com.example.demo.typeHandler.ListTypeHandler},
@@ -92,7 +92,7 @@
             `request_assert`=#{requestAssert,jdbcType=VARCHAR,typeHandler=com.example.demo.typeHandler.ListTypeHandler},
         </if>
         <if test="parameterExtractions !=null">
-            `parameter_xtractions`=#{parameterExtractions,jdbcType=VARCHAR,typeHandler=com.example.demo.typeHandler.ListTypeHandler},
+            `parameter_extractions`=#{parameterExtractions,jdbcType=VARCHAR,typeHandler=com.example.demo.typeHandler.ListTypeHandler},
         </if>
         `update_time` =#{updateTime}
         where id =#{id};
@@ -113,7 +113,7 @@
     </select>
     <select id="findAllToPage" resultMap="BaseResultMap" parameterType="com.example.demo.Model.Api">
         select
-        <include refid="Base_Column_List"></include>
+        <include refid="Base_Column_List"/>
         from api
         <where>
             <if test="apiSuiteId !=null and apiSuiteId !=''">

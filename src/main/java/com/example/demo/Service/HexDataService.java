@@ -13,6 +13,8 @@ public interface HexDataService {
 
     SendHexRecordResponse debugHexData(Integer id, int hexEnvId);
 
+    SendHexRecordResponse test(Integer id, int hexEnvId);
+
     List<SendHexRecordResponse> runHexData(Integer hexEnvId);
 
     PageInfoNew<HexPageResp> getHexPage(int pageNum, int pageSize);

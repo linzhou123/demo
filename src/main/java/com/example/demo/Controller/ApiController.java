@@ -114,7 +114,7 @@ public class ApiController {
     }
 
     @PostMapping("/transfer/device/alarm")
-    public ResponseInfo getAlarm(@RequestBody AlarmData alarmData) {
+    public ResponseInfo getAlarm(@RequestBody  AlarmData alarmData) {
         log.info("报警数据:" + JSONObject.toJSONString(alarmData));
         return ResponseInfo.successInfo(alarmData);
     }

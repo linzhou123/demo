@@ -28,10 +28,7 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -65,7 +62,7 @@ public class HexDataServiceImpl implements HexDataService {
     @Override
     public SendHexRecordResponse debugHexData(Integer id, int hexEnvId) {
         HexDto data = hexDataMapper.getHexDataById(id);
-        HexEnv hexEnv =hexEnvMapper.getHexEnvById(hexEnvId);
+        HexEnv hexEnv = hexEnvMapper.getHexEnvById(hexEnvId);
         data.setUserName(hexEnv.getPlatformUser());
         data.setPassword(hexEnv.getPlatformPassword());
         data.setSendPlatform(hexEnv.getSendPlatform());
@@ -88,10 +85,36 @@ public class HexDataServiceImpl implements HexDataService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if (hexUtil.getHexAssert()){
-            sedDingDingTalk(data.getDeviceName()+"设备发送测试hex流成功");
-        }else {
-            sedDingDingTalk(data.getDeviceName()+"设备发送测试hex流失败");
+        if (hexUtil.getHexAssert()) {
+            sedDingDingTalk(data.getDeviceName() + "设备发送测试hex流成功");
+        } else {
+            sedDingDingTalk(data.getDeviceName() + "设备发送测试hex流失败");
+        }
+        return sendHexRecord;
+    }
+
+    @Override
+    public SendHexRecordResponse test(Integer id, int hexEnvId) {
+        HexDto data = hexDataMapper.getHexDataById(id);
+        HexEnv hexEnv = hexEnvMapper.getHexEnvById(hexEnvId);
+        data.setUserName(hexEnv.getPlatformUser());
+        data.setPassword(hexEnv.getPlatformPassword());
+        data.setSendPlatform(hexEnv.getSendPlatform());
+        if (!StringUtils.isEmpty(hexEnv.getHost()) || !StringUtils.isEmpty(hexEnv.getPort())) {
+            data.setHost(hexEnv.getHost());
+            data.setPort(hexEnv.getPort());
+        }
+        SendHexRecordResponse sendHexRecord = new SendHexRecordResponse();
+        HexUtil hexUtil = new HexUtil(data);
+        try {
+            String content = hexUtil.getBackMsg1(data.getHexContent());
+            sendHexRecord.setDeviceName(data.getDeviceName());
+            sendHexRecord.setHexContent(data.getHexContent());
+            sendHexRecord.setSysBackContent(content);
+            sendHexRecord.setCreateTime(DateToStamp.getTimeStap());
+            sendHexRecord.setUrl(data.getHost().concat(":").concat(String.valueOf(data.getPort())));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return sendHexRecord;
     }
@@ -101,7 +124,7 @@ public class HexDataServiceImpl implements HexDataService {
         List<SendHexRecordResponse> sendHexRecordList = new ArrayList<>();
         List<HexData> hexDataList = hexDataMapper.getAllHexData();
         for (HexData hexData : hexDataList) {
-            SendHexRecordResponse sendHexRecord = debugHexData(hexData.getId(),hexEnvId);
+            SendHexRecordResponse sendHexRecord = debugHexData(hexData.getId(), hexEnvId);
             sendHexRecordList.add(sendHexRecord);
         }
 
@@ -111,12 +134,12 @@ public class HexDataServiceImpl implements HexDataService {
     @Override
     public PageInfoNew<HexPageResp> getHexPage(int pageNum, int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        List<HexPageResp> hexDataList =new ArrayList<>();
+        List<HexPageResp> hexDataList = new ArrayList<>();
         List<HexData> list = hexDataMapper.getAllHexData();
         PageInfo<HexData> pageInfo = new PageInfo<>(list);
-        for (HexData hexData :list){
-            HexPageResp resp =new HexPageResp();
-            BeanUtils.copyProperties(hexData,resp);
+        for (HexData hexData : list) {
+            HexPageResp resp = new HexPageResp();
+            BeanUtils.copyProperties(hexData, resp);
             resp.setDateTypeName(HexDataTypeEnum.valueOfType(hexData.getDataType()).getName());
             resp.setDeviceTypeName(HexDeviceTypeEnum.valueOfType(hexData.getDeviceType()).getName());
             hexDataList.add(resp);
@@ -128,7 +151,7 @@ public class HexDataServiceImpl implements HexDataService {
         pageParams.setPageTotal(pageInfo.getTotal());
         pageParams.setSize(pageInfo.getSize());
 //        System.out.println(hexDataList);
-        return new PageInfoNew<>(hexDataList,pageParams);
+        return new PageInfoNew<>(hexDataList, pageParams);
     }
 
     @Override
@@ -136,17 +159,17 @@ public class HexDataServiceImpl implements HexDataService {
         hexDataMapper.deleteHex(id);
     }
 
-    public void sedDingDingTalk(String content){
-        Map<String,String> map = new HashMap<>();
-        map.put("content",content);
-        Map<String,Object> reqMap =new HashMap<>();
-        reqMap.put("msgtype","text");
-        reqMap.put("text",map);
-        JSONObject jsonObject  = new JSONObject(reqMap);
-        Map<String,String> headers = new HashMap<>();
-        headers.put("Content-Type","application/json");
-        Response response= RestAssured.given().headers(headers).body(jsonObject).when().post(dingDingTalkUrl);
-        log.info("钉钉消息推送结果："+response.prettyPrint());
+    public void sedDingDingTalk(String content) {
+        Map<String, String> map = new HashMap<>();
+        map.put("content", content);
+        Map<String, Object> reqMap = new HashMap<>();
+        reqMap.put("msgtype", "text");
+        reqMap.put("text", map);
+        JSONObject jsonObject = new JSONObject(reqMap);
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/json");
+        Response response = RestAssured.given().headers(headers).body(jsonObject).when().post(dingDingTalkUrl);
+        log.info("钉钉消息推送结果：" + response.prettyPrint());
 
     }
 }

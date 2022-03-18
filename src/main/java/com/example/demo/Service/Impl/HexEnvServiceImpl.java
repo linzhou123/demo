@@ -7,12 +7,14 @@ import com.example.demo.utils.DateToStamp;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service
 public class HexEnvServiceImpl implements HexEnvService {
 
     @Resource
     HexEnvMapper hexEnvMapper;
+
     @Override
     public void insertHexEnv(HexEnv hexEnv) {
         hexEnv.setCreateTime(DateToStamp.getTimeStap());
@@ -29,5 +31,10 @@ public class HexEnvServiceImpl implements HexEnvService {
     @Override
     public HexEnv getHexEnvById(int id) {
         return hexEnvMapper.getHexEnvById(id);
+    }
+
+    @Override
+    public List<HexEnv> getAllHexEnvList() {
+        return hexEnvMapper.getAllHexEnv();
     }
 }

@@ -1,6 +1,5 @@
 package com.example.demo.Mapper;
 
-import com.example.demo.Model.HexData;
 import com.example.demo.Model.HexEnv;
 import org.apache.ibatis.annotations.Param;
 
@@ -11,7 +10,7 @@ public interface HexEnvMapper {
 
     void updateHexEnv(HexEnv hexEnv);
 
-    List<HexData> getAllHexEnv();
+    List<HexEnv> getAllHexEnv();
 
     HexEnv getHexEnvById(@Param(value = "id") int id);
 

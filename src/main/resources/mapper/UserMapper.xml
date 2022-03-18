@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.Mapper.UserMapper">
+    <resultMap id="BaseResultMap" type="com.example.demo.Model.User">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="user_name" jdbcType="VARCHAR" property="userName"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="create_time" jdbcType="INTEGER" property="createTime"/>
+        <result column="update_time" jdbcType="INTEGER" property="updateTime"/>
+    </resultMap>
+     <sql id="Base_Column_List">
+         `id`,`name`,`user_name`,`password`,`create_time`,`update_time`
+     </sql>
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true" parameterType="com.example.demo.Model.User">
+        insert into `user` (`name`,`user_name`,`password`,`create_time`,`update_time`)
+        value (#{name},#{userName},#{password},#{createTime},#{updateTime})
+    </insert>
+    <select id="selectByUserName" resultMap="BaseResultMap" parameterType="String">
+        select
+        <include refid="Base_Column_List" />
+        from`user`
+        where  `user_name`=#{userName}
+    </select>
+</mapper>

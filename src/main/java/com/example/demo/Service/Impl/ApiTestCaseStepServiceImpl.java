@@ -52,7 +52,7 @@ public class ApiTestCaseStepServiceImpl implements ApiTestCaseStepService {
     }
 
     @Override
-    public ApiTestCaseResultDto runStep(Integer testCaseId) {
+    public ApiTestCaseResultDto runStep(Integer testCaseId, Integer envId) {
         List<ApiTestCaseStep> apiTestCaseSteps = apiTestCaseStepMapper.findByTestCaseId(testCaseId);
         ApiTestCase apiTestCase = apiTestCaseMapper.findById(testCaseId);
         ApiTestCaseResult apiTestCaseResult = new ApiTestCaseResult();
@@ -67,11 +67,14 @@ public class ApiTestCaseStepServiceImpl implements ApiTestCaseStepService {
             log.info("获取测试用例步骤:" + apiTestCaseStep.toString());
             Api api = new Api();
             BeanUtils.copyProperties(apiTestCaseStep, api);
+            api.setEnvId(envId);
             ApiRequestResult apiRequestResult = apiService.requestTestRun(api, getExtractionsList);
             apiRequestResult.setApiId(apiTestCaseStep.getApiId());
             apiRequestResult.setApiTestCaseId(apiTestCaseStep.getTestCaseId());
             apiRequestResult.setApiTestCaseStepId(apiTestCaseStep.getId());
-            getExtractionsList.addAll(apiRequestResult.getResultExtractions());
+            if(apiRequestResult.getResultExtractions()!=null){
+                getExtractionsList.addAll(apiRequestResult.getResultExtractions());
+            }
             apiRequestResults.add(apiRequestResult);
 //            apiRequestResultMapper.insertApiRequestResult(apiRequestResult);
             count += 1;

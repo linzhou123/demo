@@ -93,7 +93,7 @@ public class JobMsgServiceImpl implements JobMsgService {
         jobPlanLog.setCreateTime(DateToStamp.getTimeStap());
         jobPlanLogMapper.insert(jobPlanLog);
         for (int groupId : groupIdList) {
-            ApiTestCaseResultDto apiTestCaseResultDto = runTestGroup(groupId);
+            ApiTestCaseResultDto apiTestCaseResultDto = runTestGroup(groupId,jobMsg.getEnvId());
             ApiTestCaseResult apiTestCaseResult = apiTestCaseResultDto.getApiTestCaseResult();
             apiTestCaseResult.setPlanId(jobPlanLog.getId());
             apiTestCaseResultMapper.insertResult(apiTestCaseResult);
@@ -117,11 +117,11 @@ public class JobMsgServiceImpl implements JobMsgService {
         jobPlanLogMapper.update(jobPlanLog);
     }
 
-    public ApiTestCaseResultDto runTestGroup(int testCaseGroupId) {
+    public ApiTestCaseResultDto runTestGroup(int testCaseGroupId,int envId) {
         ApiTestCaseResultDto apiTestCaseResultDto = new ApiTestCaseResultDto();
         List<ApiTestCaseMerge> apiTestCaseMergeList = apiTestCaseMergeMapper.findByGroupId(testCaseGroupId);
         for (ApiTestCaseMerge apiTestCaseMerge : apiTestCaseMergeList) {
-            apiTestCaseResultDto = apiTestCaseStepService.runStep(apiTestCaseMerge.getApiTestCaseId());
+            apiTestCaseResultDto = apiTestCaseStepService.runStep(apiTestCaseMerge.getApiTestCaseId(), envId);
 
         }
         return apiTestCaseResultDto;

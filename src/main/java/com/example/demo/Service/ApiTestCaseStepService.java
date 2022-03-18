@@ -9,7 +9,7 @@ import java.util.List;
 public interface ApiTestCaseStepService {
     int insertStepToTestCase(List<ApiTestCaseStep> apiTestCaseStepList);
 
-    ApiTestCaseResultDto runStep(Integer testCaseId);
+    ApiTestCaseResultDto runStep(Integer testCaseId,Integer envId);
 
     void apiTestCaseStepEdit(List<ApiTestCaseStep> apiTestCaseStepList);
 

@@ -24,9 +24,16 @@ public class HexEnvController {
         hexEnvService.insertHexEnv(hexEnv);
         return ResponseInfo.successInfo("");
     }
+
     @GetMapping("/hexDetails")
-    @ApiImplicitParam(name = "id",value = "id",required = true ,dataType = "int")
-    public ResponseInfo hexDetails(int id){
+    @ApiOperation(value = "获取hex环境详情接口")
+    @ApiImplicitParam(name = "id", value = "id", required = true, dataType = "int")
+    public ResponseInfo hexDetails(int id) {
         return ResponseInfo.successInfo(hexEnvService.getHexEnvById(id));
+    }
+    @GetMapping("/list")
+    @ApiOperation(value = "获取hex环境列表接口")
+    public ResponseInfo list(){
+        return ResponseInfo.successInfo(hexEnvService.getAllHexEnvList());
     }
 }

@@ -84,13 +84,13 @@ public class ApiServiceImpl implements ApiService {
         ApiRequestResult apiRequestResult = new ApiRequestResult();
         RequestSpecification requestSpecification = RestAssured.given();
         requestSpecification.headers(getHeaders(api.getRequestHeader(), getExtractionsList));
-        if (!api.getMethod().equalsIgnoreCase("get")){
-            if (api.getRequestParamType().equals("raw")){
+        if (!api.getMethod().equalsIgnoreCase("get")) {
+            if (api.getRequestParamType().equals("raw")) {
                 requestSpecification.body(api.getRequestBody());
-            }else{
-                requestSpecification.params(getParams(api.getRequestDataParams(),getExtractionsList));
+            } else {
+                requestSpecification.params(getParams(api.getRequestDataParams(), getExtractionsList));
             }
-        }else {
+        } else {
             requestSpecification.params(getParams(api.getRequestParams(), getExtractionsList));
         }
         log.info("---------开始执行自动化接口用例---------");
@@ -110,16 +110,16 @@ public class ApiServiceImpl implements ApiService {
         try {
             switch (api.getMethod()) {
                 case "Post":
-                    response =requestSpecification.when().post(URL);
+                    response = requestSpecification.when().post(URL);
                     break;
                 case "Get":
-                    response =requestSpecification.when().get(URL);
+                    response = requestSpecification.when().get(URL);
                     break;
                 case "Delete":
-                    response =requestSpecification.when().delete(URL);
+                    response = requestSpecification.when().delete(URL);
                     break;
                 case "Put":
-                    response =requestSpecification.when().put(URL);
+                    response = requestSpecification.when().put(URL);
                     break;
                 default:
                     apiRequestResult.setExceptionBody("不支持该请求方式 :" + URL);
@@ -152,7 +152,7 @@ public class ApiServiceImpl implements ApiService {
      * 获取消息头
      *
      * @param hList              消息头列表
-     * @param getExtractionsList
+     * @param getExtractionsList 环境变量值
      * @return 以map 格式返回消息头
      */
     public Map<String, Object> getHeaders(List<Header> hList, List<GetExtractions> getExtractionsList) {

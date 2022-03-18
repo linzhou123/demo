@@ -37,10 +37,11 @@ public class ApiTestGroupController {
      */
     @PostMapping("/addCaseToGroup")
     @ApiOperation(value = "添加测试用例至测试用例集")
-    public ResponseInfo addCaseToGroup(@RequestParam ApiTestCaseMergeDto apiTestCaseMergeDto) {
+    public ResponseInfo addCaseToGroup(@RequestBody ApiTestCaseMergeDto apiTestCaseMergeDto) {
         apiTestCaseMergeService.insertApiTestCaseMerge(apiTestCaseMergeDto);
         return ResponseInfo.successInfo("");
     }
+
 
     /**
      * 从测试用例集中删除测试用例
@@ -57,9 +58,24 @@ public class ApiTestGroupController {
      */
     @PostMapping("/run")
     @ApiOperation(value = "运行测试用例集")
-    public ResponseInfo runTestGroup(@RequestParam int testGroupId) {
-        apiTestCaseGroupService.runTestGroup(testGroupId);
+    public ResponseInfo runTestGroup(@RequestParam int testGroupId,@RequestParam int envId) {
+        apiTestCaseGroupService.runTestGroup(testGroupId,envId);
         return ResponseInfo.successInfo("");
+    }
+
+    /**
+     * 测试用例集展示列表
+     * */
+    @GetMapping("/list")
+    @ApiOperation(value = "测试用例集展示列表")
+    public ResponseInfo list(@RequestParam int projectId,@RequestParam(required = false) String groupName){
+        return ResponseInfo.successInfo(apiTestCaseGroupService.apiTestCaseGroupList(projectId,groupName));
+    }
+
+    @GetMapping("/caseList")
+    @ApiOperation(value = "测试用例展示")
+    public ResponseInfo caseListByGroupId(@RequestParam int testGroupId){
+        return ResponseInfo.successInfo(apiTestCaseGroupService.caseListByGroupId(testGroupId));
     }
 
 }

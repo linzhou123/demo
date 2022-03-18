@@ -15,5 +15,5 @@ public interface ApiTestCaseService {
 
     void testCaseDelete(int testCaseId);
 
-    ApiTestCaseResultDto runCase(Integer testCaseId);
+    ApiTestCaseResultDto runCase(Integer testCaseId,Integer envId);
 }

@@ -26,27 +26,31 @@ import java.util.Map;
 @Slf4j
 public class FileServiceImpl implements FileService {
 
+    private static int num=1;
     @Resource
     ApiSuiteMapper apiSuiteMapper;
     @Resource
     ApiMapper apiMapper;
 
+
     @Override
-    public String AnalysisJson(String fileName, int projectId, String url) {
+    public String AnalysisJson(String fileName, int projectId, String url,int  envId) {
         //判断读取的文件内容是否为空
         if (!StringUtils.isEmpty(FileUtils.readJsonFile(fileName))) {
             //根据项目创建接口分类
             setApiSuite(fileName, projectId);
             List<Api> getApiList = getApiList(fileName, projectId);
             for (Api api : getApiList) {
+                api.setDomain(url);
+                api.setEnvId(envId);
                 if (apiMapper.findAllByFile(api.getName(),projectId).size() < 1) {
-                    api.setDomain(url);
-//                api.setEnvId();
                     api.setCreateTime(DateToStamp.getTimeStap());
                     api.setUpdateTime(DateToStamp.getTimeStap());
                     apiMapper.insertApi(api);
                 } else {
-                    log.info("接口已存在，不再导入，接口内容:{}", api);
+                    api.setUpdateTime(DateToStamp.getTimeStap());
+                    apiMapper.updateApi(api);
+                    log.info("接口已存在，将更新内容，接口内容:{}", api);
                 }
             }
             return "导入成功";
@@ -60,6 +64,7 @@ public class FileServiceImpl implements FileService {
      * 创建接口组别
      */
     public void setApiSuite(String fileName, int projectId) {
+        //读取文件中的json串
         JSONObject jsonObject = JSON.parseObject(FileUtils.readJsonFile(fileName));
         JSONArray jsonArray = jsonObject.getJSONArray("tags");
         for (Object ob : jsonArray) {
@@ -120,6 +125,7 @@ public class FileServiceImpl implements FileService {
                     //判断json-parameters 中是否存在 in 来获取requestType
                     if (parameter.containsKey("in")) {
                         String requestType = parameter.get("in").toString();
+                        System.out.println("parameter:"+parameter.toString());
                         if (requestType.equals("body")) {
                             //json格式消息头塞入Content-Type
                             List<Header> headerList = new ArrayList<>();
@@ -130,6 +136,7 @@ public class FileServiceImpl implements FileService {
                             api.setRequestHeader(headerList);
                             api.setRequestParamType("raw");
                             JSONObject schema = (JSONObject) parameter.get("schema");
+                            System.out.println("schema:"+schema.toString());
                             //判断是否直接存在key：originalRef
                             if (schema.containsKey("originalRef")) {
                                 String parameters = getParams(getDefinitions(js), schema.get("originalRef").toString());
@@ -137,6 +144,8 @@ public class FileServiceImpl implements FileService {
                             } else {
                                 //不是直接的key:originalRef  这外面包了一层key:items
                                 JSONObject items = (JSONObject) schema.get("items");
+                                System.out.println("items:"+items.toString());
+                                System.out.println("getDefinitions(js):"+getDefinitions(js));
                                 String parameters = getParams(getDefinitions(js), items.get("originalRef").toString());
                                 api.setRequestBody(parameters);
                             }
@@ -198,10 +207,37 @@ public class FileServiceImpl implements FileService {
         HashMap map = JSON.parseObject(js, HashMap.class);
         Map<String, Object> map1 = new HashMap<>();
         for (Object key : map.keySet()) {
-            map1.put(key.toString(), "");
+            JSONObject json = JSONObject.parseObject(map.get(key).toString());
+            if (json.containsKey("originalRef")){
+                map1.put(key.toString(),JSONObject.parseObject(getParams(jsonObject,json.get("originalRef").toString())));
+                log.info("进入二次嵌套，获取Key结果:"+key.toString());
+                log.info("进入二次嵌套，获取结果:"+getParams(jsonObject,json.get("originalRef").toString()));
+            }else {
+                if (json.get("type").toString().equals("array")){
+                    JSONObject items =(JSONObject) json.get("items");
+                    List<Object> list =new ArrayList<>();
+                    if (num<3&&jsonObject.containsKey(items.get("originalRef").toString())){
+                        num+=1;
+                        String s =getParams(jsonObject,items.get("originalRef").toString());
+                        log.info("key:"+key.toString()+",originalRef:"+items.get("originalRef").toString());
+                        log.info("items:"+items.toString());
+                        log.info("进入二次嵌套，获取结果1111:"+s);
+                        list.add(JSONObject.parseObject(s));
+                        map1.put(key.toString(),list);
+                    }else {
+                        if (map1.containsKey(key.toString())){
+                            continue;
+                        }else {
+                            map1.put(key.toString(),list);
+                        }
+                    }
+                }else {
+                    map1.put(key.toString(), "");
+                }
+            }
         }
         JSONObject result = new JSONObject(map1);
-
+        log.info("返回result结果:",result.toJSONString());
         return result.toJSONString();
     }
 

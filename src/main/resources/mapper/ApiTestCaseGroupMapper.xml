@@ -17,4 +17,13 @@
         value (#{name},#{projectId},#{remark},#{createTime},#{updateTime})
     </insert>
 
+    <select id="getGroupByProjectIdAndName" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from api_testcase_group  where
+        project_id =#{projectId}
+        <if test="name !=null and name !=''">
+            and `name` =#{name}
+        </if>
+    </select>
 </mapper>

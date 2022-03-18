@@ -15,7 +15,7 @@
     <sql id="Base_Column_List">
         `id`,`host`,`port`,`name`,`send_platform`,`platform_user`,`platform_password`,`create_time`,`update_time`
     </sql>
-    <insert id="insertHexEnv" parameterType="com.example.demo.Model.HexEnv" keyProperty="id">
+    <insert id="insertHexEnv" parameterType="com.example.demo.Model.HexEnv" keyProperty="id" useGeneratedKeys="true">
         insert into hex_env (`host`,`port`,`name`,`send_platform`,`platform_user`,`platform_password`,`create_time`,`update_time`)
         value
         (#{host},#{port},#{name},#{sendPlatform},#{platformUser},#{platformPassword},#{createTime},#{updateTime})

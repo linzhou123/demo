@@ -27,9 +27,10 @@ public class HexController {
         hexDataService.insertHexData(hexData);
         return ResponseInfo.successInfo("");
     }
+
     @PostMapping("/update")
     @ApiOperation(value = "更新hex流数据接口")
-    public ResponseInfo updateHexData(@RequestBody HexData hexData){
+    public ResponseInfo updateHexData(@RequestBody HexData hexData) {
         hexDataService.updateHexData(hexData);
         return ResponseInfo.successInfo("");
     }
@@ -41,8 +42,8 @@ public class HexController {
             @ApiImplicitParam(name = "hexEnvId", value = "hex环境变量id", required = true, dataType = "int"),
 
     })
-    public ResponseInfo debugHexData(Integer id,int hexEnvId) {
-        return ResponseInfo.successInfo(hexDataService.debugHexData(id,hexEnvId));
+    public ResponseInfo debugHexData(Integer id, int hexEnvId) {
+        return ResponseInfo.successInfo(hexDataService.debugHexData(id, hexEnvId));
     }
 
     @PostMapping("/run")
@@ -70,6 +71,17 @@ public class HexController {
     )
     public ResponseInfo getHexPage(int pageNum, int pageSize) {
         return ResponseInfo.successInfo(hexDataService.getHexPage(pageNum, pageSize));
+    }
+
+    @PostMapping("/test")
+    @ApiOperation(value = "test")
+    @ApiImplicitParams({
+            @ApiImplicitParam(value = "hexId", name = "id", required = true, dataType = "int"),
+            @ApiImplicitParam(name = "hexEnvId", value = "hex环境变量id", required = true, dataType = "int"),
+
+    })
+    public ResponseInfo test(Integer id, int hexEnvId) {
+        return ResponseInfo.successInfo(hexDataService.test(id, hexEnvId));
     }
 
 }

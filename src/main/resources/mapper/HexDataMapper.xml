@@ -16,7 +16,7 @@
     <sql id="Base_Column_List">
         `id`,`host`,`port`,`name`,`device_name`,`hex_content`,`data_type`,`device_type`,`create_time`,`update_time`
     </sql>
-    <insert id="insertHexData" parameterType="com.example.demo.Model.SendHexRecord" keyProperty="id">
+    <insert id="insertHexData" parameterType="com.example.demo.Model.SendHexRecord" keyProperty="id" useGeneratedKeys="true">
         insert into hex_data (`host`,`port`,`name`,`device_name`,`hex_content`,`data_type`,`device_type`,`create_time`,`update_time`)
         value
         (#{host},#{port},#{name},#{deviceName},#{hexContent},#{dataType},#{deviceType},#{createTime},#{updateTime})

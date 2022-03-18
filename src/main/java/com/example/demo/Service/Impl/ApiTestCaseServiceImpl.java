@@ -60,8 +60,8 @@ public class ApiTestCaseServiceImpl implements ApiTestCaseService {
     }
 
     @Override
-    public ApiTestCaseResultDto runCase(Integer testCaseId) {
-        ApiTestCaseResultDto apiTestCaseResultDto = apiTestCaseStepService.runStep(testCaseId);
+    public ApiTestCaseResultDto runCase(Integer testCaseId, Integer envId) {
+        ApiTestCaseResultDto apiTestCaseResultDto = apiTestCaseStepService.runStep(testCaseId,envId);
         apiTestCaseResultMapper.insertResult(apiTestCaseResultDto.getApiTestCaseResult());
         for (ApiRequestResult apiRequestResult : apiTestCaseResultDto.getApiRequestResults()) {
             apiRequestResultMapper.insertApiRequestResult(apiRequestResult);

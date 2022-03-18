@@ -15,7 +15,7 @@
     <sql id="Base_Column_List">
         `id`,`url`,`method`,`params`,`header`,`class_method`,`code`,`response`,`create_time`
     </sql>
-    <insert id="insert" keyProperty="id" parameterType="com.example.demo.Model.SysLog">
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true" parameterType="com.example.demo.Model.SysLog">
         insert  into sys_log
         (`url`,`method`,`params`,`header`,`class_method`,`code`,`response`,`create_time`) value
         (#{url},#{method},#{params},#{header},#{classMethod},#{code},#{response},#{createTime})

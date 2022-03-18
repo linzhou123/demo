@@ -101,8 +101,8 @@ public class ApiTestCaseController {
 
     @PostMapping("/run")
     @ApiOperation(value = "执行测试用例接口")
-    public ResponseInfo runTestCase(@RequestParam Integer testCaseId) {
-        return ResponseInfo.successInfo(apiTestCaseService.runCase(testCaseId));
+    public ResponseInfo runTestCase(@RequestParam Integer testCaseId,@RequestParam Integer envId) {
+        return ResponseInfo.successInfo(apiTestCaseService.runCase(testCaseId,envId));
     }
 
     @PostMapping("/addApiStep")
